@@ -205,7 +205,67 @@ public class SensorColor extends LinearOpMode {
                     .addData("Value", "%.3f", hsvValues[2]);
             telemetry.addData("Alpha", "%.3f", colors.alpha);
 
-            /* If this color sensor also has a distance sensor, display the measured distance.
+            //The Following Code has been added by Addy Stevens from FTC Team #25955 WOW!
+            //This was made for 2025-2026 FTC DECODE!
+
+            int colorRed;
+                colorRed = (int) colors.red;
+
+            int colorGreen;
+                    colorGreen = (int) colors.green;
+
+            int colorBlue;
+                    colorBlue = (int) colors.blue;
+
+            /*
+            The following variables are the max and min hues for the purple and green artifacts.
+            The pattern for the variable names are as follows: "artifactHueMax"
+            So yes, unfortunately Green is just "greenGreenMax" "greenGreenMin".
+            Please don't get this confused. <3
+
+            - Addy
+             */
+
+            //Purple Artifacts For Red Variable
+            int purpleRedMax;
+                    purpleRedMax =
+            int purpleRedMin;
+                    purpleRedMin =
+            //Purple Artifacts for Blue Variable
+            int purpleBlueMax;
+                    purpleBlueMax =
+            int purpleBlueMin;
+                    purpleBlueMin =
+
+            //Green Artifacts -> Green Variable
+            int greenGreenMax;
+                    greenGreenMax =
+            int greenGreenMin;
+                    greenGreenMin =
+
+            //Evil Evil If then statements are now below this comment.
+
+            //Red
+            if (colorRed <= purpleRedMax){}
+                else{}
+            if (colorRed >= purpleRedMin){}
+                else{}
+
+            //Blue
+            if (colorBlue <= purpleBlueMax){}
+                else{}
+            if (colorBlue >= purpleBlueMin){}
+                else{}
+
+            //Green
+            if(colorGreen <= greenGreenMax){}
+                else{}
+            if(colorGreen >= greenGreenMin){}
+                else{}
+
+
+
+        /* If this color sensor also has a distance sensor, display the measured distance.
              * Note that the reported distance is only useful at very close range, and is impacted by
              * ambient light and surface reflectivity. */
             if (colorSensor instanceof DistanceSensor) {
