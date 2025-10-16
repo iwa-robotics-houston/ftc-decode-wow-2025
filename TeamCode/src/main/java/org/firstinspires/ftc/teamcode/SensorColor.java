@@ -157,10 +157,11 @@ public class SensorColor extends LinearOpMode {
             // Update the gain value if either of the A or B gamepad buttons is being held
             if (gamepad1.a) {
                 // Only increase the gain by a small amount, since this loop will occur multiple times per second.
-                gain += 0.005;
-            } else if (gamepad1.b && gain > 1) { // A gain of less than 1 will make the values smaller, which is not helpful.
-                gain -= 0.005;
-            }
+                gain += 0.005F;
+            } else // A gain of less than 1 will make the values smaller, which is not helpful.
+                if (gamepad1.b && gain > 1) {
+                    gain -= 0.005;
+                }
 
             // Show the gain value via telemetry
             telemetry.addData("Gain", gain);
@@ -227,41 +228,72 @@ public class SensorColor extends LinearOpMode {
              */
 
             //Purple Artifacts For Red Variable
-            int purpleRedMax;
-                    purpleRedMax =
-            int purpleRedMin;
-                    purpleRedMin =
+            double purpleRedMax;
+                    purpleRedMax = 0.033;
+            double purpleRedMin;
+                    purpleRedMin = 0.001;
             //Purple Artifacts for Blue Variable
-            int purpleBlueMax;
-                    purpleBlueMax =
-            int purpleBlueMin;
-                    purpleBlueMin =
+            double purpleBlueMax;
+                    purpleBlueMax = 0.025;
+            double purpleBlueMin;
+                    purpleBlueMin = 0.001;
+            //Purple Artifact for Green Variable
+            double purpleGreenMax;
+                    purpleGreenMax = 0.015;
+            double purpleGreenMin;
+                    purpleGreenMin = 0.001;
 
+            //Green Artifacts For Red Variable
+            double greenRedMax;
+                    greenRedMax = 0.040;
+            double greenRedMin;
+                    greenRedMin = 0.001;
+            //Green Artifacts for Blue Variable
+            double greenBlueMax;
+                    greenBlueMax = 0.006;
+            double greenBlueMin;
+                    greenBlueMin = 0.001;
             //Green Artifacts -> Green Variable
-            int greenGreenMax;
-                    greenGreenMax =
-            int greenGreenMin;
-                    greenGreenMin =
+            double greenGreenMax;
+                    greenGreenMax = 0.040;
+            double greenGreenMin;
+                    greenGreenMin = 0.001;
 
             //Evil Evil If then statements are now below this comment.
 
+            //Purple Artifact
             //Red
             if (colorRed <= purpleRedMax){}
                 else{}
             if (colorRed >= purpleRedMin){}
                 else{}
-
             //Blue
             if (colorBlue <= purpleBlueMax){}
                 else{}
             if (colorBlue >= purpleBlueMin){}
                 else{}
+            //Green
+            if(colorGreen <= purpleGreenMax){}
+                else{}
+            if(colorGreen >= purpleGreenMin){}
+                else{}
 
+            //Green Artifact
+            //Red
+            if (colorRed <= greenRedMax){}
+            else{}
+            if (colorRed >= greenRedMin){}
+            else{}
+            //Blue
+            if (colorBlue <= greenBlueMax){}
+            else{}
+            if (colorBlue >= greenBlueMin){}
+            else{}
             //Green
             if(colorGreen <= greenGreenMax){}
-                else{}
+            else{}
             if(colorGreen >= greenGreenMin){}
-                else{}
+            else{}
 
 
 
