@@ -10,20 +10,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
-Hey chat, uh at the moment this is just a copy and paste of the Robot.Java from last year.
-I haven't changed much yet, so bare with me. You'll probably see the comments I used
-as notes/lists somewhere below this comment so uh have fun with this file i guess?
-- Addy
+This Robot.Java needs to stay on this branch. This is for the gobuilda robot until
+our actual robot is made - Addy
  */
-
-/*
-Notes from what the build team told me:
-- 4 Mech Wheels: front-right, front-left etc etc
-- Arm/Servo/Continuous Rotation Servo
-- Direct Current motor (all robots for FTC have these apparently so uh)
-- I was told to look at pedro pathing but that isn't relevant for Robot.Java but anyways.
- */
-
 /*
 Contains robot build, state, and transformation functions.
 Used to init hardware when an OpMode is run and to control hardware and track state during a run.
@@ -63,16 +52,16 @@ public class Robot {
     public DcMotor leftBackDrive;
     public DcMotor rightBackDrive;
 
-    public DcMotor arm1;
-    public DcMotor arm2;
-    public DcMotor armSlide;
-    public DcMotor vertSlide;
+    //public DcMotor arm1;
+    //public DcMotor arm2;
+    //public DcMotor armSlide;
+    //public DcMotor vertSlide;
 
     //servos
-    public CRServo intakeServo1;
-    public CRServo intakeServo2;
-    public Servo miniClawServo;
-    public Servo wristServo;
+    //public CRServo intakeServo1;
+    //public CRServo intakeServo2;
+    //public Servo miniClawServo;
+    //public Servo wristServo;
 
     public Robot(HardwareMap hardwareMap) {
         // init hardware
@@ -81,15 +70,15 @@ public class Robot {
         leftBackDrive = hardwareMap.get(DcMotor.class, "backLeft");
         rightBackDrive = hardwareMap.get(DcMotor.class, "backRight");
 
-        arm1 = hardwareMap.get(DcMotor.class, "arm1");
-        arm2 = hardwareMap.get(DcMotor.class, "arm2");
-        armSlide = hardwareMap.get(DcMotor.class, "armSlide");
-        vertSlide = hardwareMap.get(DcMotor.class, "vertSlide");
+        //arm1 = hardwareMap.get(DcMotor.class, "arm1");
+        //arm2 = hardwareMap.get(DcMotor.class, "arm2");
+        //armSlide = hardwareMap.get(DcMotor.class, "armSlide");
+        //vertSlide = hardwareMap.get(DcMotor.class, "vertSlide");
 
         intakeServo1 = hardwareMap.get(CRServo.class, "intakeServo1");
         intakeServo2 = hardwareMap.get(CRServo.class, "intakeServo2");
-        miniClawServo = hardwareMap.get(Servo.class, "miniClaw");
-        wristServo = hardwareMap.get(Servo.class, "wristServo");
+        //miniClawServo = hardwareMap.get(Servo.class, "miniClaw");
+        //wristServo = hardwareMap.get(Servo.class, "wristServo");
 
         // configure drive motors
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -97,7 +86,7 @@ public class Robot {
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
-        /*// Configure encoders
+        // Configure encoders
         drivetrainSetRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drivetrainSetRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
          */
@@ -105,61 +94,60 @@ public class Robot {
         // Configure servos
         intakeServo1.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeServo2.setDirection(DcMotorSimple.Direction.REVERSE);
-        wristServo.setDirection(Servo.Direction.REVERSE);
+        //wristServo.setDirection(Servo.Direction.REVERSE);
 
         // Configure slides
-        arm1.setDirection(DcMotor.Direction.REVERSE);
-        arm1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        arm2.setDirection(DcMotor.Direction.REVERSE);
-        arm2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //arm1.setDirection(DcMotor.Direction.REVERSE);
+        //arm1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //arm2.setDirection(DcMotor.Direction.REVERSE);
+        //arm2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        armSlide.setDirection(DcMotor.Direction.FORWARD);
-        armSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //armSlide.setDirection(DcMotor.Direction.FORWARD);
+        //armSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        vertSlide.setDirection(DcMotor.Direction.REVERSE);
-        vertSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        vertSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //vertSlide.setDirection(DcMotor.Direction.REVERSE);
+        //vertSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //vertSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     // Moves the vertical slide to a specified position (in inches).
     // If blockReturn is true, the method will wait until movement is complete.
     // Movement is relative; power is a float in the range [0.0, 1.0].
-    public boolean vertSlideToPosition(double in, double power, boolean blockReturn) {
+    //public boolean vertSlideToPosition(double in, double power, boolean blockReturn) {
 
         // Check if the requested movement exceeds the slide's maximum length.
         // If it does, return false and do not move the slide.
-        if (in > vertSLideMaxLen) return false;
+      //  if (in > vertSLideMaxLen) return false;
 
         // Convert inches to encoder counts.
         // The calculation uses the wheel circumference and encoder counts per revolution (cpr).
-        double movementClicks = in / vertSlideWheelCirc * cpr;
+        //double movementClicks = in / vertSlideWheelCirc * cpr;
 
         // Set the target position for the motor (rounded to the nearest integer).
-        vertSlide.setTargetPosition((int)(movementClicks + 0.5));
+        //vertSlide.setTargetPosition((int)(movementClicks + 0.5));
 
         // Set the motor to run automatically to the target position.
-        vertSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //vertSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set the motor power (speed) to the given value.
-        vertSlide.setPower(power);
+        //vertSlide.setPower(power);
 
         // If blockReturn is false, return immediately and let the movement continue in the background.
-        if (!blockReturn) return true;
-
+        //if (!blockReturn) return true;
         // If blockReturn is true, wait until the motor reaches its target.
-        while (vertSlide.isBusy()) {  // Keep looping while the motor is still moving.
-            try {
-                sleep(50);  // Pause for 50ms before checking again.
-            } catch (InterruptedException e) {
+        //while (vertSlide.isBusy()) {  // Keep looping while the motor is still moving.
+            //try {
+              //  sleep(50);  // Pause for 50ms before checking again.
+            //} catch (InterruptedException e) {
                 // If the thread is interrupted, restore its interrupted state and exit the loop.
-                Thread.currentThread().interrupt();
-                break;
+              //  Thread.currentThread().interrupt();
+                //break;
             }
         }
 
         // Return true to indicate the slide has reached the target position.
-        return true;
+        //return true;
     }
 
 
@@ -167,21 +155,21 @@ public class Robot {
     // If blockReturn is true, the method will wait until movement is complete.
     // movement is relative; power is a float in the range [0.0, 1.0]
     // optionally block until movement completion
-    public boolean armSlideToPosition(double in, double power, boolean blockReturn) {
-        if (in > armSLideMaxLen) return false;
-        double movementClicks = in / armSlideWheelCirc * cpr;
+   // public boolean armSlideToPosition(double in, double power, boolean blockReturn) {
+    //    if (in > armSLideMaxLen) return false;
+      //  double movementClicks = in / armSlideWheelCirc * cpr;
 
-        armSlide.setTargetPosition((int)(movementClicks + 0.5));
-        armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armSlide.setPower(power);
+        //armSlide.setTargetPosition((int)(movementClicks + 0.5));
+        //armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //armSlide.setPower(power);
 
-        if (!blockReturn) return true;
-        while (armSlide.isBusy()) {
-            try {
+       // if (!blockReturn) return true;
+      //  while (armSlide.isBusy()) {
+            //try {
                 sleep(50);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                break;
+            //} catch (InterruptedException e) {
+               // Thread.currentThread().interrupt();
+               // break;
             }
         } return true;
     }
@@ -337,4 +325,3 @@ public class Robot {
         }
     }
     */
-//please work im begging you
