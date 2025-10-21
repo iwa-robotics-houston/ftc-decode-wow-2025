@@ -22,22 +22,22 @@ hardwareMap names come from the robot configuration step on the DS or DC.
 public class Robot {
     // dimensions
     final public double drivetrainDiagonal = 19.5; // in
-    public boolean isArmClawOpen;
-    public boolean isMiniClawOpen;
+    //public boolean isArmClawOpen;
+    //public boolean isMiniClawOpen;
     double cpr = 537.7; // clicks
     double wheelCirc = 11.9; // in
-    static final double vertSlideWheelCirc = Math.PI * 1.5;
+    //static final double vertSlideWheelCirc = Math.PI * 1.5;
 
-    static final double armSlideWheelCirc = Math.PI * 1.5;
+    //static final double armSlideWheelCirc = Math.PI * 1.5;
     // to correct movement lengths
     static final double drivetrainMultiplier =  1.5;
 
     // limits
-    final public double miniClawOpenPos = 0.3;
-    final public double miniClawClosePos = 0.0;
+    //final public double miniClawOpenPos = 0.3;
+    //final public double miniClawClosePos = 0.0;
 
-    final public double vertSLideMaxLen = 19.15; // in
-    final public double armSLideMaxLen = 18; // in
+   // final public double vertSLideMaxLen = 19.15; // in
+    //final public double armSLideMaxLen = 18; // in
 
     // state
     public boolean rightBumperPrev = false;
