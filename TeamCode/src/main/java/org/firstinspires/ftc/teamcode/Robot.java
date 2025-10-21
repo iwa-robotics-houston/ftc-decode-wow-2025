@@ -293,7 +293,7 @@ public class Robot {
         // clicks for movement * scale factor = adjusted clicks
         int turnClicks = (int) (((Math.PI * drivetrainDiagonal) / wheelCirc) * cpr * (degrees / 360) * drivetrainMultiplier);
 
-        // Sets target positions for a 180-degree turn
+        // Set target positions for a 180-degree turn
         //Instead of moving motors in a linear direction (x, y), function makes the left side move forward and the right side move backward
         leftFrontDrive.setTargetPosition(turnClicks);
         leftBackDrive.setTargetPosition(turnClicks);
