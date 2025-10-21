@@ -97,9 +97,9 @@ public class StarterBotTeleop extends OpMode {
     // Declare OpMode members.
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    //private DcMotorEx launcher = null;
-    //private CRServo leftFeeder = null;
-    //private CRServo rightFeeder = null;
+    private DcMotorEx launcher = null;
+    private CRServo leftFeeder = null;
+    private CRServo rightFeeder = null;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -146,9 +146,9 @@ public class StarterBotTeleop extends OpMode {
          */
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        //launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-        //leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
-        //rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
+        rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
 
         /*
          * To drive forward, most robots need the motor on one side to be reversed,
@@ -176,21 +176,21 @@ public class StarterBotTeleop extends OpMode {
          */
         leftDrive.setZeroPowerBehavior(BRAKE);
         rightDrive.setZeroPowerBehavior(BRAKE);
-        //launcher.setZeroPowerBehavior(BRAKE);
+        launcher.setZeroPowerBehavior(BRAKE);
 
         /*
          * set Feeders to an initial value to initialize the servo controller
          */
-        //leftFeeder.setPower(STOP_SPEED);
-        //rightFeeder.setPower(STOP_SPEED);
+        leftFeeder.setPower(STOP_SPEED);
+        rightFeeder.setPower(STOP_SPEED);
 
-        //launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
+        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
 
         /*
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
          * both work to feed the ball into the robot.
          */
-        //leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*
          * Tell the driver that initialization is complete.
@@ -233,22 +233,22 @@ public class StarterBotTeleop extends OpMode {
          * queuing a shot.
          */
         if (gamepad1.y) {
-            //launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) { // stop flywheel
-            //launcher.setVelocity(STOP_SPEED);
+            launcher.setVelocity(STOP_SPEED);
         }
 
         /*
          * Now we call our "Launch" function.
          */
-        //launch(gamepad1.rightBumperWasPressed());
+        launch(gamepad1.rightBumperWasPressed());
 
         /*
          * Show the state and motor powers
          */
         telemetry.addData("State", launchState);
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-        //telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("motorSpeed", launcher.getVelocity());
 
     }
 
@@ -270,34 +270,34 @@ public class StarterBotTeleop extends OpMode {
         rightDrive.setPower(rightPower);
     }
 
-    //void launch(boolean shotRequested) {
-        //switch (launchState) {
-            //case IDLE:
-                //if (shotRequested) {
-                    //launchState = LaunchState.SPIN_UP;
+    void launch(boolean shotRequested) {
+        switch (launchState) {
+            case IDLE:
+                if (shotRequested) {
+                    launchState = LaunchState.SPIN_UP;
                 }
-                //break;
-            //case SPIN_UP:
-                //launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                //if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
-                    //launchState = LaunchState.LAUNCH;
-                //}
-                //break;
-            //case LAUNCH:
-                //leftFeeder.setPower(FULL_SPEED);
-                //rightFeeder.setPower(FULL_SPEED);
-               // feederTimer.reset();
-                //launchState = LaunchState.LAUNCHING;
-               // break;
-            //case LAUNCHING:
-               // if (feederTimer.seconds() > FEED_TIME_SECONDS) {
-                    //launchState = LaunchState.IDLE;
-                    //leftFeeder.setPower(STOP_SPEED);
-                   // rightFeeder.setPower(STOP_SPEED);
-                //}
-               // break;
-        //}
-    //}
-//}
+                break;
+            case SPIN_UP:
+                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
+                    launchState = LaunchState.LAUNCH;
+                }
+                break;
+            case LAUNCH:
+                leftFeeder.setPower(FULL_SPEED);
+                rightFeeder.setPower(FULL_SPEED);
+               feederTimer.reset();
+                launchState = LaunchState.LAUNCHING;
+                break;
+            case LAUNCHING:
+                if (feederTimer.seconds() > FEED_TIME_SECONDS) {
+                    launchState = LaunchState.IDLE;
+                    leftFeeder.setPower(STOP_SPEED);
+                    rightFeeder.setPower(STOP_SPEED);
+                }
+                break;
+        }
+    }
+}
 
 //dear god please work
