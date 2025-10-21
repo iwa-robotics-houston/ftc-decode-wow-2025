@@ -170,11 +170,11 @@ public class Robot {
             //} catch (InterruptedException e) {
                // Thread.currentThread().interrupt();
                // break;
-            }
-        } return true;
+        //    }
+       // } return true;
     }
 }
-    /*
+
     public void drivetrainSetRunMode(DcMotor.RunMode mode) {
         leftFrontDrive.setMode(mode);
         rightFrontDrive.setMode(mode);
@@ -182,9 +182,9 @@ public class Robot {
         rightBackDrive.setMode(mode);
     }
 
-    // Move linearly from the current position to the specified relative point.
-    // Function conditionally blocks until movement completion.
-    // x and y are in inches; power is a float in the range [0.0, 1.0]
+     //Move linearly from the current position to the specified relative point.
+     //Function conditionally blocks until movement completion.
+     //x and y are in inches; power is a float in the range [0.0, 1.0]
     public void driveToPosition(float x, float y, double power, boolean blockReturn) {
         // no movement required
         if (x == 0 && y == 0) return;
@@ -210,7 +210,7 @@ public class Robot {
         // enable distance based movement
         drivetrainSetRunMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        // begin movement; direction is based on motor power
+       // begin movement; direction is based on motor power
         leftFrontDrive.setPower(ADRatio/maxRatio * power);
         rightFrontDrive.setPower(BCRatio/maxRatio * power);
         leftBackDrive.setPower(BCRatio/maxRatio * power);
@@ -324,4 +324,3 @@ public class Robot {
             }
         }
     }
-    */
