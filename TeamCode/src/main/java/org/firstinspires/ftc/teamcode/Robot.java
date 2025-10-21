@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /*
 This Robot.Java needs to stay on this branch. This is for the gobuilda robot until
 our actual robot is made - Addy
+Just commented out some more code- Sophie (Human)
  */
 /*
 Contains robot build, state, and transformation functions.
