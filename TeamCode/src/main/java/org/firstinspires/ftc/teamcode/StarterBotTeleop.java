@@ -56,12 +56,7 @@ import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
  * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
@@ -99,7 +94,8 @@ public class StarterBotTeleop extends OpMode {
     private DcMotor backLeftDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backRightDrive = null;
-    //private DcMotorEx launcher = null;
+    private DcMotor intake = null;
+
     //private CRServo leftFeeder = null;
     //private CRServo rightFeeder = null;
 
@@ -121,12 +117,12 @@ public class StarterBotTeleop extends OpMode {
      * We can use higher level code to cycle through these states. But this allows us to write
      * functions and autonomous routines in a way that avoids loops within loops, and "waits".
      */
-    private enum LaunchState {
-        //IDLE,
-        //SPIN_UP,
-        //LAUNCH,
-        //LAUNCHING,
-    }
+    //private enum LaunchState {
+    //IDLE,
+    //SPIN_UP,
+    //LAUNCH,
+    //LAUNCHING,
+
 
     //private LaunchState launchState;
 
@@ -135,6 +131,7 @@ public class StarterBotTeleop extends OpMode {
     double frontLeftPower;
     double frontRightPower;
     double backRightPower;
+    double intakePower = 1;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -149,10 +146,10 @@ public class StarterBotTeleop extends OpMode {
          * step.
          */
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
-        backLeftDrive = hardwareMap.get(DcMotor.class,"back_left_drive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
-        backRightDrive = hardwareMap.get(DcMotor.class,"back_right_drive");
-        //launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        intake = hardwareMap.get(DcMotor.class, "intake");
         //leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         //rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
 
@@ -176,7 +173,6 @@ public class StarterBotTeleop extends OpMode {
          * into the port right beside the motor itself. And that the motors polarity is consistent
          * through any wiring.
          */
-        //launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         /*
          * Setting zeroPowerBehavior to BRAKE enables a "brake mode". This causes the motor to
@@ -187,7 +183,6 @@ public class StarterBotTeleop extends OpMode {
         backLeftDrive.setZeroPowerBehavior(BRAKE);
         frontRightDrive.setZeroPowerBehavior(BRAKE);
         backRightDrive.setZeroPowerBehavior(BRAKE);
-        //launcher.setZeroPowerBehavior(BRAKE);
 
         /*
          * set Feeders to an initial value to initialize the servo controller
@@ -237,17 +232,17 @@ public class StarterBotTeleop extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
+
         arcadeDrive(-gamepad1.left_stick_y, gamepad1.right_stick_x);
 
-        /*
-         * Here we give the user control of the speed of the launcher motor without automatically
-         * queuing a shot.
-         */
-        /*
-        if (gamepad1.y) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad1.b) { // stop flywheel
-            launcher.setVelocity(STOP_SPEED);
+        //this is the code for the intake
+       float intakeIn = (gamepad2.right_trigger);
+       float intakeOut = (gamepad2.left_trigger);
+
+        if (gamepad2.right_trigger > 0) {
+            intake.setPower(intakePower);
+        } else if (gamepad2.left_trigger > 0) {
+            intake.setPower(-intakePower);
         }
         /*
          * Now we call our "Launch" function.
@@ -268,11 +263,10 @@ public class StarterBotTeleop extends OpMode {
     /*
      * Code to run ONCE after the driver hits STOP
      */
-    @Override
-    public void stop() {
-    }
 
-    void arcadeDrive(double forward, double rotate) {
+
+
+   public void arcadeDrive(double forward, double rotate) {
         frontLeftPower = forward + rotate;
         backLeftPower = forward + rotate;
         frontRightPower = forward - rotate;
@@ -287,8 +281,8 @@ public class StarterBotTeleop extends OpMode {
         backRightDrive.setPower(backRightPower);
     }
 /*
-    void launch(boolean shotRequested) {
-        switch (launchState) {
+   // void intake(double in, double out)
+        intakePower
             case IDLE:
                 if (shotRequested) {
                     launchState = LaunchState.SPIN_UP;
@@ -311,10 +305,6 @@ public class StarterBotTeleop extends OpMode {
                     launchState = LaunchState.IDLE;
                     leftFeeder.setPower(STOP_SPEED);
                     rightFeeder.setPower(STOP_SPEED);
-                }
-                break;
-        }
-    }
  */
 }
 
