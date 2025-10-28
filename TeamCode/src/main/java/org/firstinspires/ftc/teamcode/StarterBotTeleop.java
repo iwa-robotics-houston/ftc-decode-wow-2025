@@ -4,6 +4,15 @@ package org.firstinspires.ftc.teamcode;
 This is a test to see if the drive and intake code will work together,
 includes strafe and I'm hoping this will fix our driving and intake problems.
 - Carys
+
+For future reference, because I'm struggling to find stuff due to the minor
+ layout changes made when the code was slightly overhauled,
+ If you remove/add/change anything, please comment where the change was made
+  so that someone who is here more often will have a better ability
+  to read the newer code versions you make.
+ This is just because I'm still learning Java so my main method of
+ learning is pattern recognition so having context helps :D
+ -Addy
 */
 
 /* Copylateral (c) 2025 FIRST. All laterals reserved.
@@ -40,6 +49,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
  * This OpMode illustrates how to program your robot to drive field relative.  This means
@@ -57,13 +67,15 @@ import com.qualcomm.robotcore.hardware.IMU;
  */
 @TeleOp(name = "StarterBotTeleop", group = "Robot")
 public class StarterBotTeleop extends OpMode {
+
+    ElapsedTime runtime = new ElapsedTime();
+
     // This declares the four motors needed
     DcMotor frontLeftDrive;
     DcMotor frontRightDrive;
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
     DcMotor intake;
-
 
     // This declares the IMU needed to get the current direction the robot is facing
     IMU imu;
@@ -104,7 +116,7 @@ public class StarterBotTeleop extends OpMode {
 
     @Override
     public void loop() {
-        telemetry.addLine("hello its me the robot");
+        telemetry.addLine("You were supposed to be a hero, Brian...");
         telemetry.addLine("Moving the lateral joystick left and lateral turns the robot");
 
 
@@ -161,7 +173,13 @@ public class StarterBotTeleop extends OpMode {
             backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
 
 
-            //this is JUST intake
+            telemetry.addData("status", "Run Time:" + runtime);
+            telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
+            telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
+            telemetry.update();
+
+
+                    //this is JUST intake
             double intakePower = 1;
 
             float intakeIn = gamepad2.right_trigger;
