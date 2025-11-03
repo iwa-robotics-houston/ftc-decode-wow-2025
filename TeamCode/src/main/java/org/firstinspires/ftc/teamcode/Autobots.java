@@ -76,6 +76,11 @@ public class Autobots extends OpMode {
         // This calculates the power needed for each wheel based on the amount of axial,
         // strafe lateral, and yaw
 
+        //Variables needed to know how much engine power is needed.
+        //The numbers here can be recorded when playing the teleop mode
+        double forward = 0.19;
+        double backward = -0.24;
+
         double frontLeftPower = axial + lateral + yaw;
         double frontRightPower = axial - lateral - yaw;
         double backRightPower = axial + lateral - yaw;
@@ -99,6 +104,21 @@ public class Autobots extends OpMode {
         frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower));
         backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
         backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
+
+        //Test Autonomous Code
+
+        //Forward
+        double frontLeftForward = frontLeftPower + forward;
+        double frontRightForward = frontRightPower + forward;
+        double backLeftForward = backLeftPower + forward;
+        double backRightForward = backRightPower + forward;
+
+        //Backward
+        double frontLeftBackward = frontLeftPower + backward;
+        double frontRightBackward = frontRightPower + backward;
+        double backLeftBackward = backLeftPower + backward;
+        double backRightBackward = backRightPower + backward;
+
 
     }
 }
