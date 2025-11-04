@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -67,7 +69,7 @@ public class Autobots extends OpMode {
     public void loop() {
         // I took the drive code made in StarterBotTeleop.java and edited it. - Addy
 
-        telemetry.addLine("You were supposed to be a hero, Brian...");
+        telemetry.addLine("Im transforming it rn");
         telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
     }
 
@@ -81,43 +83,32 @@ public class Autobots extends OpMode {
         double forward = 0.19;
         double backward = -0.24;
 
-        double frontLeftPower = axial + lateral + yaw;
-        double frontRightPower = axial - lateral - yaw;
-        double backRightPower = axial + lateral - yaw;
-        double backLeftPower = axial - lateral + yaw;
-
-        double maxPower = 1.0;
-        double maxSpeed = 1.0;  // make this slower for outreaches
-
-        // This is needed to make sure we don't pass > 1.0 to any wheel
-        // It allows us to keep all of the motors in proportion to what they should
-        // be and not get clipped
-        maxPower = Math.max(maxPower, Math.abs(frontLeftPower));
-        maxPower = Math.max(maxPower, Math.abs(frontRightPower));
-        maxPower = Math.max(maxPower, Math.abs(backRightPower));
-        maxPower = Math.max(maxPower, Math.abs(backLeftPower));
-
-        // We multiply by maxSpeed so that it can be set lower for outreaches
-        // When a young child is driving the robot, we may not want to allow full
-        // speed.
-        frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower));
-        frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower));
-        backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
-        backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
-
-        //Test Autonomous Code
-
         //Forward
-        double frontLeftForward = frontLeftPower + forward;
-        double frontRightForward = frontRightPower + forward;
-        double backLeftForward = backLeftPower + forward;
-        double backRightForward = backRightPower + forward;
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
 
-        //Backward
-        double frontLeftBackward = frontLeftPower + backward;
-        double frontRightBackward = frontRightPower + backward;
-        double backLeftBackward = backLeftPower + backward;
-        double backRightBackward = backRightPower + backward;
+        sleep(2000);
+
+        //Waitwaitwait
+
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+
+        sleep(2000);
+
+        //Back it up now
+
+        frontLeftDrive.setPower(backward);
+        frontRightDrive.setPower(backward);
+        backLeftDrive.setPower(backward);
+        backRightDrive.setPower(backward);
+
+        sleep(2000);
+
 
 
     }
