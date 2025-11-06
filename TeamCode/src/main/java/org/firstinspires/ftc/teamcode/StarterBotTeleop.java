@@ -47,6 +47,7 @@ For future reference, because I'm struggling to find stuff due to the minor
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -76,8 +77,8 @@ public class StarterBotTeleop extends OpMode {
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
     DcMotor intake;
-    DcMotor launcherLeft;
-    DcMotor launcherRight;
+    CRServo launcherLeft;
+    CRServo launcherRight;
 
     // This declares the IMU needed to get the current direction the robot is facing
     IMU imu;
@@ -89,8 +90,8 @@ public class StarterBotTeleop extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        launcherLeft = hardwareMap.get(DcMotor.class, "launcherLeft");
-        launcherRight = hardwareMap.get(DcMotor.class, "launcherRight");
+        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
+        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the lateral ones.
@@ -210,15 +211,16 @@ public class StarterBotTeleop extends OpMode {
             double launcherLeftPower = 1;
             double launcherRightPower = 1;
 
-            if (gamepad2.yWasPressed()){
+
+            if (gamepad2.left_stick_y > 0){
                 launcherLeft.setPower(1);
-            } else if (gamepad2.yWasReleased()) {
+            } else if (gamepad2.left_stick_x <= 0) {
                 launcherLeft.setPower(0);
             }
 
-            if(gamepad2.bWasPressed()){
+            if(gamepad2.right_stick_y > 0){
                 launcherRight.setPower(1);
-            } else if (gamepad2.bWasReleased()){
+            } else if(gamepad2.right_stick_y <= 0){
                 launcherRight.setPower(0);
             }
         }
