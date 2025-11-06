@@ -51,14 +51,6 @@ public class Autobots extends OpMode {
         frontRightDrive.setZeroPowerBehavior(BRAKE);
         backRightDrive.setZeroPowerBehavior(BRAKE);
 
-        // If you press the left bumper, you get a drive from the point of view of the robot
-        // (much like driving an RC vehicle)
-
-        double axial = 0;
-        double lateral = 0;
-        double yaw = 0;
-        drive(axial, lateral, yaw);
-
         /*
          * Tell the driver that initialization is complete.
          */
@@ -71,12 +63,12 @@ public class Autobots extends OpMode {
 
         telemetry.addLine("Im transforming it rn");
         telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
+
+        drive();
     }
 
     // Thanks to FTC16072 for sharing this code!!
-    void drive( double axial, double lateral, double yaw){
-        // This calculates the power needed for each wheel based on the amount of axial,
-        // strafe lateral, and yaw
+    void drive(){
 
         //Variables needed to know how much engine power is needed.
         //The numbers here can be recorded when playing the teleop mode
@@ -108,8 +100,5 @@ public class Autobots extends OpMode {
         backRightDrive.setPower(backward);
 
         sleep(2000);
-
-
-
     }
 }

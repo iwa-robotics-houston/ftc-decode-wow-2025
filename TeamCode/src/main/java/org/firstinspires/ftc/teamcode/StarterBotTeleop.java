@@ -212,15 +212,15 @@ public class StarterBotTeleop extends OpMode {
             double launcherRightPower = 1;
 
 
-            if (gamepad2.left_stick_y > 0){
+            if (gamepad2.y){
                 launcherLeft.setPower(1);
-            } else if (gamepad2.left_stick_x <= 0) {
+            } else{
                 launcherLeft.setPower(0);
             }
 
-            if(gamepad2.right_stick_y > 0){
+            if(gamepad2.b){
                 launcherRight.setPower(1);
-            } else if(gamepad2.right_stick_y <= 0){
+            } else{
                 launcherRight.setPower(0);
             }
         }
