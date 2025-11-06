@@ -76,6 +76,8 @@ public class StarterBotTeleop extends OpMode {
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
     DcMotor intake;
+    DcMotor launcherLeft;
+    DcMotor launcherRight;
 
     // This declares the IMU needed to get the current direction the robot is facing
     IMU imu;
@@ -87,6 +89,8 @@ public class StarterBotTeleop extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         intake = hardwareMap.get(DcMotor.class, "intake");
+        launcherLeft = hardwareMap.get(DcMotor.class, "launcherLeft");
+        launcherRight = hardwareMap.get(DcMotor.class, "launcherRight");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the lateral ones.
@@ -195,6 +199,27 @@ public class StarterBotTeleop extends OpMode {
                 intake.setPower(-1);
             } else if (gamepad2.left_trigger == 0) {
                 intake.setPower(0);
+            }
+
+            //Addy here, I was asked to code the launcher so here is my special draft
+            //I learn code by brute force testing so this may be a monster of a line of code
+            //But bear with me.
+
+            //Launcher
+
+            double launcherLeftPower = 1;
+            double launcherRightPower = 1;
+
+            if (gamepad2.yWasPressed()){
+                launcherLeft.setPower(1);
+            } else if (gamepad2.yWasReleased()) {
+                launcherLeft.setPower(0);
+            }
+
+            if(gamepad2.bWasPressed()){
+                launcherRight.setPower(1);
+            } else if (gamepad2.bWasReleased()){
+                launcherRight.setPower(0);
             }
         }
     }
