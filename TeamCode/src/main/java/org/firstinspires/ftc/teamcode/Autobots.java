@@ -35,10 +35,10 @@ public class Autobots extends OpMode {
          * to 'get' must correspond to the names assigned during the robot configuration
          * step.
          */
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
 
         /*
@@ -71,19 +71,18 @@ public class Autobots extends OpMode {
     public void loop() {
         //This is where you paste the void names that you make beneath this loop void. Example: "drivetest();" would play the drivetest void.
         //-Addy
-
         telemetry.addLine("Im transforming it rn");
         telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
 
+        telemetry.addData("Void File Running", "Drivetest");
         drivetest();
-        telemetry.addLine("loading next void command...");
 
         sleep(2000);
 
-        telemetry.addLine("next command loaded");
+        telemetry.addData("Void File Running", "AutonomousTest");
         autonomoustest();
 
-        telemetry.addLine("Autonomous code finished.");
+        telemetry.addData("Void File Running", "None");
     }
 
     /*
@@ -96,7 +95,7 @@ public class Autobots extends OpMode {
      */
     void drivetest(){
 
-        telemetry.addLine("drivetest started");
+        telemetry.addData("Drivetest Status","Started");
 
         /*
         This void is the template/testing class. It won't be used during autonomous.
@@ -203,12 +202,12 @@ public class Autobots extends OpMode {
 
         sleep(2000);
 
-        telemetry.addLine("drivetest finished");
+        telemetry.addData("Drivetest Status", "Finished");
     }
 
     void autonomoustest(){
 
-        telemetry.addLine("AutonomousTest start");
+        telemetry.addData("Autonomous Status","Started");
 
         /*
         Purpose of this void: A testrun for the starting point of autonomous.
@@ -281,6 +280,6 @@ public class Autobots extends OpMode {
 
         sleep(2000);
 
-        telemetry.addLine("AutonomousTest finished");
+        telemetry.addData("Autonomous Status","Finished");
     }
 }
