@@ -71,30 +71,36 @@ public class StarterBotTeleop extends OpMode {
 
     ElapsedTime runtime = new ElapsedTime();
 
-    // This declares the four motors needed
+    // This declares the motors + servos needed
     DcMotor frontLeftDrive;
     DcMotor frontRightDrive;
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
     DcMotor intake;
+    DcMotor flywheelLeft;
+    DcMotor flywheelRight;
     CRServo launcherLeft;
     CRServo launcherRight;
+    CRServo diverter;
 
     // This declares the IMU needed to get the current direction the robot is facing
     IMU imu;
 
     @Override
     public void init() {
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
+        flywheelLeft = hardwareMap.get(DcMotor.class, "flywheelLeft");
+        flywheelRight = hardwareMap.get(DcMotor.class, "flywheelRight");
+        //diverter = hardwareMap.get(CRServo.class,"diverter");
 
         // We set the left motors in reverse which is needed for drive trains where the left
-        // motors are opposite to the lateral ones.
+        // motors are opposite to the right ones.
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -118,23 +124,22 @@ public class StarterBotTeleop extends OpMode {
                 RevHubOrientationOnRobot(logoDirection, usbDirection);
         imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
-
     @Override
     public void loop() {
-        telemetry.addLine("You were supposed to be a hero, Brian...");
+        telemetry.addLine("Autonomous Drive");
         telemetry.addLine("Moving the lateral joystick left and lateral turns the robot");
 
 
         // If you press the left bumper, you get a drive from the point of view of the robot
         // (much like driving an RC vehicle)
 
-        double axial = -gamepad1.left_stick_y;
-        double lateral = gamepad1.left_stick_x;
-        double yaw = gamepad1.right_stick_x;
+        double axial = gamepad1.left_stick_y;
+        double lateral = gamepad1.right_stick_x;
+        double yaw = gamepad1.left_stick_x;
         drive(axial, lateral, yaw);
     }
         // This routine drives the robot field relative
-        void driveFieldRelative ( double axial, double lateral, double yaw){
+       /* void driveFieldRelative ( double axial, double lateral, double yaw){
             // First, convert direction being asked to drive to polar coordinates
             double theta = Math.atan2(axial, lateral);
             double r = Math.hypot(lateral, axial);
@@ -146,7 +151,7 @@ public class StarterBotTeleop extends OpMode {
             // Finally, call the drive method with robot relative axial and lateral amounts
             drive(newAxial, newLateral, yaw);
         }
-
+        */
 
         // Thanks to FTC16072 for sharing this code!!
         void drive( double axial, double lateral, double yaw){
@@ -161,6 +166,7 @@ public class StarterBotTeleop extends OpMode {
             double maxPower = 1.0;
             double maxSpeed = 1.0;  // make this slower for outreaches
 
+            /*
             // This is needed to make sure we don't pass > 1.0 to any wheel
             // It allows us to keep all of the motors in proportion to what they should
             // be and not get clipped
@@ -177,7 +183,7 @@ public class StarterBotTeleop extends OpMode {
             backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
             backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
 
-
+            */
             telemetry.addData("status", "Run Time:" + runtime);
             telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
             telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
@@ -202,11 +208,8 @@ public class StarterBotTeleop extends OpMode {
                 intake.setPower(0);
             }
 
-            //Addy here, I was asked to code the launcher so here is my special draft
-            //I learn code by brute force testing so this may be a monster of a line of code
-            //But bear with me.
-
-            //Launcher
+            //Launcher + flywheels
+            //These should be working simultaneously
 
             double launcherLeftPower = 1;
             double launcherRightPower = 1;
@@ -214,14 +217,22 @@ public class StarterBotTeleop extends OpMode {
 
             if (gamepad2.y){
                 launcherLeft.setPower(1);
+                flywheelRight.setPower(1);
+                flywheelLeft.setPower(1);
             } else{
                 launcherLeft.setPower(0);
+                flywheelRight.setPower(0);
+                flywheelLeft.setPower(0);
             }
 
             if(gamepad2.b){
                 launcherRight.setPower(1);
+                flywheelRight.setPower(1);
+                flywheelLeft.setPower(1);
             } else{
                 launcherRight.setPower(0);
+                flywheelRight.setPower(0);
+                flywheelLeft.setPower(0);
             }
         }
     }
