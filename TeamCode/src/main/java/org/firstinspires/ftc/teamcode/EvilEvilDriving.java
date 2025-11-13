@@ -46,6 +46,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.CRServoImpl;
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -74,13 +75,13 @@ public class EvilEvilDriving extends OpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     // This declares the four motors needed
-    DcMotor frontLeftDrive;
-    DcMotor frontRightDrive;
-    DcMotor backLeftDrive;
-    DcMotor backRightDrive;
-    DcMotor intake;
-    CRServo launcherLeft;
-    CRServo launcherRight;
+    DcMotorEx frontLeftDrive;
+    DcMotorEx frontRightDrive;
+    DcMotorEx backLeftDrive;
+    DcMotorEx backRightDrive;
+    DcMotorEx intake;
+    CRServoImplEx launcherLeft;
+    CRServoImplEx launcherRight;
 
     // This declares the IMU needed to get the current direction the robot is facing
     IMU imu;
