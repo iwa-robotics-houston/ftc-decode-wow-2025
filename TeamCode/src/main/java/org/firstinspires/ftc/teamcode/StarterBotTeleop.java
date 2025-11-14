@@ -49,6 +49,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -72,10 +73,10 @@ public class StarterBotTeleop extends OpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     // This declares the motors + servos needed
-    DcMotor frontLeftDrive;
-    DcMotor frontRightDrive;
-    DcMotor backLeftDrive;
-    DcMotor backRightDrive;
+    DcMotorEx frontLeftDrive;
+    DcMotorEx frontRightDrive;
+    DcMotorEx backLeftDrive;
+    DcMotorEx backRightDrive;
     DcMotor intake;
     DcMotor flywheelLeft;
     DcMotor flywheelRight;
@@ -88,10 +89,10 @@ public class StarterBotTeleop extends OpMode {
 
     @Override
     public void init() {
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        frontLeftDrive = hardwareMap.get(DcMotorEx.class, "frontLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
+        backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
+        backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
@@ -139,7 +140,8 @@ public class StarterBotTeleop extends OpMode {
         drive(axial, lateral, yaw);
     }
         // This routine drives the robot field relative
-       /* void driveFieldRelative ( double axial, double lateral, double yaw){
+    /*
+       void driveFieldRelative ( double axial, double lateral, double yaw){
             // First, convert direction being asked to drive to polar coordinates
             double theta = Math.atan2(axial, lateral);
             double r = Math.hypot(lateral, axial);
@@ -158,35 +160,38 @@ public class StarterBotTeleop extends OpMode {
             // This calculates the power needed for each wheel based on the amount of axial,
             // strafe lateral, and yaw
 
-            double frontLeftPower = axial + lateral + yaw;
-            double frontRightPower = axial - lateral - yaw;
-            double backRightPower = axial + lateral - yaw;
-            double backLeftPower = axial - lateral + yaw;
+            double frontLeftVelocity = axial + lateral + yaw;
+            double frontRightVelocity = axial - lateral - yaw;
+            double backRightVelocity = axial + lateral - yaw;
+            double backLeftVelocity = axial - lateral + yaw;
 
             double maxPower = 1.0;
-            double maxSpeed = 1.0;  // make this slower for outreaches
+            double maxSpeed = 2788;  // make this slower for outreaches
+            double maxVelocity = 1.0;
+            //This velocity is the MAX velocity
 
-            /*
+
             // This is needed to make sure we don't pass > 1.0 to any wheel
             // It allows us to keep all of the motors in proportion to what they should
             // be and not get clipped
-            maxPower = Math.max(maxPower, Math.abs(frontLeftPower));
-            maxPower = Math.max(maxPower, Math.abs(frontRightPower));
-            maxPower = Math.max(maxPower, Math.abs(backRightPower));
-            maxPower = Math.max(maxPower, Math.abs(backLeftPower));
+            maxVelocity = Math.max(maxVelocity, Math.abs(frontLeftVelocity));
+            maxVelocity = Math.max(maxVelocity, Math.abs(frontRightVelocity));
+            maxVelocity = Math.max(maxVelocity, Math.abs(backRightVelocity));
+            maxVelocity = Math.max(maxVelocity, Math.abs(backLeftVelocity));
 
             // We multiply by maxSpeed so that it can be set lower for outreaches
             // When a young child is driving the robot, we may not want to allow full
             // speed.
-            frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower));
-            frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower));
-            backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
-            backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
 
-            */
+            frontLeftDrive.setVelocity(maxSpeed * (frontLeftVelocity / maxVelocity));
+            frontRightDrive.setVelocity(maxSpeed * (frontRightVelocity / maxVelocity));
+            backLeftDrive.setVelocity(maxSpeed * (backLeftVelocity / maxVelocity));
+            backRightDrive.setVelocity(maxSpeed * (backRightVelocity / maxVelocity));
+
+
             telemetry.addData("status", "Run Time:" + runtime);
-            telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
-            telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
+            telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftVelocity, frontRightVelocity);
+            telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftVelocity, backRightVelocity);
             telemetry.update();
 
 
@@ -197,14 +202,10 @@ public class StarterBotTeleop extends OpMode {
             float intakeOut = gamepad2.left_trigger;
 
             if (gamepad2.right_trigger > 0) {
-                intake.setPower(1);
-            } else if (gamepad2.right_trigger == 0) {
-                intake.setPower(0);
-            }
-
-            if (gamepad2.left_trigger > 0) {
-                intake.setPower(-1);
-            } else if (gamepad2.left_trigger == 0) {
+                intake.setPower(-1);}
+            else if (gamepad2.left_trigger > 0) {
+                intake.setPower(1);}
+            else {
                 intake.setPower(0);
             }
 
@@ -216,8 +217,8 @@ public class StarterBotTeleop extends OpMode {
 
 
             if (gamepad2.y){
-                launcherLeft.setPower(1);
-                flywheelRight.setPower(1);
+                launcherLeft.setPower(-1);
+                flywheelRight.setPower(-1);
                 flywheelLeft.setPower(1);
             } else{
                 launcherLeft.setPower(0);
@@ -227,7 +228,7 @@ public class StarterBotTeleop extends OpMode {
 
             if(gamepad2.b){
                 launcherRight.setPower(1);
-                flywheelRight.setPower(1);
+                flywheelRight.setPower(-1);
                 flywheelLeft.setPower(1);
             } else{
                 launcherRight.setPower(0);
