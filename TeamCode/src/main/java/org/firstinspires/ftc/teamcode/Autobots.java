@@ -83,7 +83,7 @@ public class Autobots extends OpMode {
 
         //autonomoustest();
 
-        AnneMarieSaidYes();
+        backwardsRobot();
 
         telemetry.addData("Void File Running", "None");
     }
@@ -289,9 +289,9 @@ public class Autobots extends OpMode {
         telemetry.addData("Autonomous Status","Finished");
     }
 
-    void AnneMarieSaidYes(){
+    void backwardsRobot(){
 
-        telemetry.addData("Void File Running", "AnneMarieSaidYes");
+        telemetry.addData("Void File Running", "Backwards");
 
         //The purpose of this void is to make the robot go backwards around 18 inches.
         //Because Girardot asked <3
@@ -313,6 +313,30 @@ public class Autobots extends OpMode {
         sleep(3000);
 
 
+
+    }
+
+    void forwardsRobot(){
+
+        telemetry.addData("Void File Running", "Forwards");
+
+        //The purpose of this void is to make the robot go forwards around 18 inches.
+
+        //Variables needed to know how much engine power is needed.
+        // The numbers here can be recorded when playing the teleop mode
+        double forward = 0.19;
+        double backward = -0.24;
+
+        double maxVelocity = 100.00;
+
+        //Back it up now
+
+        frontLeftDrive.setVelocity(forward * maxVelocity);
+        frontRightDrive.setVelocity(forward * maxVelocity);
+        backLeftDrive.setVelocity(forward * maxVelocity);
+        backRightDrive.setVelocity(forward * maxVelocity);
+
+        sleep(3000);
 
     }
 }
