@@ -49,7 +49,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -59,8 +61,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  * This OpMode assumes that you have four mecanum wheels each on its own motor named:
  *   front_left_motor, front_lateral_motor, back_left_motor, back_lateral_motor
- *
- *
  *
  *   and that the left motors are flipped such that when they turn clockwise the wheel moves backwards
  *
@@ -73,30 +73,36 @@ public class StarterBotTeleop extends OpMode {
 
     ElapsedTime runtime = new ElapsedTime();
 
-    // This declares the four motors needed
-    DcMotor frontLeftDrive;
-    DcMotor frontRightDrive;
-    DcMotor backLeftDrive;
-    DcMotor backRightDrive;
+    // This declares the motors + servos needed
+    DcMotorEx frontLeftDrive;
+    DcMotorEx frontRightDrive;
+    DcMotorEx backLeftDrive;
+    DcMotorEx backRightDrive;
     DcMotor intake;
+    DcMotor flywheelLeft;
+    DcMotor flywheelRight;
     CRServo launcherLeft;
     CRServo launcherRight;
+    Servo diverter;
 
     // This declares the IMU needed to get the current direction the robot is facing
     IMU imu;
 
     @Override
     public void init() {
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        frontLeftDrive = hardwareMap.get(DcMotorEx.class, "frontLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
+        backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
+        backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
+        flywheelLeft = hardwareMap.get(DcMotor.class, "flywheelLeft");
+        flywheelRight = hardwareMap.get(DcMotor.class, "flywheelRight");
+       diverter = hardwareMap.get(Servo.class,"diverter");
 
         // We set the left motors in reverse which is needed for drive trains where the left
-        // motors are opposite to the lateral ones.
+        // motors are opposite to the right ones.
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -123,61 +129,67 @@ public class StarterBotTeleop extends OpMode {
 
     @Override
     public void loop() {
-        telemetry.addLine("You were supposed to be a hero, Brian...");
-        telemetry.addLine("Moving the lateral joystick left and lateral turns the robot");
+        telemetry.addLine("Teleop Drive");
+        telemetry.addLine("WOW 2024 Code");
 
 
         // If you press the left bumper, you get a drive from the point of view of the robot
         // (much like driving an RC vehicle)
 
-        double axial = -gamepad1.left_stick_y;
-        double lateral = gamepad1.left_stick_x;
-        double yaw = gamepad1.right_stick_x;
+
+        double axial = gamepad1.left_stick_y;
+        double lateral = gamepad1.right_stick_x;
+        double yaw = gamepad1.left_stick_x;
+
+
         drive(axial, lateral, yaw);
     }
-        // This routine drives the robot field relative
-        void driveFieldRelative ( double axial, double lateral, double yaw){
-            // First, convert direction being asked to drive to polar coordinates
-            double theta = Math.atan2(axial, lateral);
-            double r = Math.hypot(lateral, axial);
 
-            // Third, convert back to cartesian
-            double newAxial = r * Math.sin(theta);
-            double newLateral = r * Math.cos(theta);
+    // Thanks to FTC16072 for sharing this code!!
+    void drive(double axial, double lateral, double yaw) {
+        // This calculates the power needed for each wheel based on the amount of axial,
+        // strafe lateral, and yaw
 
-            // Finally, call the drive method with robot relative axial and lateral amounts
-            drive(newAxial, newLateral, yaw);
+        double frontLeftPower = axial + lateral + yaw;
+        double frontRightPower = axial - lateral - yaw;
+        double backRightPower = axial - lateral + yaw;
+        double backLeftPower = axial + lateral - yaw;
+
+        double maxPower = 1.0;
+        double maxSpeed = 1.0;
+        double maxVelocity = 2788;
+        //This velocity is the MAX velocity
+
+
+        // This is needed to make sure we don't pass > 1.0 to any wheel
+        // It allows us to keep all of the motors in proportion to what they should
+        // be and not get clipped
+
+        /*
+        maxSpeed = Math.max(maxPower, Math.abs(frontLeftPower));
+        maxSpeed = Math.max(maxPower, Math.abs(frontRightPower));
+        maxSpeed = Math.max(maxPower, Math.abs(backRightPower));
+        maxSpeed = Math.max(maxPower, Math.abs(backLeftPower));
+        */
+
+        // We multiply by maxSpeed so that it can be set lower for outreaches
+        // When a young child is driving the robot, we may not want to allow full
+        // speed.
+
+
+        frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower));
+        frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower));
+        backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
+        backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
+
+        /*
+        if (maxSpeed) {
+            frontLeftPower /= maxSpeed;
+            frontRightPower /= maxSpeed;
+            backLeftPower /= maxSpeed;
+            backRightPower /= maxSpeed;
         }
-
-
-        // Thanks to FTC16072 for sharing this code!!
-        void drive( double axial, double lateral, double yaw){
-            // This calculates the power needed for each wheel based on the amount of axial,
-            // strafe lateral, and yaw
-
-            double frontLeftPower = axial + lateral + yaw;
-            double frontRightPower = axial - lateral - yaw;
-            double backRightPower = axial + lateral - yaw;
-            double backLeftPower = axial - lateral + yaw;
-
-            double maxPower = 1.0;
-            double maxSpeed = 1.0;  // make this slower for outreaches
-
-            // This is needed to make sure we don't pass > 1.0 to any wheel
-            // It allows us to keep all of the motors in proportion to what they should
-            // be and not get clipped
-            maxPower = Math.max(maxPower, Math.abs(frontLeftPower));
-            maxPower = Math.max(maxPower, Math.abs(frontRightPower));
-            maxPower = Math.max(maxPower, Math.abs(backRightPower));
-            maxPower = Math.max(maxPower, Math.abs(backLeftPower));
-
-            // We multiply by maxSpeed so that it can be set lower for outreaches
-            // When a young child is driving the robot, we may not want to allow full
-            // speed.
-            frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower));
-            frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower));
-            backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
-            backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
+        */
 
 
             telemetry.addData("status", "Run Time:" + runtime);
@@ -186,46 +198,60 @@ public class StarterBotTeleop extends OpMode {
             telemetry.update();
 
 
-                    //this is JUST intake
+            //this is JUST intake
             double intakePower = 1;
 
             float intakeIn = gamepad2.right_trigger;
             float intakeOut = gamepad2.left_trigger;
 
             if (gamepad2.right_trigger > 0) {
-                intake.setPower(1);
-            } else if (gamepad2.right_trigger == 0) {
-                intake.setPower(0);
-            }
-
-            if (gamepad2.left_trigger > 0) {
                 intake.setPower(-1);
-            } else if (gamepad2.left_trigger == 0) {
+            } else if (gamepad2.left_trigger > 0) {
+                intake.setPower(1);
+            } else {
                 intake.setPower(0);
             }
 
-            //Addy here, I was asked to code the launcher so here is my special draft
-            //I learn code by brute force testing so this may be a monster of a line of code
-            //But bear with me.
 
-            //Launcher
+            //Possible Diverter
+        if (gamepad2.dpad_left) diverter.setPosition(0);
+            else if (gamepad2.dpad_right) {
+                diverter.setPosition(.70);
+            } else {
+                diverter.setPosition(.5);
+            }
+            
+
+            //Launcher + flywheels
+            //They've just been broken up into separate buttons
 
             double launcherLeftPower = 1;
             double launcherRightPower = 1;
 
 
-            if (gamepad2.y){
-                launcherLeft.setPower(1);
-            } else{
+            if (gamepad2.left_bumper) {
+                launcherLeft.setPower(-1);
+
+            } else {
                 launcherLeft.setPower(0);
             }
 
-            if(gamepad2.b){
+            if (gamepad2.right_bumper) {
                 launcherRight.setPower(1);
-            } else{
+
+            } else {
                 launcherRight.setPower(0);
+            }
+
+            if (gamepad2.a) {
+                flywheelRight.setPower(-1);
+                flywheelLeft.setPower(1);
+            } else {
+                flywheelRight.setPower(0);
+                flywheelLeft.setPower(0);
             }
         }
     }
+
 
 
