@@ -160,7 +160,7 @@ public class Autobots extends OpMode {
         frontLeftDrive.setPower(backward);
         frontRightDrive.setPower(backward);
         backLeftDrive.setPower(backward);
-        backRightDrive.setPower(backward;
+        backRightDrive.setPower(backward);
 
         sleep(2000);
 
