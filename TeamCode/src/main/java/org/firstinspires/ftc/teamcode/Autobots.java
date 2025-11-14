@@ -77,13 +77,29 @@ public class Autobots extends OpMode {
         telemetry.addLine("Im transforming it rn");
         telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
 
+        telemetry.addData("Void File Running","DriveTest");
+
+        sleep(100);
+
         drivetest();
 
         sleep(2000);
 
         //autonomoustest();
 
+        telemetry.addData("Void File Running", "Backwards");
+
+        sleep(100);
+
         backwardsRobot();
+
+        sleep(2000);
+
+        telemetry.addData("Void File Running", "Forwards");
+
+        sleep(100);
+
+        forwardsRobot();
 
         telemetry.addData("Void File Running", "None");
     }
@@ -97,8 +113,6 @@ public class Autobots extends OpMode {
     - Addy
      */
     void drivetest(){
-
-        telemetry.addData("Void File Running","DriveTest");
 
         /*
         This void is the template/testing class. It won't be used during autonomous.
@@ -114,8 +128,6 @@ public class Autobots extends OpMode {
         double forward = 0.19;
         double backward = -0.24;
 
-        double maxVelocity = 100.00;
-
         /*
         After testing, I think the numbers for these variables should be a bit higher. As it was a bit slow.
         But they can be individualized for each void class that is actually used.
@@ -125,10 +137,10 @@ public class Autobots extends OpMode {
 
         //Forward
         //You don't need to put numbers for the set powers here, as we defined a number for the variable "forward" and "backward"
-        frontLeftDrive.setVelocity(forward * maxVelocity);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(forward * maxVelocity);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
 
         //sleep(#) is important so that the robot actually performs the line of code beforehand.
         //1000 = 1 millisecond. And so on and so forth.
@@ -136,75 +148,75 @@ public class Autobots extends OpMode {
 
         //Waitwaitwaitwaitwait!!!!
 
-        frontLeftDrive.setVelocity(0);
-        frontRightDrive.setVelocity(0);
-        backLeftDrive.setVelocity(0);
-        backRightDrive.setVelocity(0);
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
 
         sleep(2000);
 
         //Back it up now
 
-        frontLeftDrive.setVelocity(backward * maxVelocity);
-        frontRightDrive.setVelocity(backward * maxVelocity);
-        backLeftDrive.setVelocity(backward * maxVelocity);
-        backRightDrive.setVelocity(backward * maxVelocity);
+        frontLeftDrive.setPower(backward);
+        frontRightDrive.setPower(backward);
+        backLeftDrive.setPower(backward);
+        backRightDrive.setPower(backward;
 
         sleep(2000);
 
         //Turn RIGHT
         //Right (SMOOTH)
 
-        frontLeftDrive.setVelocity(forward * maxVelocity);
-        frontRightDrive.setVelocity(forward - 10 * maxVelocity);
-        backLeftDrive.setVelocity(forward * maxVelocity);
-        backRightDrive.setVelocity(forward - 10 * maxVelocity);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
 
         sleep(2000);
 
         //Right (Sharp)
 
-        frontLeftDrive.setVelocity(forward * maxVelocity);
-        frontRightDrive.setVelocity(0);
-        backLeftDrive.setVelocity(forward * maxVelocity);
-        backRightDrive.setVelocity(0);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(0);
 
         sleep(2000);
 
         //Right  (In Place)
 
-        frontLeftDrive.setVelocity(forward * maxVelocity);
-        frontRightDrive.setVelocity(backward * maxVelocity);
-        backLeftDrive.setVelocity(forward * maxVelocity);
-        backRightDrive.setVelocity(backward * maxVelocity);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(backward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(backward);
 
         sleep(2000);
 
         //Turn LEFT
         // Left (Smooth)
 
-        frontLeftDrive.setVelocity(forward - 10 * maxVelocity);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(forward - 10 * maxVelocity);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
 
         sleep(2000);
 
         //Left (Sharp)
 
-        frontLeftDrive.setVelocity(0);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(0);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(forward);
 
         sleep(2000);
 
         //Left (In Place)
 
-        frontLeftDrive.setVelocity(backward * maxVelocity);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(backward * maxVelocity);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(backward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(backward);
+        backRightDrive.setPower(forward);
 
         sleep(2000);
     }
@@ -227,24 +239,22 @@ public class Autobots extends OpMode {
         double forward = 0.30;
         double backward = -0.40;
 
-        double maxVelocity = 100.00;
-
         //Step One - Drive forward from starting point to the center of the field, then turn around.
 
         //Forward
-        frontLeftDrive.setVelocity(forward * maxVelocity);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(forward * maxVelocity);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
 
         sleep(3000);
 
         //Turn Left (In Place)
 
-        frontLeftDrive.setVelocity(backward * maxVelocity);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(backward * maxVelocity);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(backward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(backward);
+        backRightDrive.setPower(forward);
 
         sleep(2000);
 
@@ -252,46 +262,42 @@ public class Autobots extends OpMode {
         //Step Two - Drive back towards direction of starting point, but stop and turn and continue driving.
 
         //Forward
-        frontLeftDrive.setVelocity(forward * maxVelocity);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(forward * maxVelocity);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
 
         sleep(2000);
 
         //Turn LEFT
         // Left (Smooth)
 
-        frontLeftDrive.setVelocity(forward - 10 * maxVelocity);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(forward - 10 * maxVelocity);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(forward - 10);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward - 10);
+        backRightDrive.setPower(forward);
 
         sleep(1000);
 
         //Forward
-        frontLeftDrive.setVelocity(forward * maxVelocity);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(forward * maxVelocity);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
 
         sleep(2000);
 
         //Waitwaitwaitwaitwait!!!!
 
-        frontLeftDrive.setVelocity(0);
-        frontRightDrive.setVelocity(0);
-        backLeftDrive.setVelocity(0);
-        backRightDrive.setVelocity(0);
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
 
         sleep(2000);
-
-        telemetry.addData("Autonomous Status","Finished");
     }
 
     void backwardsRobot(){
-
-        telemetry.addData("Void File Running", "Backwards");
 
         //The purpose of this void is to make the robot go backwards around 18 inches.
         //Because Girardot asked <3
@@ -301,14 +307,12 @@ public class Autobots extends OpMode {
         double forward = 0.19;
         double backward = -0.24;
 
-        double maxVelocity = 100.00;
-
         //Back it up now
 
-        frontLeftDrive.setVelocity(backward * maxVelocity);
-        frontRightDrive.setVelocity(backward * maxVelocity);
-        backLeftDrive.setVelocity(backward * maxVelocity);
-        backRightDrive.setVelocity(backward * maxVelocity);
+        frontLeftDrive.setPower(backward);
+        frontRightDrive.setPower(backward);
+        backLeftDrive.setPower(backward);
+        backRightDrive.setPower(backward);
 
         sleep(3000);
 
@@ -318,8 +322,6 @@ public class Autobots extends OpMode {
 
     void forwardsRobot(){
 
-        telemetry.addData("Void File Running", "Forwards");
-
         //The purpose of this void is to make the robot go forwards around 18 inches.
 
         //Variables needed to know how much engine power is needed.
@@ -327,14 +329,12 @@ public class Autobots extends OpMode {
         double forward = 0.19;
         double backward = -0.24;
 
-        double maxVelocity = 100.00;
-
         //Back it up now
 
-        frontLeftDrive.setVelocity(forward * maxVelocity);
-        frontRightDrive.setVelocity(forward * maxVelocity);
-        backLeftDrive.setVelocity(forward * maxVelocity);
-        backRightDrive.setVelocity(forward * maxVelocity);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
 
         sleep(3000);
 
