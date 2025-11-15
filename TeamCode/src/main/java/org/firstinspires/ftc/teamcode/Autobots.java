@@ -77,11 +77,11 @@ public class Autobots extends OpMode {
         telemetry.addLine("Im transforming it rn");
         telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
 
-        telemetry.addData("Void File Running","DriveTest");
+        //telemetry.addData("Void File Running","DriveTest");
 
         sleep(100);
 
-        drivetest();
+        //drivetest();
 
         sleep(2000);
 
@@ -125,8 +125,8 @@ public class Autobots extends OpMode {
 
         //Variables needed to know how much engine power is needed.
         // The numbers here can be recorded when playing the teleop mode
-        double forward = 0.19;
-        double backward = -0.24;
+        double forward = -0.19;
+        double backward = 0.24;
 
         /*
         After testing, I think the numbers for these variables should be a bit higher. As it was a bit slow.
@@ -236,8 +236,8 @@ public class Autobots extends OpMode {
         //Variables needed to know how much engine power is needed.
         //The numbers here can be recorded when playing the teleop mode
         //I changed the numbers from 0.19 and -0.24 to larger numbers to get a bit more speed - Addy
-        double forward = 0.30;
-        double backward = -0.40;
+        double forward = -0.30;
+        double backward = 0.40;
 
         //Step One - Drive forward from starting point to the center of the field, then turn around.
 
@@ -304,8 +304,8 @@ public class Autobots extends OpMode {
 
         //Variables needed to know how much engine power is needed.
         // The numbers here can be recorded when playing the teleop mode
-        double forward = 0.19;
-        double backward = -0.24;
+        double forward = -0.40;
+        double backward = 0.40;
 
         //Back it up now
 
@@ -314,7 +314,7 @@ public class Autobots extends OpMode {
         backLeftDrive.setPower(backward);
         backRightDrive.setPower(backward);
 
-        sleep(3000);
+        sleep(4000);
 
 
 
@@ -326,8 +326,8 @@ public class Autobots extends OpMode {
 
         //Variables needed to know how much engine power is needed.
         // The numbers here can be recorded when playing the teleop mode
-        double forward = 0.19;
-        double backward = -0.24;
+        double forward = -0.40;
+        double backward = 0.40;
 
         //Back it up now
 
@@ -336,7 +336,7 @@ public class Autobots extends OpMode {
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
 
-        sleep(3000);
+        sleep(4000);
 
         //peepeepoopoo
         //skibidi
