@@ -4,37 +4,28 @@ import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 /*
-Hey guys! This is the autonomous code for our robot. (Yes I named it Autobots. No shame. No regrets)
-It's rather simple, and I left a bunch of comments/instructions to help y'all edit it if that is needed.
-I plan on making two versions of this code to align with the red alliance and the blue alliance.
-That way we don't have to worry about as many errors if the code is configured more accurately for each color team.
+This java file is made specifically for testing autonomous code. Anything that works
+will be taken from here and given it's own java file.
+Okay? okay slay
 - Addy
  */
 
-@Autonomous (name = "Autobots", group = "OpMode")
-public class Autobots extends OpMode {
+@Autonomous (name = "AutobotsTEST", group = "OpMode")
+public class AutobotsTEST extends OpMode {
 
     // Declare OpMode members.
-   DcMotor frontLeftDrive;
-   DcMotor backLeftDrive;
-   DcMotor frontRightDrive;
-   DcMotor backRightDrive;
-    DcMotor intake;
-    DcMotor flywheelLeft;
-    DcMotor flywheelRight;
-    CRServo launcherLeft;
-    CRServo launcherRight;
-    Servo diverter;
-
+    private DcMotorEx frontLeftDrive = null;
+    private DcMotorEx backLeftDrive = null;
+    private DcMotorEx frontRightDrive = null;
+    private DcMotorEx backRightDrive = null;
 
     //No code for the intake or launcher yet. When we get the teleop version perfected I'll add it here! - Addy
+    private DcMotor intake = null;
 
     @Override
     public void init() {
@@ -43,26 +34,21 @@ public class Autobots extends OpMode {
          * to 'get' must correspond to the names assigned during the robot configuration
          * step.
          */
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
-        intake = hardwareMap.get(DcMotor.class, "intake");
-        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
-        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
-        flywheelLeft = hardwareMap.get(DcMotor.class, "flywheelLeft");
-        flywheelRight = hardwareMap.get(DcMotor.class, "flywheelRight");
-        diverter = hardwareMap.get(Servo.class,"diverter");
+        frontLeftDrive = hardwareMap.get(DcMotorEx.class, "frontLeftDrive");
+        backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
+        backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
          * Reduction or 90 Deg drives may require direction flips
          */
 
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        backLeftDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        frontRightDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        backRightDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
         /*
          * Setting zeroPowerBehavior to BRAKE enables a "brake mode". This causes the motor to
@@ -78,22 +64,42 @@ public class Autobots extends OpMode {
          * Tell the driver that initialization is complete.
          */
         telemetry.addData("Status", "Initialized");
+
+        telemetry.addData("Void File Running", "None");
     }
 
     @Override
     public void loop() {
         //This is where you paste the void names that you make beneath this loop void. Example: "drivetest();" would play the drivetest void.
         //-Addy
+        telemetry.addLine("Im transforming it rn");
+        telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
 
-        drivetest();
-        telemetry.addLine("loading next void command...");
+        //telemetry.addData("Void File Running","DriveTest");
+
+        sleep(100);
+
+        //drivetest();
 
         sleep(2000);
 
-        telemetry.addLine("next command loaded");
-        autonomoustest();
+        //autonomoustest();
 
-        telemetry.addLine("Autonomous code finished.");
+        telemetry.addData("Void File Running", "Backwards");
+
+        sleep(100);
+
+        backwardsRobot();
+
+        sleep(2000);
+
+        telemetry.addData("Void File Running", "Forwards");
+
+        sleep(100);
+
+        forwardsRobot();
+
+        telemetry.addData("Void File Running", "None");
     }
 
     /*
@@ -106,8 +112,6 @@ public class Autobots extends OpMode {
      */
     void drivetest(){
 
-        telemetry.addLine("drivetest started");
-
         /*
         This void is the template/testing class. It won't be used during autonomous.
         Rather, it's a storage for the basic information that can be copy and pasted into the void classes that we actually use during autonomous.
@@ -119,8 +123,9 @@ public class Autobots extends OpMode {
 
         //Variables needed to know how much engine power is needed.
         // The numbers here can be recorded when playing the teleop mode
-        double forward = 0.19;
-        double backward = -0.24;
+        double forward = -0.19;
+        double backward = 0.24;
+
         /*
         After testing, I think the numbers for these variables should be a bit higher. As it was a bit slow.
         But they can be individualized for each void class that is actually used.
@@ -161,9 +166,9 @@ public class Autobots extends OpMode {
         //Right (SMOOTH)
 
         frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(forward - 10);
+        frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward - 10);
+        backRightDrive.setPower(forward);
 
         sleep(2000);
 
@@ -188,9 +193,9 @@ public class Autobots extends OpMode {
         //Turn LEFT
         // Left (Smooth)
 
-        frontLeftDrive.setPower(forward - 10);
+        frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward - 10);
+        backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
 
         sleep(2000);
@@ -212,13 +217,11 @@ public class Autobots extends OpMode {
         backRightDrive.setPower(forward);
 
         sleep(2000);
-
-        telemetry.addLine("drivetest finished");
     }
 
     void autonomoustest(){
 
-        telemetry.addLine("AutonomousTest start");
+        telemetry.addData("Void File Running", "Autonomous Test");
 
         /*
         Purpose of this void: A testrun for the starting point of autonomous.
@@ -231,15 +234,15 @@ public class Autobots extends OpMode {
         //Variables needed to know how much engine power is needed.
         //The numbers here can be recorded when playing the teleop mode
         //I changed the numbers from 0.19 and -0.24 to larger numbers to get a bit more speed - Addy
-        double forward = 0.80;
-        double backward = -0.80;
+        double forward = -0.30;
+        double backward = 0.40;
 
         //Step One - Drive forward from starting point to the center of the field, then turn around.
 
         //Forward
-        frontLeftDrive.setPower(backward);
+        frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(backward);
+        backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
 
         sleep(3000);
@@ -290,8 +293,50 @@ public class Autobots extends OpMode {
         backRightDrive.setPower(0);
 
         sleep(2000);
+    }
+
+    void backwardsRobot(){
+
+        //The purpose of this void is to make the robot go backwards around 18 inches.
+        //Because Girardot asked <3
+
+        //Variables needed to know how much engine power is needed.
+        // The numbers here can be recorded when playing the teleop mode
+        double forward = -0.40;
+        double backward = 0.40;
+
+        //Back it up now
+
+        frontLeftDrive.setPower(backward);
+        frontRightDrive.setPower(backward);
+        backLeftDrive.setPower(backward);
+        backRightDrive.setPower(backward);
+
+        sleep(4000);
 
 
-        telemetry.addLine("AutonomousTest finished");
+
+    }
+
+    void forwardsRobot(){
+
+        //The purpose of this void is to make the robot go forwards around 18 inches.
+
+        //Variables needed to know how much engine power is needed.
+        // The numbers here can be recorded when playing the teleop mode
+        double forward = -0.40;
+        double backward = 0.40;
+
+        //Back it up now
+
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
+
+        sleep(4000);
+
+        //peepeepoopoo
+        //skibidi
     }
 }
