@@ -4,21 +4,19 @@ import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 /*
-Hey guys! This is the autonomous code for our robot. (Yes I named it Autobots. No shame. No regrets)
-It's rather simple, and I left a bunch of comments/instructions to help y'all edit it if that is needed.
-I plan on making two versions of this code to align with the red alliance and the blue alliance.
-That way we don't have to worry about as many errors if the code is configured more accurately for each color team.
+This java file is made specifically for testing autonomous code. Anything that works
+will be taken from here and given it's own java file.
+Okay? okay slay
 - Addy
  */
 
-@Autonomous (name = "Autobots", group = "OpMode")
-public class Autobots extends OpMode {
+@Autonomous (name = "AutobotsTEST", group = "OpMode")
+public class AutobotsTEST extends OpMode {
 
     // Declare OpMode members.
     private DcMotorEx frontLeftDrive = null;
