@@ -15,7 +15,7 @@ Okay? okay slay
 - Addy
  */
 
-@Autonomous (name = "AutoForward", group = "OpMode")
+@Autonomous (name = "AutoForward", group = "Boobs")
 public class AutoBackward extends OpMode {
 
     // Declare OpMode members.
