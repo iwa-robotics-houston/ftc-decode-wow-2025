@@ -8,14 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-/*
-This java file is made specifically for testing autonomous code. Anything that works
-will be taken from here and given it's own java file.
-Okay? okay slay
-- Addy
- */
-
-@Autonomous (name = "AutoForward", group = "OpMode")
+@Autonomous(name = "AutoForward", group = "OpMode")
 public class AutoForward extends OpMode {
 
     // Declare OpMode members.
