@@ -77,27 +77,29 @@ public class AutobotsTEST extends OpMode {
 
         //telemetry.addData("Void File Running","DriveTest");
 
-        sleep(100);
+        //sleep(100);
 
         //drivetest();
 
-        sleep(2000);
+        //sleep(2000);
 
         //autonomoustest();
 
-        telemetry.addData("Void File Running", "Backwards");
+        //telemetry.addData("Void File Running", "Backwards");
 
-        sleep(100);
+        //sleep(100);
 
-        backwardsRobot();
+        //backwardsRobot();
 
-        sleep(2000);
+        //sleep(2000);
 
-        telemetry.addData("Void File Running", "Forwards");
+        //telemetry.addData("Void File Running", "Forwards");
 
-        sleep(100);
+        //sleep(100);
 
-        forwardsRobot();
+        //forwardsRobot();
+
+        TestBotPush();
 
         telemetry.addData("Void File Running", "None");
     }
