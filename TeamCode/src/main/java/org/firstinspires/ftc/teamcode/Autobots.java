@@ -6,7 +6,9 @@ import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /*
 Hey guys! This is the autonomous code for our robot. (Yes I named it Autobots. No shame. No regrets)
@@ -20,13 +22,19 @@ That way we don't have to worry about as many errors if the code is configured m
 public class Autobots extends OpMode {
 
     // Declare OpMode members.
-    private DcMotor frontLeftDrive = null;
-    private DcMotor backLeftDrive = null;
-    private DcMotor frontRightDrive = null;
-    private DcMotor backRightDrive = null;
+   DcMotor frontLeftDrive;
+   DcMotor backLeftDrive;
+   DcMotor frontRightDrive;
+   DcMotor backRightDrive;
+    DcMotor intake;
+    DcMotor flywheelLeft;
+    DcMotor flywheelRight;
+    CRServo launcherLeft;
+    CRServo launcherRight;
+    Servo diverter;
+
 
     //No code for the intake or launcher yet. When we get the teleop version perfected I'll add it here! - Addy
-    private DcMotor intake = null;
 
     @Override
     public void init() {
@@ -35,11 +43,16 @@ public class Autobots extends OpMode {
          * to 'get' must correspond to the names assigned during the robot configuration
          * step.
          */
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
+        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
+        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
+        flywheelLeft = hardwareMap.get(DcMotor.class, "flywheelLeft");
+        flywheelRight = hardwareMap.get(DcMotor.class, "flywheelRight");
+        diverter = hardwareMap.get(Servo.class,"diverter");
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
@@ -71,9 +84,6 @@ public class Autobots extends OpMode {
     public void loop() {
         //This is where you paste the void names that you make beneath this loop void. Example: "drivetest();" would play the drivetest void.
         //-Addy
-
-        telemetry.addLine("Im transforming it rn");
-        telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
 
         drivetest();
         telemetry.addLine("loading next void command...");
@@ -221,15 +231,15 @@ public class Autobots extends OpMode {
         //Variables needed to know how much engine power is needed.
         //The numbers here can be recorded when playing the teleop mode
         //I changed the numbers from 0.19 and -0.24 to larger numbers to get a bit more speed - Addy
-        double forward = 0.30;
-        double backward = -0.40;
+        double forward = 0.80;
+        double backward = -0.80;
 
         //Step One - Drive forward from starting point to the center of the field, then turn around.
 
         //Forward
-        frontLeftDrive.setPower(forward);
+        frontLeftDrive.setPower(backward);
         frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
+        backLeftDrive.setPower(backward);
         backRightDrive.setPower(forward);
 
         sleep(3000);
@@ -280,6 +290,7 @@ public class Autobots extends OpMode {
         backRightDrive.setPower(0);
 
         sleep(2000);
+
 
         telemetry.addLine("AutonomousTest finished");
     }

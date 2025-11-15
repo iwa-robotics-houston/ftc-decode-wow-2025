@@ -130,7 +130,7 @@ public class StarterBotTeleop extends OpMode {
     @Override
     public void loop() {
         telemetry.addLine("Teleop Drive");
-        telemetry.addLine("WOW 2024 Code");
+        telemetry.addLine("Women of the Wires");
 
 
         // If you press the left bumper, you get a drive from the point of view of the robot
@@ -201,8 +201,6 @@ public class StarterBotTeleop extends OpMode {
             //this is JUST intake
             double intakePower = 1;
 
-            float intakeIn = gamepad2.right_trigger;
-            float intakeOut = gamepad2.left_trigger;
 
             if (gamepad2.right_trigger > 0) {
                 intake.setPower(-1);
