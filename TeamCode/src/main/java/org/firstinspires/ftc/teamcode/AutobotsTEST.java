@@ -166,9 +166,9 @@ public class AutobotsTEST extends OpMode {
         //Right (SMOOTH)
 
         frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(forward);
+        frontRightDrive.setPower(forward - 0.10);
         backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
+        backRightDrive.setPower(forward - 0.10);
 
         sleep(2000);
 
@@ -193,10 +193,10 @@ public class AutobotsTEST extends OpMode {
         //Turn LEFT
         // Left (Smooth)
 
-        frontLeftDrive.setPower(forward);
+        frontLeftDrive.setPower(forward - 0.10);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
+        backRightDrive.setPower(forward - 0.10);
 
         sleep(2000);
 
@@ -270,9 +270,9 @@ public class AutobotsTEST extends OpMode {
         //Turn LEFT
         // Left (Smooth)
 
-        frontLeftDrive.setPower(forward - 10);
+        frontLeftDrive.setPower(forward - 0.10);
         frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward - 10);
+        backLeftDrive.setPower(forward - 0.10);
         backRightDrive.setPower(forward);
 
         sleep(1000);
@@ -338,5 +338,35 @@ public class AutobotsTEST extends OpMode {
 
         //peepeepoopoo
         //skibidi
+    }
+
+    void TestBotPush(){
+
+        //The Goal of this Void is to test and eventually have code that can push a bot that lacks an autonomous.
+
+        //Variables needed to know how much engine power is needed.
+        // The numbers here can be recorded when playing the teleop mode
+        //Forward needs to be negative, and backwards needs to be positive.
+        double forward = -0.40;
+        double backward = 0.40;
+
+
+        //Forward
+        //You don't need to put numbers for the set powers here, as we defined a number for the variable "forward" and "backward"
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
+
+        sleep (3000);
+
+        //The goal for the next line of code is to up the power of the motors ever so slightly so that the robot can push another robot.
+        //This may need to be configured to where the robots are placed, this is just me theorizing right now.
+        frontLeftDrive.setPower(forward - 0.10);
+        frontRightDrive.setPower(forward - 0.10);
+        backLeftDrive.setPower(forward - 0.10);
+        backRightDrive.setPower(forward - 0.10);
+
+        sleep(3000);
     }
 }
