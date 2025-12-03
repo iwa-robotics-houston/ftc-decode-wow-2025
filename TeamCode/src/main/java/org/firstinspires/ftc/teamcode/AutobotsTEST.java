@@ -3,10 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /*
 This java file is made specifically for testing autonomous code. Anything that works
@@ -19,12 +23,16 @@ Okay? okay slay
 public class AutobotsTEST extends OpMode {
 
     // Declare OpMode members.
-    private DcMotorEx frontLeftDrive = null;
-    private DcMotorEx backLeftDrive = null;
-    private DcMotorEx frontRightDrive = null;
-    private DcMotorEx backRightDrive = null;
-
-    //No code for the intake or launcher yet. When we get the teleop version perfected I'll add it here! - Addy
+    DcMotorEx frontLeftDrive;
+    DcMotorEx backLeftDrive;
+    DcMotorEx frontRightDrive;
+    DcMotorEx backRightDrive;
+    DcMotorEx flywheelLeft;
+    DcMotorEx flywheelRight;
+    CRServo launcherLeft;
+    CRServo launcherRight;
+    Servo diverter;
+    IMU imu;
     private DcMotor intake = null;
 
     @Override
@@ -39,6 +47,11 @@ public class AutobotsTEST extends OpMode {
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
+        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
+        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
+        flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
+        flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
+        diverter = hardwareMap.get(Servo.class,"diverter");
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
@@ -59,6 +72,17 @@ public class AutobotsTEST extends OpMode {
         backLeftDrive.setZeroPowerBehavior(BRAKE);
         frontRightDrive.setZeroPowerBehavior(BRAKE);
         backRightDrive.setZeroPowerBehavior(BRAKE);
+
+        imu = hardwareMap.get(IMU.class, "imu");
+        // This needs to be changed to match the orientation on your robot
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
+                RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+
+        RevHubOrientationOnRobot orientationOnRobot = new
+                RevHubOrientationOnRobot(logoDirection, usbDirection);
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
 
         /*
          * Tell the driver that initialization is complete.
@@ -370,5 +394,68 @@ public class AutobotsTEST extends OpMode {
         backRightDrive.setPower(forward - 0.10);
 
         sleep(3000);
+    }
+
+    void okayInternAnnieNowHitTheSecondTower(){
+
+        //The purpose of this void is to potentially have the robot launch balls.
+        //It is still heavily under construction so uh i wouldn't recommend using it.
+
+        //this is JUST intake
+        double intakePower = 1;
+
+        double intakeIn = -1;
+        double intakeOut = 1;
+
+        //Launcher + flywheels
+
+        double launcherLeftPowerStart = 1;
+        double launcherLeftPowerStop = 0;
+        double launcherRightPowerStart = 1;
+        double launcherRightPowerStop = 0;
+
+        //Goal: for autonomous it would be a lot easier if the robot had a sensor to sense balls/read april tags
+        //That way I could do an if/then/else statement with how autonomous works.
+        //I want the robot to keep driving until It is close to an obstacle, then i want it to turn a certain direction.
+        //but thats hard to do without sensors
+
+        //Guys i have no clue what I'm doing and Im lowkey kinda burnt out bear with me I'll have code made by ythe next meet trust - Addy
+
+
+        intake.setPower(-1);
+        intake.setPower(1);
+        intake.setPower(0);
+
+
+        //Possible Diverter
+        if (gamepad2.dpad_left) diverter.setPosition(0);
+        else if (gamepad2.dpad_right) {
+            diverter.setPosition(.70);
+        } else {
+            diverter.setPosition(.5);
+        }
+
+
+        if (gamepad2.left_bumper) {
+            launcherLeft.setPower(-1);
+
+        } else {
+            launcherLeft.setPower(0);
+        }
+
+        if (gamepad2.right_bumper) {
+            launcherRight.setPower(1);
+
+        } else {
+            launcherRight.setPower(0);
+        }
+
+        if (gamepad2.a) {
+            flywheelRight.setPower(-1);
+            flywheelLeft.setPower(1);
+        } else {
+            flywheelRight.setPower(0);
+            flywheelLeft.setPower(0);
+        }
     }
 }
