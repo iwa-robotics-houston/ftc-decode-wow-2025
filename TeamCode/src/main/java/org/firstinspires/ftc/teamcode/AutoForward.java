@@ -5,27 +5,35 @@ import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /*
 This java file is made specifically for testing autonomous code. Anything that works
 will be taken from here and given it's own java file.
 Okay? okay slay
 - Addy
+
+Okay I'm trying to do an auto that includes preloaded artifacts
+- Carys
  */
 
 @Autonomous (name = "AutoForward", group = "OpMode")
-public class AutoForward extends OpMode {
+class AutoForward extends OpMode {
+    DcMotorEx frontLeftDrive;
+    DcMotorEx frontRightDrive;
+    DcMotorEx backLeftDrive;
+    DcMotorEx backRightDrive;
+    DcMotor intake;
+    DcMotor flywheelLeft;
+    DcMotor flywheelRight;
+    CRServo launcherLeft;
+    CRServo launcherRight;
+    Servo diverter;
 
     // Declare OpMode members.
-    private DcMotorEx frontLeftDrive = null;
-    private DcMotorEx backLeftDrive = null;
-    private DcMotorEx frontRightDrive = null;
-    private DcMotorEx backRightDrive = null;
-
-    //No code for the intake or launcher yet. When we get the teleop version perfected I'll add it here! - Addy
-    private DcMotor intake = null;
 
     @Override
     public void init() {
@@ -77,29 +85,44 @@ public class AutoForward extends OpMode {
         telemetry.addLine("Im transforming it rn");
         telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
 
-        forwardsRobot();
+        autoBlue();
     }
 
-    void forwardsRobot(){
+    void autoBlue(){
 
         //The purpose of this void is to make the robot go forwards around 18 inches.
+        //Right now, this code is really rudimentary, does not include limelight or
+        //odometry --> this is not what we really want
 
-        //Variables needed to know how much engine power is needed.
-        // The numbers here can be recorded when playing the teleop mode
-        double forward = -0.40;
-        double backward = 0.40;
+        double forward = -0.50;
+        double reverse = 0.40;
+        double brake = 0;
 
-
-        //You don't need to put numbers for the set powers here,
-        // As we defined a number for the variable "forward" and "backward"
+        //robot drives to the triangle
         frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
 
-        sleep(4000);
+        sleep(2000);
+        //robot turns to face the blue launch target
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
 
-        //peepeepoopoo
-        //skibidi
+        sleep(1000);
+
+        /*
+        //robot warms up the flywheel and launches
+        flywheelLeft.setPower(1);
+        flywheelRight.setPower(-1);
+        //8000 absolutely needed for flywheel
+        launcherLeft.setPower(-1);
+        launcherRight.setPower(1);
+        */
+
+        telemetry.addLine("Autonomous finished");
+
     }
 }
