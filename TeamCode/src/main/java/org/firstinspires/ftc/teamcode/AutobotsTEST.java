@@ -493,8 +493,7 @@ public class AutobotsTEST extends OpMode {
         //I changed the numbers from 0.19 and -0.24 to larger numbers to get a bit more speed - Addy
         double forward = -0.30;
         double backward = 0.40;
-        double intakeIn = -1;
-        double intakeOut = 1;
+        double launch = 1;
 
         //Step One - Drive forward from starting point to the center of the field, then turn.
 
@@ -520,11 +519,15 @@ public class AutobotsTEST extends OpMode {
 
         //this is JUST intake, and may need to be changed if it doesn't properly launch.
 
-        intake.setPower(intakeOut);
+        launcherLeft.setPower(-launch);
+        launcherRight.setPower(launch);
 
         sleep(3000);
 
-        intake.setPower(0);
+        launcherLeft.setPower(0);
+        launcherRight.setPower(0);
+
+        //This should work I guess
 
     }
 }
