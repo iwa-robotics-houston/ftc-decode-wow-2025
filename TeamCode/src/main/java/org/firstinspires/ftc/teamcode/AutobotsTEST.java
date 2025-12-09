@@ -474,60 +474,57 @@ public class AutobotsTEST extends OpMode {
         //It is still heavily under construction so uh i wouldn't recommend using it.
 
         //this is JUST intake
-        double intakePower = 1;
 
         double intakeIn = -1;
         double intakeOut = 1;
-
-        //Launcher + flywheels
-
-        double launcherLeftPowerStart = 1;
-        double launcherLeftPowerStop = 0;
-        double launcherRightPowerStart = 1;
-        double launcherRightPowerStop = 0;
-
-        //Goal: for autonomous it would be a lot easier if the robot had a sensor to sense balls/read april tags
-        //That way I could do an if/then/else statement with how autonomous works.
-        //I want the robot to keep driving until It is close to an obstacle, then i want it to turn a certain direction.
-        //but thats hard to do without sensors
-
-        //Guys i have no clue what I'm doing and Im lowkey kinda burnt out bear with me I'll have code made by ythe next meet trust - Addy
-
 
         intake.setPower(-1);
         intake.setPower(1);
         intake.setPower(0);
 
+    }
 
-        //Possible Diverter
-        if (gamepad2.dpad_left) diverter.setPosition(0);
-        else if (gamepad2.dpad_right) {
-            diverter.setPosition(.70);
-        } else {
-            diverter.setPosition(.5);
-        }
+    void WEARECHARLIEKIRRRRRKWECARRRRRRYTHEFLAMMEEEEE(){
 
+        //I'm probably going to hell for this void title, but this java file is for testing so I'll just change it when it's finished - Addy
 
-        if (gamepad2.left_bumper) {
-            launcherLeft.setPower(-1);
+        //Variables needed to know how much engine power is needed.
+        //The numbers here can be recorded when playing the teleop mode
+        //I changed the numbers from 0.19 and -0.24 to larger numbers to get a bit more speed - Addy
+        double forward = -0.30;
+        double backward = 0.40;
+        double intakeIn = -1;
+        double intakeOut = 1;
 
-        } else {
-            launcherLeft.setPower(0);
-        }
+        //Step One - Drive forward from starting point to the center of the field, then turn.
 
-        if (gamepad2.right_bumper) {
-            launcherRight.setPower(1);
+        //Forward
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
 
-        } else {
-            launcherRight.setPower(0);
-        }
+        sleep(2000);
+        //Sleep length may need to be changed to get the length we want.
 
-        if (gamepad2.a) {
-            flywheelRight.setPower(-1);
-            flywheelLeft.setPower(1);
-        } else {
-            flywheelRight.setPower(0);
-            flywheelLeft.setPower(0);
-        }
+        //Left (In Place)
+
+        frontLeftDrive.setPower(backward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(backward);
+        backRightDrive.setPower(forward);
+
+        sleep(2000);
+
+        //Launch Balls
+
+        //this is JUST intake, and may need to be changed if it doesn't properly launch.
+
+        intake.setPower(intakeOut);
+
+        sleep(3000);
+
+        intake.setPower(0);
+
     }
 }
