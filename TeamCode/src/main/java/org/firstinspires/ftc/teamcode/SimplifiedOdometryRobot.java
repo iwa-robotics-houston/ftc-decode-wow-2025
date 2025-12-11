@@ -57,10 +57,10 @@ public class SimplifiedOdometryRobot {
     // ---  Private Members
 
     // Hardware interface Objects
-    private DcMotor leftFrontDrive;     //  control the left front drive wheel
-    private DcMotor rightFrontDrive;    //  control the right front drive wheel
-    private DcMotor leftBackDrive;      //  control the left back drive wheel
-    private DcMotor rightBackDrive;     //  control the right back drive wheel
+    private DcMotor frontLeftDrive;     //  control the left front drive wheel
+    private DcMotor frontRightDrive;    //  control the right front drive wheel
+    private DcMotor backLeftDrive;      //  control the left back drive wheel
+    private DcMotor backRightDrive;     //  control the right back drive wheel
 
     private DcMotor driveEncoder;       //  the Axial (front/back) Odometry Module (may overlap with motor, or may not)
     private DcMotor strafeEncoder;      //  the Lateral (left/right) Odometry Module (may overlap with motor, or may not)
@@ -96,10 +96,10 @@ public class SimplifiedOdometryRobot {
         // motor/device must match the names assigned during the robot configuration.
 
         // !!!  Set the drive direction to ensure positive power drives each wheel forward.
-        leftFrontDrive  = setupDriveMotor("leftfront_drive", DcMotor.Direction.REVERSE);
-        rightFrontDrive = setupDriveMotor("rightfront_drive", DcMotor.Direction.FORWARD);
-        leftBackDrive  = setupDriveMotor( "leftback_drive", DcMotor.Direction.REVERSE);
-        rightBackDrive = setupDriveMotor( "rightback_drive",DcMotor.Direction.FORWARD);
+        frontLeftDrive  = setupDriveMotor("frontLeftDrive", DcMotor.Direction.REVERSE);
+        frontRightDrive = setupDriveMotor("frontRightDrive", DcMotor.Direction.FORWARD);
+        backLeftDrive  = setupDriveMotor( "backLeftDrive", DcMotor.Direction.REVERSE);
+        backRightDrive = setupDriveMotor( "backRightDrive",DcMotor.Direction.FORWARD);
         imu = myOpMode.hardwareMap.get(IMU.class, "imu");
 
         //  Connect to the encoder channels using the name of that channel.
@@ -288,10 +288,10 @@ public class SimplifiedOdometryRobot {
         }
 
         //send power to the motors
-        leftFrontDrive.setPower(lF);
-        rightFrontDrive.setPower(rF);
-        leftBackDrive.setPower(lB);
-        rightBackDrive.setPower(rB);
+        frontLeftDrive.setPower(lF);
+        frontRightDrive.setPower(rF);
+        backLeftDrive.setPower(lB);
+        backRightDrive.setPower(rB);
 
         if (showTelemetry) {
             myOpMode.telemetry.addData("Axes D:S:Y", "%5.2f %5.2f %5.2f", drive, strafe, yaw);
