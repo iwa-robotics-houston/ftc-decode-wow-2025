@@ -90,6 +90,7 @@ public class StarterBotTeleop extends OpMode {
     CRServo launcherRight;
     Servo diverter;
 
+   //Blue limelight code AprilTag 20 pipeline 0
     public class aprilTagBlueLimelightTest extends OpMode{
         private Limelight3A limelight;
         private IMU imu;
@@ -125,6 +126,45 @@ public class StarterBotTeleop extends OpMode {
             }
         }
     }
+
+    //Red Limelight code AprilTag 24 pipeline 1:
+    public class aprilTagRedLimelightTest extends OpMode{
+        private Limelight3A limelight;
+        private IMU imu;
+
+        @Override
+        public void init(){
+            limelight = hardwareMap.get(Limelight3A.class, "limelight");
+            limelight.pipelineSwitch(1);//april tag #24 pipeline
+            limelight.start();
+
+            imu = hardwareMap.get(IMU.class,"imu");
+            RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                    RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
+            imu.initialize(new IMU.Parameters(revHubOrientationOnRobot));
+        }
+
+        @Override
+        public void start(){
+            limelight.start();
+        }
+
+        @Override
+        public void loop(){
+            YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+            limelight.updateRobotOrientation(orientation.getYaw());
+            LLResult llResult = limelight.getLatestResult();
+            if(llResult != null && llResult.isValid()){
+                Pose2D botPose = llResult.getBotpose_MT2();
+
+                telemetry.addData("Tx", llResult.getTx());
+                telemetry.addData("Ty", llResult.getTy());
+                telemetry.addData("Ta", llResult.getTa());
+            }
+        }
+    }
+
+
 
     // This declares the IMU needed to get the current direction the robot is facing
     IMU imu;
