@@ -44,16 +44,20 @@ For future reference, because I'm struggling to find stuff due to the minor
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 /*
  * This OpMode illustrates how to program your robot to drive field relative.  This means
@@ -85,6 +89,42 @@ public class StarterBotTeleop extends OpMode {
     CRServo launcherLeft;
     CRServo launcherRight;
     Servo diverter;
+
+    public class aprilTagBlueLimelightTest extends OpMode{
+        private Limelight3A limelight;
+        private IMU imu;
+
+        @Override
+        public void init(){
+            limelight = hardwareMap.get(Limelight3A.class, "limelight");
+            limelight.pipelineSwitch(0);//april tag #20 pipeline
+            limelight.start();
+
+            imu = hardwareMap.get(IMU.class,"imu");
+            RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                    RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
+            imu.initialize(new IMU.Parameters(revHubOrientationOnRobot));
+        }
+
+        @Override
+        public void start(){
+            limelight.start();
+        }
+
+        @Override
+        public void loop(){
+            YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+            limelight.updateRobotOrientation(orientation.getYaw());
+            LLResult llResult = limelight.getLatestResult();
+            if(llResult != null && llResult.isValid()){
+                Pose2D botPose = llResult.getBotpose_MT2();
+
+                telemetry.addData("Tx", llResult.getTx());
+                telemetry.addData("Ty", llResult.getTy());
+                telemetry.addData("Ta", llResult.getTa());
+            }
+        }
+    }
 
     // This declares the IMU needed to get the current direction the robot is facing
     IMU imu;
