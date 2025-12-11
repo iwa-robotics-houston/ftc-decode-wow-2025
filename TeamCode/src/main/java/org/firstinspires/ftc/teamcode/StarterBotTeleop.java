@@ -79,8 +79,8 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotor intake;
-    DcMotor flywheelLeft;
-    DcMotor flywheelRight;
+    DcMotorEx flywheelLeft;
+    DcMotorEx flywheelRight;
     CRServo launcherLeft;
     CRServo launcherRight;
     Servo diverter;
@@ -97,8 +97,8 @@ public class StarterBotTeleop extends OpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
-        flywheelLeft = hardwareMap.get(DcMotor.class, "flywheelLeft");
-        flywheelRight = hardwareMap.get(DcMotor.class, "flywheelRight");
+        flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
+        flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
        diverter = hardwareMap.get(Servo.class,"diverter");
 
         // We set the left motors in reverse which is needed for drive trains where the left
@@ -114,6 +114,8 @@ public class StarterBotTeleop extends OpMode {
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         imu = hardwareMap.get(IMU.class, "imu");
         // This needs to be changed to match the orientation on your robot
@@ -195,12 +197,13 @@ public class StarterBotTeleop extends OpMode {
             telemetry.addData("status", "Run Time:" + runtime);
             telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
             telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
+            //telemetry.addData("speed", currentVelocity);
             telemetry.update();
 
 
             //this is JUST intake
-            double intakePower = 1;
-
+            double intakePower;
+            double velocity;
 
             if (gamepad2.right_trigger > 0) {
                 intake.setPower(-1);
@@ -210,40 +213,42 @@ public class StarterBotTeleop extends OpMode {
                 intake.setPower(0);
             }
 
-
-            //Possible Diverter
-        if (gamepad2.dpad_left) diverter.setPosition(0);
+            //diverter
+            if (gamepad2.dpad_left) diverter.setPosition(0);
             else if (gamepad2.dpad_right) {
                 diverter.setPosition(.70);
             } else {
                 diverter.setPosition(.5);
             }
-            
 
-            //Launcher + flywheels
-            //They've just been broken up into separate buttons
-
+            //launcher + flywheel
             double launcherLeftPower = 1;
             double launcherRightPower = 1;
 
 
             if (gamepad2.left_bumper) {
                 launcherLeft.setPower(-1);
-
             } else {
                 launcherLeft.setPower(0);
             }
 
             if (gamepad2.right_bumper) {
                 launcherRight.setPower(1);
-
             } else {
                 launcherRight.setPower(0);
             }
 
-            if (gamepad2.a) {
-                flywheelRight.setPower(-1);
-                flywheelLeft.setPower(1);
+            if (gamepad2.b) {
+                flywheelRight.setVelocity(-5600);
+                flywheelLeft.setVelocity(5600);
+            } else {
+                flywheelRight.setPower(0);
+                flywheelLeft.setPower(0);
+            }
+
+            if(gamepad2.a){
+                flywheelRight.setVelocity(-1300);
+                flywheelLeft.setVelocity(1300);
             } else {
                 flywheelRight.setPower(0);
                 flywheelLeft.setPower(0);

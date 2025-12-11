@@ -15,25 +15,23 @@ This java file is made specifically for testing autonomous code. Anything that w
 will be taken from here and given it's own java file.
 Okay? okay slay
 - Addy
+*/
 
-Okay I'm trying to do an auto that includes preloaded artifacts
-- Carys
- */
+//Okay I'm trying to do an auto that includes preloaded artifacts - Carys
 
-@Autonomous (name = "AutoForward", group = "OpMode")
-class AutoForward extends OpMode {
+
+@Autonomous (name = "AutoBlueGPP", group = "OpMode")
+public  class AutoBlueGPP extends OpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotor intake;
-    DcMotor flywheelLeft;
-    DcMotor flywheelRight;
+    DcMotorEx flywheelLeft;
+    DcMotorEx flywheelRight;
     CRServo launcherLeft;
     CRServo launcherRight;
     Servo diverter;
-
-    // Declare OpMode members.
 
     @Override
     public void init() {
@@ -47,6 +45,11 @@ class AutoForward extends OpMode {
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
+        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
+        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
+        flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
+        flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
+        diverter = hardwareMap.get(Servo.class,"diverter");
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
@@ -82,47 +85,124 @@ class AutoForward extends OpMode {
         // Example: "drivetest();" would play a void called drivetest.
         // This autonomous java file should run the forwardsRobot(); void.
         //-Addy
-        telemetry.addLine("Im transforming it rn");
-        telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
+        telemetry.addLine("Autonomous started");
+        telemetry.addLine("Blue, GPP");
 
-        autoBlue();
+        opModeIsActive();
     }
 
-    void autoBlue(){
+    void opModeIsActive(){
 
-        //The purpose of this void is to make the robot go forwards around 18 inches.
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
+        // - Carys
 
         double forward = -0.50;
-        double reverse = 0.40;
-        double brake = 0;
+        double reverse = 0.50;
 
+        //turn slightly
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
+        sleep(150);
+
+        //start the flywheel
+        flywheelRight.setVelocity(-5600);
+        flywheelLeft.setVelocity(5600);
+        sleep(3000);
+        //you'll probably change this
+
+        //launch artifacts
+        flywheelRight.setVelocity(-5600);
+        flywheelLeft.setVelocity(5600);
+        launcherLeft.setPower(-1);
+        intake.setPower(1);
+        sleep(3000);
+
+        flywheelRight.setVelocity(-5600);
+        flywheelLeft.setVelocity(5600);
+        launcherLeft.setPower(0);
+        launcherRight.setPower(1);
+        intake.setPower(1);
+        sleep(3000);
+
+        //move one foot forward
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
+        flywheelRight.setVelocity(0);
+        flywheelLeft.setVelocity(0);
+        launcherRight.setPower(0);
+        intake.setPower(0);
+        sleep(3000);
+
+        //brake!!
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(3000);
+
+
+        /*
         //robot drives to the triangle
         frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
+        sleep(1700);
 
-        sleep(2000);
         //robot turns to face the blue launch target
         frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(reverse);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(reverse);
+        sleep(300);
 
-        sleep(1000);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
+        sleep(275);
 
-        /*
+        //robot stops in launch zone
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(3000);
+
         //robot warms up the flywheel and launches
         flywheelLeft.setPower(1);
         flywheelRight.setPower(-1);
-        //8000 absolutely needed for flywheel
-        launcherLeft.setPower(-1);
-        launcherRight.setPower(1);
-        */
+        sleep(8000); //8000 absolutely needed for flywheel
 
+        //robot launches the GREEN artifact
+        flywheelRight.setPower(-1);
+        flywheelLeft.setPower(1);
+        launcherLeft.setPower(-1);
+        sleep(2000);
+
+        //robot launches the TWO PURPLE artifacts
+        flywheelRight.setPower(-1);
+        flywheelLeft.setPower(1);
+        launcherRight.setPower(1);
+        launcherLeft.setPower(0);
+        sleep(5000);
+
+        //robot stops
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(30000);
+
+        */
         telemetry.addLine("Autonomous finished");
+        telemetry.addData("Status", "Completed");
 
     }
+
 }
