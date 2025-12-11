@@ -457,14 +457,7 @@ public class AutobotsTEST extends OpMode {
         5. Know the limits of your odo
          */
 
-        double x_n = x_(n-1) + relΔX(_n)cos(0_n) - relΔY(_n)sin(0_n);
-        double y_n = y_(n-1) + relΔY(_n)cos(0_n) + relΔX(_n)sin(0_n);
-
-        double relΔX = Δr(_0)sin(Δ0) - r(_1)(1-cos(Δ0));
-        double relΔY = Δr(_1)sin(Δ0) + r(_0)(1 - cos(Δ0));
-
-        double r_0 = Δfwd/Δ0;
-        double r_1 = Δstr/Δ0;
+        // As of right now, I am working on a Robot.Java before I go any further with odometry. - Addy
 
     }
 
