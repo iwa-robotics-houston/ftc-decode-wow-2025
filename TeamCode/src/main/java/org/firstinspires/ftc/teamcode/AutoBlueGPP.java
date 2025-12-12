@@ -75,8 +75,8 @@ public  class AutoBlueGPP extends OpMode {
          * Tell the driver that initialization is complete.
          */
         telemetry.addData("Status", "Initialized");
-
         telemetry.addData("Void File Running", "Forwards");
+        telemetry.addLine("Left 2 Purple, Right Green");
     }
 
     @Override
@@ -89,6 +89,7 @@ public  class AutoBlueGPP extends OpMode {
         telemetry.addLine("Blue, GPP");
 
         opModeIsActive();
+        opModeIsInactive();
     }
 
     void opModeIsActive(){
@@ -99,110 +100,68 @@ public  class AutoBlueGPP extends OpMode {
 
         double forward = -0.50;
         double reverse = 0.50;
+        /*
+        //forward slightly
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
+        sleep(300);
 
         //turn slightly
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
         frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(reverse);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(reverse);
-        sleep(150);
+        sleep(250);
+        */
 
-        //start the flywheel
+        //start flywheel
         flywheelRight.setVelocity(-5600);
         flywheelLeft.setVelocity(5600);
         sleep(3000);
-        //you'll probably change this
 
-        //launch artifacts
-        flywheelRight.setVelocity(-5600);
-        flywheelLeft.setVelocity(5600);
+        //launch right arti
+        launcherRight.setPower(1);
+        sleep(3000);
+
+        //launch left artis
+        launcherRight.setPower(0);
         launcherLeft.setPower(-1);
         intake.setPower(1);
         sleep(3000);
 
-        flywheelRight.setVelocity(-5600);
-        flywheelLeft.setVelocity(5600);
-        launcherLeft.setPower(0);
-        launcherRight.setPower(1);
-        intake.setPower(1);
-        sleep(3000);
-
-        //move one foot forward
+        //drive forward one foot
         frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
         flywheelRight.setVelocity(0);
         flywheelLeft.setVelocity(0);
-        launcherRight.setPower(0);
-        intake.setPower(0);
-        sleep(3000);
-
-        //brake!!
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        sleep(3000);
-
-
-        /*
-        //robot drives to the triangle
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
-        sleep(1700);
-
-        //robot turns to face the blue launch target
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(reverse);
-        sleep(300);
-
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
-        sleep(275);
-
-        //robot stops in launch zone
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        sleep(3000);
-
-        //robot warms up the flywheel and launches
-        flywheelLeft.setPower(1);
-        flywheelRight.setPower(-1);
-        sleep(8000); //8000 absolutely needed for flywheel
-
-        //robot launches the GREEN artifact
-        flywheelRight.setPower(-1);
-        flywheelLeft.setPower(1);
-        launcherLeft.setPower(-1);
-        sleep(2000);
-
-        //robot launches the TWO PURPLE artifacts
-        flywheelRight.setPower(-1);
-        flywheelLeft.setPower(1);
-        launcherRight.setPower(1);
         launcherLeft.setPower(0);
-        sleep(5000);
+        intake.setPower(0);
+        sleep(1500);
 
-        //robot stops
+        //brake
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        sleep(30000);
+    }
 
-        */
+    void opModeIsInactive(){
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+
         telemetry.addLine("Autonomous finished");
         telemetry.addData("Status", "Completed");
-
     }
+
 
 }
