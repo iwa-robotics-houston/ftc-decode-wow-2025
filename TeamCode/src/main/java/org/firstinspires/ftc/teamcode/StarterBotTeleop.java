@@ -90,7 +90,8 @@ public class StarterBotTeleop extends OpMode {
     CRServo launcherRight;
     Servo diverter;
 
-   /*Blue limelight code AprilTag 20 pipeline 0
+    /*
+   //Blue limelight code AprilTag 20 pipeline 0
     public class aprilTagBlueLimelightTest extends OpMode{
         private Limelight3A limelight;
         private IMU imu;
@@ -102,8 +103,8 @@ public class StarterBotTeleop extends OpMode {
             limelight.start();
 
             imu = hardwareMap.get(IMU.class,"imu");
-            RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                    RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
+            RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                    RevHubOrientationOnRobot.UsbFacingDirection.DOWN);
             imu.initialize(new IMU.Parameters(revHubOrientationOnRobot));
         }
 
@@ -139,8 +140,8 @@ public class StarterBotTeleop extends OpMode {
             limelight.start();
 
             imu = hardwareMap.get(IMU.class,"imu");
-            RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                    RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
+            RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                    RevHubOrientationOnRobot.UsbFacingDirection.DOWN);
             imu.initialize(new IMU.Parameters(revHubOrientationOnRobot));
         }
 
