@@ -46,7 +46,8 @@ public class AutobotsTEST extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
-        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        imu.clone()
+    intake = hardwareMap.get(DcMotorEx.class, "intake");
         launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
         flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");

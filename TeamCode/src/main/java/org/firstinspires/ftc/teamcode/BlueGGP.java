@@ -1,8 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
+import static android.os.SystemClock.sleep;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
+
 public class BlueGGP {package org.firstinspires.ftc.teamcode;
 
-import static android.os.SystemClock.sleep;
+import static sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -20,7 +28,7 @@ Okay? okay slay
 */
 
     //Okay I'm trying to do an auto that includes preloaded artifacts - Carys
-    DcMotorEx frontLeftDrive;
+    DcMotorEx  frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
@@ -39,7 +47,7 @@ Okay? okay slay
       */
      telemetry.addLine("Autonomous started");
         telemetry.addLine("Blue, GPP");
-    opModeIsActive();
+    void opModeIsActive();
 }
 void opModeIsActive(){
     //Right now, this code is really rudimentary, does not include limelight or
