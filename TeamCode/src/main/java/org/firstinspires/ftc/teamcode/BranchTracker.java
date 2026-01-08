@@ -4,7 +4,7 @@ public class BranchTracker {
 
     /*
 
-    WIP Autonomous Code can be found in AddyV1 Branch
+   All needed code can be found in this branch.
 
      */
 }
