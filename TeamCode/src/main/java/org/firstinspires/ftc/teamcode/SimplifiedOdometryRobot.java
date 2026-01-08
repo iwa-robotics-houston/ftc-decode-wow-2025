@@ -9,8 +9,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -20,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import java.util.List;
 
-//Hey guys uh Ill be customizing this to fit our robot so give me a little bit - Addy
+//This will be the Robot.Java for our Robot. I am working on making it match up to our robot's calibrations. - Addy
 //I found this online shoutout to that cool guy who made the base code he's so cool - Addy
 
 public class SimplifiedOdometryRobot {
@@ -60,12 +63,19 @@ public class SimplifiedOdometryRobot {
     // ---  Private Members
 
     // Hardware interface Objects
-    private DcMotor frontLeftDrive;     //  control the left front drive wheel
-    private DcMotor frontRightDrive;    //  control the right front drive wheel
-    private DcMotor backLeftDrive;      //  control the left back drive wheel
-    private DcMotor backRightDrive;     //  control the right back drive wheel
 
-    //The following will need to be adjusted to fit the cameras we have on our robot
+    DcMotor frontLeftDrive; // control the left front drive wheel
+    DcMotor frontRightDrive; // control the right front drive wheel
+    DcMotor backLeftDrive; // control the left back drive wheel
+    DcMotor backRightDrive; // control the right back drive wheel
+    DcMotor intake;
+    DcMotor flywheelLeft;
+    DcMotor flywheelRight;
+    CRServo launcherLeft;
+    CRServo launcherRight;
+    Servo diverter;
+
+    // The following will need to be adjusted to fit the cameras we have on our robot
     private DcMotor driveEncoder;       //  the Axial (front/back) Odometry Module (may overlap with motor, or may not)
     private DcMotor strafeEncoder;      //  the Lateral (left/right) Odometry Module (may overlap with motor, or may not)
     //
@@ -107,6 +117,13 @@ public class SimplifiedOdometryRobot {
         backLeftDrive  = setupDriveMotor( "backLeftDrive", DcMotor.Direction.REVERSE);
         backRightDrive = setupDriveMotor( "backRightDrive",DcMotor.Direction.FORWARD);
         imu = myOpMode.hardwareMap.get(IMU.class, "imu");
+        intake = myOpMode.hardwareMap.get(DcMotorEx.class, "intake");
+        launcherLeft = myOpMode.hardwareMap.get(CRServo.class, "launcherLeft");
+        launcherRight = myOpMode.hardwareMap.get(CRServo.class, "launcherRight");
+        flywheelLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "flywheelLeft");
+        flywheelRight = myOpMode.hardwareMap.get(DcMotorEx.class, "flywheelRight");
+        diverter = myOpMode.hardwareMap.get(Servo.class,"diverter");
+
 
         //  Connect to the encoder channels using the name of that channel.
         driveEncoder = myOpMode.hardwareMap.get(DcMotor.class, "axial");
