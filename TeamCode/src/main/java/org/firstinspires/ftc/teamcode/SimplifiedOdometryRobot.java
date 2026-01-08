@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import java.util.List;
 
-//This will be the Robot.Java for our Robot. I am working on making it match up to our robot's calibrations. - Addy
+//Use this for robot initialzation to save time!
 //I found this online shoutout to that cool guy who made the base code he's so cool - Addy
 
 public class SimplifiedOdometryRobot {
@@ -74,16 +74,12 @@ public class SimplifiedOdometryRobot {
     CRServo launcherLeft;
     CRServo launcherRight;
     Servo diverter;
-
-    // The following will need to be adjusted to fit the cameras we have on our robot
     private DcMotor driveEncoder;       //  the Axial (front/back) Odometry Module (may overlap with motor, or may not)
     private DcMotor strafeEncoder;      //  the Lateral (left/right) Odometry Module (may overlap with motor, or may not)
-    //
     private LinearOpMode myOpMode;
     private IMU imu;
     private ElapsedTime holdTimer = new ElapsedTime();  // User for any motion requiring a hold time or timeout.
 
-    //The following will need to be adjusted for our robot
     private int rawDriveOdometer    = 0; // Unmodified axial odometer count
     private int driveOdometerOffset = 0; // Used to offset axial odometer
     private int rawStrafeOdometer   = 0; // Unmodified lateral odometer count
@@ -92,7 +88,6 @@ public class SimplifiedOdometryRobot {
     private double headingOffset    = 0; // Used to offset heading
 
     private double turnRate           = 0; // Latest Robot Turn Rate from IMU
-    //
     private boolean showTelemetry     = false;
 
     // Robot Constructor
