@@ -20,6 +20,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import java.util.List;
 
+//Hey guys uh Ill be customizing this to fit our robot so give me a little bit - Addy
+//I found this online shoutout to that cool guy who made the base code he's so cool - Addy
+
 public class SimplifiedOdometryRobot {
     // Adjust these numbers to suit your robot.
     private final double ODOM_INCHES_PER_COUNT   = 0.002969;   //  GoBilda Odometry Pod (1/226.8)
@@ -62,13 +65,15 @@ public class SimplifiedOdometryRobot {
     private DcMotor backLeftDrive;      //  control the left back drive wheel
     private DcMotor backRightDrive;     //  control the right back drive wheel
 
+    //The following will need to be adjusted to fit the cameras we have on our robot
     private DcMotor driveEncoder;       //  the Axial (front/back) Odometry Module (may overlap with motor, or may not)
     private DcMotor strafeEncoder;      //  the Lateral (left/right) Odometry Module (may overlap with motor, or may not)
-
+    //
     private LinearOpMode myOpMode;
     private IMU imu;
     private ElapsedTime holdTimer = new ElapsedTime();  // User for any motion requiring a hold time or timeout.
 
+    //The following will need to be adjusted for our robot
     private int rawDriveOdometer    = 0; // Unmodified axial odometer count
     private int driveOdometerOffset = 0; // Used to offset axial odometer
     private int rawStrafeOdometer   = 0; // Unmodified lateral odometer count
@@ -77,6 +82,7 @@ public class SimplifiedOdometryRobot {
     private double headingOffset    = 0; // Used to offset heading
 
     private double turnRate           = 0; // Latest Robot Turn Rate from IMU
+    //
     private boolean showTelemetry     = false;
 
     // Robot Constructor
