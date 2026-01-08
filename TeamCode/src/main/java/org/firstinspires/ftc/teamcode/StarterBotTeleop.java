@@ -44,13 +44,14 @@ For future reference, because I'm struggling to find stuff due to the minor
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static android.os.SystemClock.sleep;
+
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -79,7 +80,7 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
-    DcMotorEx intake;
+    DcMotor intake;
     DcMotorEx flywheelLeft;
     DcMotorEx flywheelRight;
     CRServo launcherLeft;
@@ -95,12 +96,12 @@ public class StarterBotTeleop extends OpMode {
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
         backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
-        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake = hardwareMap.get(DcMotor.class, "intake");
         launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
         flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
         flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
-       diverter = hardwareMap.get(Servo.class,"diverter");
+        diverter = hardwareMap.get(Servo.class,"diverter");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -115,6 +116,8 @@ public class StarterBotTeleop extends OpMode {
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         imu = hardwareMap.get(IMU.class, "imu");
         // This needs to be changed to match the orientation on your robot
@@ -131,7 +134,7 @@ public class StarterBotTeleop extends OpMode {
     @Override
     public void loop() {
         telemetry.addLine("Teleop Drive");
-        telemetry.addLine("WOW 2025 Code");
+        telemetry.addLine("Women of the Wires");
 
 
         // If you press the left bumper, you get a drive from the point of view of the robot
@@ -193,68 +196,96 @@ public class StarterBotTeleop extends OpMode {
         */
 
 
-            telemetry.addData("status", "Run Time:" + runtime);
-            telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
-            telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
-            telemetry.addData("Flywheel Left", "%4.2f,%4.2f", flywheelLeft.getVelocity());
-            telemetry.addData("Flywheel Right", "%4.2f,%4.2f", flywheelRight.getVelocity());
-            telemetry.update();
+        telemetry.addData("status", "Run Time:" + runtime);
+        telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
+        telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
+        //telemetry.addData("speed", currentVelocity);
+        telemetry.update();
 
 
-            //this is JUST intake
-            double intakePower = 1;
+        //this is JUST intake
+        double intakePower;
+        double velocity;
 
-            float intakeIn = gamepad2.right_trigger;
-            float intakeOut = gamepad2.left_trigger;
+        if (gamepad2.right_trigger > 0) {
+            intake.setPower(-1);
+        } else if (gamepad2.left_trigger > 0) {
+            intake.setPower(1);
+        } else {
+            intake.setPower(0);
+        }
 
-            if (gamepad2.right_trigger > 0) {
-                intake.setPower(-1);
-            } else if (gamepad2.left_trigger > 0) {
-                intake.setPower(1);
-            } else {
-                intake.setPower(0);
-            }
-
-
-            //Possible Diverter
+        //diverter
         if (gamepad2.dpad_left) diverter.setPosition(0);
-            else if (gamepad2.dpad_right) {
-                diverter.setPosition(.70);
-            } else {
-                diverter.setPosition(.5);
-            }
-            
+        else if (gamepad2.dpad_right) {
+            diverter.setPosition(.70);
+        } else {
+            diverter.setPosition(.5);
+        }
 
-            //Launcher + flywheels
-            //They've just been broken up into separate buttons
-
-            double launcherLeftPower = 1;
-            double launcherRightPower = 1;
+        //launcher + flywheel
+        double launcherLeftPower = 1;
+        double launcherRightPower = 1;
 
 
-            if (gamepad2.left_bumper) {
-                launcherLeft.setPower(-1);
+        if (gamepad2.left_bumper) {
+            launcherLeft.setPower(-1);
+        } else {
+            launcherLeft.setPower(0);
+        }
 
-            } else {
-                launcherLeft.setPower(0);
-            }
-
-            if (gamepad2.right_bumper) {
-                launcherRight.setPower(1);
-
-            } else {
-                launcherRight.setPower(0);
-            }
-
-            if (gamepad2.a) {
-                flywheelRight.setPower(-1);
-                flywheelLeft.setPower(1);
-            } else {
-                flywheelRight.setPower(0);
-                flywheelLeft.setPower(0);
-            }
+        if (gamepad2.right_bumper) {
+            launcherRight.setPower(1);
+        } else {
+            launcherRight.setPower(0);
+        }
+        //fast
+        if (gamepad2.b) {
+            fireSequenceLeft(5600);
+        } else {
+            fireSequenceLeft(0);
+        }
+        //slow
+        if(gamepad2.a){
+            fireSequenceLeft(1300);
+        } else {
+            fireSequenceLeft(0);
         }
     }
+    private void fireSequenceLeft(double targetVelocity) {
 
+        // Start flywheel motors spinning toward target
+        flywheelRight.setVelocity(-targetVelocity);
+        flywheelLeft.setVelocity(-targetVelocity);
+
+        // Wait until flywheel is up to speed
+        if (getAvgFlywheel() < targetVelocity * 0.99){
+            telemetry.addData("Flywheel Avg", getAvgFlywheel());
+            telemetry.update();
+            sleep(10);  // tiny delay
+        }
+        else{
+            launcherLeft.setPower(-1);
+
+        }
+
+        // Feed one artifact
+        feedOnce();
+
+        // Short pause to allow flywheel to recover
+        sleep(120);
+
+        // Stop flywheel after all shots
+        flywheelLeft.setVelocity(0);
+        flywheelRight.setVelocity(0);
+    }
+
+    private double getAvgFlywheel(){
+
+
+
+    }
+
+}
 
 
