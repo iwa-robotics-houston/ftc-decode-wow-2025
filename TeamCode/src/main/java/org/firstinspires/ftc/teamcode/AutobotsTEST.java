@@ -13,9 +13,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /*
-This java file is made specifically for testing autonomous code. Anything that works
-will be taken from here and given it's own java file.
-Okay? okay slay
+This java file is for testing the robot's basic functions autonomous wise - Addy
 - Addy
  */
 
@@ -99,29 +97,7 @@ public class AutobotsTEST extends OpMode {
         telemetry.addLine("Im transforming it rn");
         telemetry.addLine("Heh... Autobots.... Rev up and roll out!!");
 
-        //telemetry.addData("Void File Running","DriveTest");
-
-        //sleep(100);
-
         //drivetest();
-
-        //sleep(2000);
-
-        //autonomoustest();
-
-        //telemetry.addData("Void File Running", "Backwards");
-
-        //sleep(100);
-
-        //backwardsRobot();
-
-        //sleep(2000);
-
-        //telemetry.addData("Void File Running", "Forwards");
-
-        //sleep(100);
-
-        //forwardsRobot();
 
         TestBotPush();
 
