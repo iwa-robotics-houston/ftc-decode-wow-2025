@@ -27,8 +27,7 @@ public class BigBookofExplanationsTM {
 
     SimplifiedOdometryRobot.java
         This is similar to last year's Robot.Java, and came with the Sample Autonomous that I (Addy)
-        found while researching odometry code. It needs to be calibrated and edited to fit the parameters
-        of our robot a bit more.
+        found while researching odometry code.
 
     StarterBotTeleop
         This is our actual teleop file. We use it for the teleop stage. Carys and Sophie M mainly
