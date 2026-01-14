@@ -40,10 +40,10 @@ public class SampleAutonomous extends LinearOpMode
             // Note, this example takes more than 30 seconds to execute, so turn OFF the auto timer.
 
             // Drive the path again without turning.
-            robot.drive(  12, 0.5, 0.15);
-            robot.strafe( 10, 0.3, 0.15);
-            robot.drive( -12, 0.5, 0.15);
-            robot.strafe(-10, 0.3, 0.15);
+            robot.drive(  -12, 0.2, 0.15);
+            robot.strafe( -10, 0.1, 0.15);
+            robot.drive( 12, 0.2, 0.15);
+            robot.strafe(10, 0.1, 0.15);
 
             //sleep(500);
         }

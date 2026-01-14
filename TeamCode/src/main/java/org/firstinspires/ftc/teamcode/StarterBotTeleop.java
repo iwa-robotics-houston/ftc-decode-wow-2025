@@ -259,7 +259,7 @@ public class StarterBotTeleop extends OpMode {
         flywheelLeft.setVelocity(-targetVelocity);
 
         // Wait until flywheel is up to speed
-        if (getAvgFlywheel() < targetVelocity * 0.99){
+        /*if (getAvgFlywheel() < targetVelocity * 0.99){
             telemetry.addData("Flywheel Avg", getAvgFlywheel());
             telemetry.update();
             sleep(10);  // tiny delay
@@ -270,7 +270,7 @@ public class StarterBotTeleop extends OpMode {
         }
 
         // Feed one artifact
-        feedOnce();
+        //feedOnce();
 
         // Short pause to allow flywheel to recover
         sleep(120);
@@ -280,7 +280,9 @@ public class StarterBotTeleop extends OpMode {
         flywheelRight.setVelocity(0);
     }
 
-    private double getAvgFlywheel(){
+         */
+
+    //private double getAvgFlywheel(){
 
 
 
