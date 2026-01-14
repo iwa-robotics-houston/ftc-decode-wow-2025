@@ -40,16 +40,16 @@ public class SampleAutonomous extends LinearOpMode
             // Note, this example takes more than 30 seconds to execute, so turn OFF the auto timer.
 
             // Drive a large rectangle, turning at each corner
-            robot.drive(  -5, 0.30, 0.05);
-            robot.turnTo(90, 0.45, 0.25);
-            robot.drive(  -5, 0.30, 0.05);
-            robot.turnTo(180, 0.45, 0.25);
-            robot.drive(  -5, 0.30, 0.05);
-            robot.turnTo(270, 0.45, 0.25);
-            robot.drive(  -5, 0.30, 0.05);
-            robot.turnTo(0, 0.45, 0.25);
+            robot.drive(  -5, 0.05, 0.05);
+            robot.turnTo(90, 0.10, 0.25);
+            robot.drive(  -5, 0.05, 0.05);
+            robot.turnTo(180, 0.10, 0.25);
+            robot.drive(  -5, 0.05, 0.05);
+            robot.turnTo(270, 0.10, 0.25);
+            robot.drive(  -5, 0.05, 0.05);
+            robot.turnTo(0, 0.10, 0.25);
 
-            sleep(500);
+            //sleep(500);
         }
     }
 }
