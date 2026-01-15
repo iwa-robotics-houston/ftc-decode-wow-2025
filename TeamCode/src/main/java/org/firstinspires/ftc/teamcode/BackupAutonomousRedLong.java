@@ -18,8 +18,8 @@ Together we are FTC!!!!
 */
 
 
-@Autonomous (name = "BackupAutonomousBlueLong", group = "OpMode")
-public  class BackupAutonomousBlueLong extends OpMode {
+@Autonomous (name = "BackupAutonomousRedLong", group = "OpMode")
+public  class BackupAutonomousRedLong extends OpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -133,8 +133,8 @@ public  class BackupAutonomousBlueLong extends OpMode {
         sleep(1000);
 
         //turn slightly
-        frontLeftDrive.setPower(ittyBittyReverse);
-        backLeftDrive.setPower(ittyBittyReverse);
+        frontRightDrive.setPower(ittyBittyReverse);
+        backRightDrive.setPower(ittyBittyReverse);
         sleep(1000);
     }
 
