@@ -18,8 +18,8 @@ Together we are FTC!!!!
 */
 
 
-@Autonomous (name = "BackupAutonomousRed", group = "OpMode")
-public  class BackupAutonomousRed extends OpMode {
+@Autonomous (name = "BackupAutonomousBlueLong", group = "OpMode")
+public  class BackupAutonomousBlueLong extends OpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -115,13 +115,14 @@ public  class BackupAutonomousRed extends OpMode {
 
         double forward = -0.50;
         double reverse = 0.50;
+        double ittyBittyForward = 0.25;
+        double ittyBittyReverse = -0.25;
 
-        //backwards slightly
-        //This works
-        frontLeftDrive.setPower(reverse);
-        frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(reverse);
-        backRightDrive.setPower(reverse);
+        //forward slightly
+        frontLeftDrive.setPower(ittyBittyForward);
+        frontRightDrive.setPower(ittyBittyForward);
+        backLeftDrive.setPower(ittyBittyForward);
+        backRightDrive.setPower(ittyBittyForward);
         sleep(1300);
 
         //Brake
@@ -129,6 +130,11 @@ public  class BackupAutonomousRed extends OpMode {
         frontRightDrive.setPower(0);
         backRightDrive.setPower(0);
         backLeftDrive.setPower(0);
+        sleep(1000);
+
+        //turn slightly
+        frontLeftDrive.setPower(ittyBittyReverse);
+        backLeftDrive.setPower(ittyBittyReverse);
         sleep(1000);
     }
 
@@ -166,13 +172,6 @@ public  class BackupAutonomousRed extends OpMode {
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
         sleep(1000);
-
-        //strafe right
-        frontLeftDrive.setPower(reverse);
-        frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(reverse);
-        sleep(2000);
     }
 
         void killSwitch(){

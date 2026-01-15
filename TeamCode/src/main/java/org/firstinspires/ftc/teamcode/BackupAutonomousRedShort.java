@@ -18,9 +18,8 @@ Together we are FTC!!!!
 */
 
 
-
-@Autonomous (name = "BackupAutonomousBlue", group = "OpMode")
-public  class BackupAutonomousBlue extends OpMode {
+@Autonomous (name = "BackupAutonomousRedShort", group = "OpMode")
+public  class BackupAutonomousRedShort extends OpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -169,10 +168,10 @@ public  class BackupAutonomousBlue extends OpMode {
         sleep(1000);
 
         //strafe right
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(reverse);
-        backRightDrive.setPower(forward);
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
         sleep(2000);
     }
 
