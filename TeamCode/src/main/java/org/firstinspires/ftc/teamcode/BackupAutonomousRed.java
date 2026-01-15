@@ -168,10 +168,10 @@ public  class BackupAutonomousRed extends OpMode {
         sleep(1000);
 
         //strafe right
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(reverse);
-        backRightDrive.setPower(forward);
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
         sleep(2000);
     }
 
