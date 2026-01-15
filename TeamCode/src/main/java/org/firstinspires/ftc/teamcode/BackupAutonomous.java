@@ -87,11 +87,28 @@ public  class BackupAutonomous extends OpMode {
         telemetry.addLine("Autonomous started");
         telemetry.addLine("Blue, GPP");
 
-        opModeIsActive();
-        opModeIsInactive();
+        forward();
+
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(100);
+
+        launchBalls();
+
+        sleep(100);
+
+        killSwitch();
+        sleep(100);
+
+        telemetry.addLine("Autonomous finished");
+        telemetry.addData("Status", "Completed");
+
+        requestOpModeStop();
     }
 
-    void opModeIsActive(){
+    void forward(){
 
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
@@ -99,33 +116,41 @@ public  class BackupAutonomous extends OpMode {
 
         double forward = -0.50;
         double reverse = 0.50;
-        /*
-        //forward slightly
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
-        sleep(300);
 
-        //turn slightly
+        //backwards slightly
+        //This works
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
+        backRightDrive.setPower(reverse);
+        sleep(1300);
+
+        //Brake
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        sleep(1000);
+    }
+
+    void launchBalls(){
+
+        //Brake
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(reverse);
-        sleep(250);
-        */
+        sleep(1000);
 
         //start flywheel
-        flywheelRight.setVelocity(-5600);
-        flywheelLeft.setVelocity(5600);
+        //Its flywheeling it up
+        flywheelRight.setPower(-5600);
+        flywheelLeft.setPower(5600);
         sleep(3000);
 
         //launch right arti
         launcherRight.setPower(1);
+        launcherLeft.setPower(0);
         sleep(3000);
 
         //launch left artis
@@ -134,33 +159,30 @@ public  class BackupAutonomous extends OpMode {
         intake.setPower(1);
         sleep(3000);
 
-        //drive forward one foot
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
-        flywheelRight.setVelocity(0);
-        flywheelLeft.setVelocity(0);
-        launcherLeft.setPower(0);
-        intake.setPower(0);
-        sleep(1500);
-
-        //brake
+        //Brake
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
+        sleep(1000);
     }
 
-    void opModeIsInactive(){
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
+        void killSwitch(){
 
-        telemetry.addLine("Autonomous finished");
-        telemetry.addData("Status", "Completed");
-    }
+            //Brake
+            frontLeftDrive.setPower(0);
+            frontRightDrive.setPower(0);
+            backLeftDrive.setPower(0);
+            backRightDrive.setPower(0);
+            sleep(1000);
 
+            //Brake Launcher
+            launcherRight.setPower(0);
+            launcherLeft.setPower(0);
+            flywheelRight.setPower(0);
+            flywheelLeft.setPower(0);
+
+
+        }
 
 }
