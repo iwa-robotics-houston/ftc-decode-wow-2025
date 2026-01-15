@@ -44,13 +44,13 @@ For future reference, because I'm struggling to find stuff due to the minor
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -86,7 +86,11 @@ public class StarterBotTeleop extends OpMode {
     Servo diverter;
 
     // This declares the IMU needed to get the current direction the robot is facing
-    IMU imu;
+    //IMU imu;
+
+    //adding pinpoint as imu
+    GoBildaPinpointDriver imu; // Declare OpMode member for the Odometry Computer
+
 
     @Override
     public void init() {
@@ -99,7 +103,8 @@ public class StarterBotTeleop extends OpMode {
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
         flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
         flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
-       diverter = hardwareMap.get(Servo.class,"diverter");
+        diverter = hardwareMap.get(Servo.class,"diverter");
+        imu = hardwareMap.get(GoBildaPinpointDriver.class,"imu");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -117,7 +122,7 @@ public class StarterBotTeleop extends OpMode {
         flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        imu = hardwareMap.get(IMU.class, "imu");
+        //imu = hardwareMap.get(IMU.class, "imu");
         // This needs to be changed to match the orientation on your robot
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
                 RevHubOrientationOnRobot.LogoFacingDirection.UP;
@@ -126,7 +131,8 @@ public class StarterBotTeleop extends OpMode {
 
         RevHubOrientationOnRobot orientationOnRobot = new
                 RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        //imu.initialize(new IMU.Parameters(orientationOnRobot));
+        imu.initialize();
     }
 
     @Override
