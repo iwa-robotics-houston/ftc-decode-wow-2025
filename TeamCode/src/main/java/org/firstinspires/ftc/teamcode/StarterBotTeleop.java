@@ -44,6 +44,7 @@ For future reference, because I'm struggling to find stuff due to the minor
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -86,7 +87,8 @@ public class StarterBotTeleop extends OpMode {
     Servo diverter;
 
     // This declares the IMU needed to get the current direction the robot is facing
-    IMU imu;
+    //fixed this to0
+    GoBildaPinpointDriver imu;
 
     @Override
     public void init() {
@@ -116,8 +118,8 @@ public class StarterBotTeleop extends OpMode {
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        imu = hardwareMap.get(IMU.class, "imu");
+//fixed this and hen imported hardword
+        imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
         // This needs to be changed to match the orientation on your robot
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
                 RevHubOrientationOnRobot.LogoFacingDirection.UP;
@@ -126,7 +128,7 @@ public class StarterBotTeleop extends OpMode {
 
         RevHubOrientationOnRobot orientationOnRobot = new
                 RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        imu.initialize();
     }
 
     @Override
