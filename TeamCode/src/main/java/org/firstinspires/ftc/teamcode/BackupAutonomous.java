@@ -134,6 +134,8 @@ public  class BackupAutonomous extends OpMode {
     }
 
     void launchBalls(){
+        double forward = -0.50;
+        double reverse = 0.50;
 
         //Brake
         frontLeftDrive.setPower(0);
@@ -165,6 +167,13 @@ public  class BackupAutonomous extends OpMode {
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
         sleep(1000);
+
+        //strafe right
+        frontLeftDrive.setPower(.8);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
+        backRightDrive.setPower(.8);
+        sleep(2000);
     }
 
         void killSwitch(){
