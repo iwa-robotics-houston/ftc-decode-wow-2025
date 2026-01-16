@@ -4,24 +4,32 @@ import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+
+
+//READ ME CODERS!!!!!!!
 /*
-This java file is made specifically for testing autonomous code. Anything that works
-will be taken from here and given it's own java file.
-Okay? okay slay
-- Addy
-*/
+I just created several files for auto code, this is likely the auto we will be using
+tomorrow as it can actually run right. While I am away, please work on close auto for
+red and blue, and fix the velocity/timing problems as necessary
 
-//Okay I'm trying to do an auto that includes preloaded artifacts - Carys
+I'm also guessing that there's also changes in all velocity since the tension got
+changed, including in teleop and all the auto, so please take a good look at that too
+
+I believe in you!!
+- Carys
+ */
 
 
-@Autonomous (name = "AutoBlueGPP", group = "OpMode")
-public  class AutoBlueGPP extends OpMode {
+
+@Autonomous (name = "BackGPP", group = "LinearOpMode")
+public class BackGPP extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -34,7 +42,7 @@ public  class AutoBlueGPP extends OpMode {
     Servo diverter;
 
     @Override
-    public void init() {
+    public void runOpMode() {
         /*
          * Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
@@ -49,7 +57,7 @@ public  class AutoBlueGPP extends OpMode {
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
         flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
         flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
-        diverter = hardwareMap.get(Servo.class,"diverter");
+        diverter = hardwareMap.get(Servo.class, "diverter");
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
@@ -74,25 +82,28 @@ public  class AutoBlueGPP extends OpMode {
         /*
          * Tell the driver that initialization is complete.
          */
+
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Void File Running", "Forwards");
         telemetry.addLine("Left 2 Purple, Right Green");
-    }
 
-    @Override
-    public void loop() {
+
         //This is where you paste the void names that you make beneath this loop void.
         // Example: "drivetest();" would play a void called drivetest.
         // This autonomous java file should run the forwardsRobot(); void.
         //-Addy
         telemetry.addLine("Autonomous started");
-        telemetry.addLine("Blue, GPP");
+        telemetry.addLine("Back, GPP");
 
+        waitForStart();
         opModeIsActive();
-        opModeIsInactive();
-    }
-
-    void opModeIsActive(){
 
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
@@ -100,34 +111,17 @@ public  class AutoBlueGPP extends OpMode {
 
         double forward = -0.50;
         double reverse = 0.50;
-        /*
-        //forward slightly
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
-        sleep(300);
-
-        //turn slightly
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(reverse);
-        sleep(250);
-        */
 
         //start flywheel
-        flywheelRight.setVelocity(-5600);
-        flywheelLeft.setVelocity(5600);
+        flywheelRight.setVelocity(-1700);
+        flywheelLeft.setVelocity(1700);
         sleep(3000);
+
 
         //launch right arti
         launcherRight.setPower(1);
         sleep(3000);
+
 
         //launch left artis
         launcherRight.setPower(0);
@@ -140,8 +134,8 @@ public  class AutoBlueGPP extends OpMode {
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
-        flywheelRight.setVelocity(0);
-        flywheelLeft.setVelocity(0);
+        flywheelRight.setPower(0);
+        flywheelLeft.setPower(0);
         launcherLeft.setPower(0);
         intake.setPower(0);
         sleep(1500);
@@ -151,17 +145,10 @@ public  class AutoBlueGPP extends OpMode {
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-    }
-
-    void opModeIsInactive(){
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
 
         telemetry.addLine("Autonomous finished");
         telemetry.addData("Status", "Completed");
+
+        
     }
-
-
 }

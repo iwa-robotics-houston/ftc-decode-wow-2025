@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,18 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-/*
-This java file is made specifically for testing autonomous code. Anything that works
-will be taken from here and given it's own java file.
-Okay? okay slay
-- Addy
-*/
-
-//Okay I'm trying to do an auto that includes preloaded artifacts - Carys
-
-
-@Autonomous (name = "AutoGPP", group = "LinearOpMode")
-public class AutoGPP extends LinearOpMode {
+@Autonomous(name = "BackPPG", group = "LinearOpMode")
+public class BackPPG extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -87,18 +76,15 @@ public class AutoGPP extends LinearOpMode {
         telemetry.addLine("Left 2 Purple, Right Green");
 
 
-
-
-
         //This is where you paste the void names that you make beneath this loop void.
         // Example: "drivetest();" would play a void called drivetest.
         // This autonomous java file should run the forwardsRobot(); void.
         //-Addy
         telemetry.addLine("Autonomous started");
-        telemetry.addLine("Back, GPP");
+        telemetry.addLine("Back, PPG");
 
-
-
+        waitForStart();
+        opModeIsActive();
 
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
@@ -112,14 +98,14 @@ public class AutoGPP extends LinearOpMode {
         flywheelLeft.setVelocity(1700);
         sleep(3000);
 
-        //launch right arti
-        launcherRight.setPower(1);
-        sleep(3000);
-
         //launch left artis
-        launcherRight.setPower(0);
         launcherLeft.setPower(-1);
         intake.setPower(1);
+        sleep(3000);
+
+        //launch right arti
+        launcherRight.setPower(1);
+        launcherLeft.setPower(0);
         sleep(3000);
 
         //drive forward one foot
@@ -129,16 +115,11 @@ public class AutoGPP extends LinearOpMode {
         backRightDrive.setPower(forward);
         flywheelRight.setPower(0);
         flywheelLeft.setPower(0);
-        launcherLeft.setPower(0);
+        launcherRight.setPower(0);
         intake.setPower(0);
         sleep(1500);
 
         //brake
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
@@ -150,3 +131,4 @@ public class AutoGPP extends LinearOpMode {
 
     }
 }
+
