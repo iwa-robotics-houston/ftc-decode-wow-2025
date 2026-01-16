@@ -123,7 +123,7 @@ public  class AutoBlueShort extends OpMode {
         frontRightDrive.setPower(reverse);
         backLeftDrive.setPower(reverse);
         backRightDrive.setPower(reverse);
-        sleep(1355);
+        sleep(1400);
 
         //Brake
         frontLeftDrive.setPower(0);
