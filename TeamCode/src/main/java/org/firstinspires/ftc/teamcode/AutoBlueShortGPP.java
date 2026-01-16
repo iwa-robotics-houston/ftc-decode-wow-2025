@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -19,8 +17,9 @@ Together we are FTC!!!!
 */
 
 
-@Autonomous (name = "BackupAutonomousRedLong", group = "OpMode")
-public class BackupAutonomousRedLong extends LinearOpMode {
+
+@Autonomous (name = "AutoBlueShortGPP", group = "OpMode")
+public  class AutoBlueShortGPP extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -73,27 +72,26 @@ public class BackupAutonomousRedLong extends LinearOpMode {
         /*
          * Tell the driver that initialization is complete.
          */
+
         telemetry.addData("Status", "Initialized");
 
+    /*
+    Forward
+     */
 
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
         // - Carys
 
-        /*
-        Forward
-         */
-
         double forward = -0.50;
         double reverse = 0.50;
-        double ittyBittyForward = 0.25;
-        double ittyBittyReverse = -0.25;
 
-        //forward slightly
-        frontLeftDrive.setPower(ittyBittyForward);
-        frontRightDrive.setPower(ittyBittyForward);
-        backLeftDrive.setPower(ittyBittyForward);
-        backRightDrive.setPower(ittyBittyForward);
+        //backwards slightly
+        //This works
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
+        backRightDrive.setPower(reverse);
         sleep(1300);
 
         //Brake
@@ -103,19 +101,9 @@ public class BackupAutonomousRedLong extends LinearOpMode {
         backLeftDrive.setPower(0);
         sleep(1000);
 
-        //turn slightly
-        frontRightDrive.setPower(ittyBittyReverse);
-        backRightDrive.setPower(ittyBittyReverse);
-        sleep(1000);
-
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        sleep(100);
-
         /*
-        LAUNCH BELOW
+        Launch
+        LEFT IS GREEN RIGHT IS PURPLE
          */
 
         //Brake
@@ -149,10 +137,10 @@ public class BackupAutonomousRedLong extends LinearOpMode {
         backRightDrive.setPower(0);
         sleep(1000);
 
-        //leave forward
+        //strafe right
         frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
         backRightDrive.setPower(forward);
         sleep(2000);
 
@@ -161,9 +149,11 @@ public class BackupAutonomousRedLong extends LinearOpMode {
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
         sleep(100);
-    /*
-    Kill Switch
-     */
+
+        /*
+        Kill Switch
+         */
+
         //Brake
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
@@ -177,8 +167,8 @@ public class BackupAutonomousRedLong extends LinearOpMode {
         flywheelRight.setPower(0);
         flywheelLeft.setPower(0);
 
+
         telemetry.addLine("Autonomous finished");
         telemetry.addData("Status", "Completed");
-
     }
 }

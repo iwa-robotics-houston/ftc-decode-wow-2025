@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -20,8 +18,8 @@ Together we are FTC!!!!
 
 
 
-@Autonomous (name = "BackupAutonomousBlueShortGPP", group = "OpMode")
-public  class BackupAutonomousBlueShortGPP extends LinearOpMode {
+@Autonomous (name = "BackupAutonomousBlueShort", group = "OpMode")
+public  class AutoBlueShort extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -105,7 +103,6 @@ public  class BackupAutonomousBlueShortGPP extends LinearOpMode {
 
         /*
         Launch
-        LEFT IS GREEN RIGHT IS PURPLE
          */
 
         //Brake
@@ -156,21 +153,21 @@ public  class BackupAutonomousBlueShortGPP extends LinearOpMode {
         Kill Switch
          */
 
-        //Brake
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        sleep(1000);
+            //Brake
+            frontLeftDrive.setPower(0);
+            frontRightDrive.setPower(0);
+            backLeftDrive.setPower(0);
+            backRightDrive.setPower(0);
+            sleep(1000);
 
-        //Brake Launcher
-        launcherRight.setPower(0);
-        launcherLeft.setPower(0);
-        flywheelRight.setPower(0);
-        flywheelLeft.setPower(0);
+            //Brake Launcher
+            launcherRight.setPower(0);
+            launcherLeft.setPower(0);
+            flywheelRight.setPower(0);
+            flywheelLeft.setPower(0);
 
 
         telemetry.addLine("Autonomous finished");
         telemetry.addData("Status", "Completed");
-    }
+        }
 }

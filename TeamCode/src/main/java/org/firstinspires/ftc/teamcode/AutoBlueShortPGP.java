@@ -18,8 +18,8 @@ Together we are FTC!!!!
 
 
 
-@Autonomous (name = "BackupAutonomousBlueShortPPG", group = "OpMode")
-public  class BackupAutonomousBlueShortPPG extends LinearOpMode {
+@Autonomous (name = "AutoBlueShortPGP", group = "OpMode")
+public  class AutoBlueShortPGP extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -127,6 +127,12 @@ public  class BackupAutonomousBlueShortPPG extends LinearOpMode {
         //launch right arti
         launcherRight.setPower(1);
         launcherLeft.setPower(0);
+        sleep(3000);
+
+        //launch left artis
+        launcherRight.setPower(0);
+        launcherLeft.setPower(-1);
+        intake.setPower(1);
         sleep(3000);
 
         //Brake

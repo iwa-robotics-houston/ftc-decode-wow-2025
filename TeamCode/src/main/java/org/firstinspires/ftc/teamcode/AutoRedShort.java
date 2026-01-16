@@ -17,9 +17,8 @@ Together we are FTC!!!!
 */
 
 
-
-@Autonomous (name = "BackupAutonomousBlueShort", group = "OpMode")
-public  class BackupAutonomousBlueShort extends LinearOpMode {
+@Autonomous (name = "AutoRedShort", group = "OpMode")
+public  class AutoRedShort extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -72,7 +71,6 @@ public  class BackupAutonomousBlueShort extends LinearOpMode {
         /*
          * Tell the driver that initialization is complete.
          */
-
         telemetry.addData("Status", "Initialized");
 
     /*
@@ -101,9 +99,9 @@ public  class BackupAutonomousBlueShort extends LinearOpMode {
         backLeftDrive.setPower(0);
         sleep(1000);
 
-        /*
-        Launch
-         */
+   /*
+   Launch
+    */
 
         //Brake
         frontLeftDrive.setPower(0);
@@ -137,10 +135,10 @@ public  class BackupAutonomousBlueShort extends LinearOpMode {
         sleep(1000);
 
         //strafe right
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(reverse);
-        backRightDrive.setPower(forward);
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
         sleep(2000);
 
         frontLeftDrive.setPower(0);
@@ -148,10 +146,9 @@ public  class BackupAutonomousBlueShort extends LinearOpMode {
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
         sleep(100);
-
-        /*
-        Kill Switch
-         */
+    /*
+    Kill Switch
+     */
 
             //Brake
             frontLeftDrive.setPower(0);

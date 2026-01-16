@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -19,8 +17,8 @@ Together we are FTC!!!!
 */
 
 
-@Autonomous (name = "BackupAutonomousRedShortPGP", group = "OpMode")
-public  class BackupAutonomousRedShortPGP extends LinearOpMode {
+@Autonomous (name = "AutoRedShortPPG", group = "OpMode")
+public  class AutoRedShortPPG extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -103,7 +101,6 @@ public  class BackupAutonomousRedShortPGP extends LinearOpMode {
 
    /*
    Launch
-   LEFT IS GREEN RIGHT IS PURPLE
     */
 
         //Brake
@@ -128,12 +125,6 @@ public  class BackupAutonomousRedShortPGP extends LinearOpMode {
         //launch right arti
         launcherRight.setPower(1);
         launcherLeft.setPower(0);
-        sleep(3000);
-
-        //launch left artis
-        launcherRight.setPower(0);
-        launcherLeft.setPower(-1);
-        intake.setPower(1);
         sleep(3000);
 
         //Brake

@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -19,8 +17,8 @@ Together we are FTC!!!!
 */
 
 
-@Autonomous (name = "BackupAutonomousBlueLong", group = "OpMode")
-public class BackupAutonomousBlueLong extends LinearOpMode {
+@Autonomous (name = "AutoRedShortPGP", group = "OpMode")
+public  class AutoRedShortPGP extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -75,25 +73,23 @@ public class BackupAutonomousBlueLong extends LinearOpMode {
          */
         telemetry.addData("Status", "Initialized");
 
+    /*
+    Forward
+     */
 
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
         // - Carys
 
-        /*
-        Forward
-         */
-
         double forward = -0.50;
         double reverse = 0.50;
-        double ittyBittyForward = 0.25;
-        double ittyBittyReverse = -0.25;
 
-        //forward slightly
-        frontLeftDrive.setPower(ittyBittyForward);
-        frontRightDrive.setPower(ittyBittyForward);
-        backLeftDrive.setPower(ittyBittyForward);
-        backRightDrive.setPower(ittyBittyForward);
+        //backwards slightly
+        //This works
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
+        backRightDrive.setPower(reverse);
         sleep(1300);
 
         //Brake
@@ -103,20 +99,10 @@ public class BackupAutonomousBlueLong extends LinearOpMode {
         backLeftDrive.setPower(0);
         sleep(1000);
 
-        //turn slightly
-        frontLeftDrive.setPower(ittyBittyReverse);
-        backLeftDrive.setPower(ittyBittyReverse);
-        sleep(1000);
-
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        sleep(100);
-
-        /*
-        LAUNCH BELOW
-         */
+   /*
+   Launch
+   LEFT IS GREEN RIGHT IS PURPLE
+    */
 
         //Brake
         frontLeftDrive.setPower(0);
@@ -129,6 +115,12 @@ public class BackupAutonomousBlueLong extends LinearOpMode {
         //Its flywheeling it up
         flywheelRight.setPower(-5600);
         flywheelLeft.setPower(5600);
+        sleep(3000);
+
+        //launch left artis
+        launcherRight.setPower(0);
+        launcherLeft.setPower(-1);
+        intake.setPower(1);
         sleep(3000);
 
         //launch right arti
@@ -149,11 +141,11 @@ public class BackupAutonomousBlueLong extends LinearOpMode {
         backRightDrive.setPower(0);
         sleep(1000);
 
-        //leave forward
-        frontLeftDrive.setPower(forward);
+        //strafe right
+        frontLeftDrive.setPower(reverse);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
         sleep(2000);
 
         frontLeftDrive.setPower(0);
@@ -164,20 +156,22 @@ public class BackupAutonomousBlueLong extends LinearOpMode {
     /*
     Kill Switch
      */
-            //Brake
-            frontLeftDrive.setPower(0);
-            frontRightDrive.setPower(0);
-            backLeftDrive.setPower(0);
-            backRightDrive.setPower(0);
-            sleep(1000);
 
-            //Brake Launcher
-            launcherRight.setPower(0);
-            launcherLeft.setPower(0);
-            flywheelRight.setPower(0);
-            flywheelLeft.setPower(0);
+        //Brake
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(1000);
+
+        //Brake Launcher
+        launcherRight.setPower(0);
+        launcherLeft.setPower(0);
+        flywheelRight.setPower(0);
+        flywheelLeft.setPower(0);
+
 
         telemetry.addLine("Autonomous finished");
         telemetry.addData("Status", "Completed");
-        }
+    }
 }
