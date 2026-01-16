@@ -4,7 +4,7 @@ import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -20,8 +20,8 @@ Okay? okay slay
 //Okay I'm trying to do an auto that includes preloaded artifacts - Carys
 
 
-@Autonomous (name = "AutoGPP", group = "OpMode")
-public class AutoGPP extends OpMode {
+@Autonomous (name = "AutoGPP", group = "LinearOpMode")
+public class AutoGPP extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -34,7 +34,7 @@ public class AutoGPP extends OpMode {
     Servo diverter;
 
     @Override
-    public void init() {
+    public void runOpMode() {
         /*
          * Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
@@ -49,7 +49,7 @@ public class AutoGPP extends OpMode {
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
         flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
         flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
-        diverter = hardwareMap.get(Servo.class,"diverter");
+        diverter = hardwareMap.get(Servo.class, "diverter");
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
@@ -86,11 +86,10 @@ public class AutoGPP extends OpMode {
         telemetry.addData("Void File Running", "Forwards");
         telemetry.addLine("Left 2 Purple, Right Green");
 
-    }
 
 
-    @Override
-    public void loop() {
+
+
         //This is where you paste the void names that you make beneath this loop void.
         // Example: "drivetest();" would play a void called drivetest.
         // This autonomous java file should run the forwardsRobot(); void.
@@ -98,11 +97,8 @@ public class AutoGPP extends OpMode {
         telemetry.addLine("Autonomous started");
         telemetry.addLine("Back, GPP");
 
-        opModeIsActive();
-        opModeIsInactive();
-    }
 
-    void opModeIsActive(){
+
 
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
@@ -142,9 +138,7 @@ public class AutoGPP extends OpMode {
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-    }
 
-    void opModeIsInactive(){
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
@@ -152,7 +146,7 @@ public class AutoGPP extends OpMode {
 
         telemetry.addLine("Autonomous finished");
         telemetry.addData("Status", "Completed");
+
+
     }
-
-
 }
