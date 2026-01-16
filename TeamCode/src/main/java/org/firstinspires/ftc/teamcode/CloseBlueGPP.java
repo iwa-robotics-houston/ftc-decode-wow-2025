@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-
-import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -10,24 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
-//READ ME CODERS!!!!!!!
-/*
-I just created several files for auto code, this is likely the auto we will be using
-tomorrow as it can actually run right. While I am away, please work on close auto for
-red and blue, and fix the velocity/timing problems as necessary
-
-I'm also guessing that there's also changes in all velocity since the tension got
-changed, including in teleop and all the auto, so please take a good look at that too
-
-I believe in you!!
-- Carys
- */
-
-
-
-@Autonomous (name = "BackGPP", group = "LinearOpMode")
-public class BackGPP extends LinearOpMode {
+@Autonomous(name = "CloseBlueGPP", group = "LinearOpMode")
+public class CloseBlueGPP extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -98,7 +79,7 @@ public class BackGPP extends LinearOpMode {
         // This autonomous java file should run the forwardsRobot(); void.
         //-Addy
         telemetry.addLine("Autonomous started");
-        telemetry.addLine("Back, GPP");
+        telemetry.addLine("Back, PPG");
 
         waitForStart();
         opModeIsActive();
@@ -111,32 +92,42 @@ public class BackGPP extends LinearOpMode {
         double reverse = 0.50;
 
         //start flywheel
+        //NOTE: CHANGE THIS FOR CLOSE SHOOTING
         flywheelRight.setVelocity(-1700);
         flywheelLeft.setVelocity(1700);
         sleep(3000);
 
+        //drive back to shoot
+        //you can either edit the velocity or the time it drives back when editing
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
+        backRightDrive.setPower(reverse);
+        sleep(2500);
 
         //launch right arti
-        launcherRight.setPower(1);
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
         sleep(3000);
 
-
         //launch left artis
-        launcherRight.setPower(0);
-        launcherLeft.setPower(-1);
+        launcherRight.setPower(1);
+        launcherLeft.setPower(1);
         intake.setPower(1);
         sleep(3000);
 
-        //drive forward one foot
-        frontLeftDrive.setPower(forward);
+        //strafe LEFT one foot (blue goal)
+        frontLeftDrive.setPower(reverse);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
         flywheelRight.setPower(0);
         flywheelLeft.setPower(0);
-        launcherLeft.setPower(0);
+        launcherRight.setPower(0);
         intake.setPower(0);
-        sleep(1500);
+        sleep(1000);
 
         //brake
         frontLeftDrive.setPower(0);
@@ -147,6 +138,6 @@ public class BackGPP extends LinearOpMode {
         telemetry.addLine("Autonomous finished");
         telemetry.addData("Status", "Completed");
 
-        
+
     }
 }

@@ -245,16 +245,16 @@ public class StarterBotTeleop extends OpMode {
             }
 
             if (gamepad2.b) {
-                flywheelRight.setVelocity(-5600);
-                flywheelLeft.setVelocity(5600);
+                flywheelRight.setVelocity(-3000);
+                flywheelLeft.setVelocity(3000);
             } else {
                 flywheelRight.setPower(0);
                 flywheelLeft.setPower(0);
             }
 
             if(gamepad2.a){
-                flywheelRight.setVelocity(-1300);
-                flywheelLeft.setVelocity(1300);
+                flywheelRight.setVelocity(-1000);
+                flywheelLeft.setVelocity(1000);
             } else {
                 flywheelRight.setPower(0);
                 flywheelLeft.setPower(0);
