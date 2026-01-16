@@ -31,8 +31,7 @@ public  class AutoBlueShort extends LinearOpMode {
     CRServo launcherRight;
     Servo diverter;
 
-    @Override
-    public void runOpMode() {
+    public void autoinit() {
         /*
          * Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
@@ -47,7 +46,7 @@ public  class AutoBlueShort extends LinearOpMode {
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
         flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
         flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
-        diverter = hardwareMap.get(Servo.class,"diverter");
+        diverter = hardwareMap.get(Servo.class, "diverter");
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
@@ -74,6 +73,11 @@ public  class AutoBlueShort extends LinearOpMode {
          */
 
         telemetry.addData("Status", "Initialized");
+
+    }
+
+    @Override
+    public void runOpMode(){
 
     /*
     Forward
