@@ -19,7 +19,7 @@ Together we are FTC!!!!
 
 
 @Autonomous (name = "BackupAutonomousBlueShort", group = "OpMode")
-public  class BackupAutonomousBlueShortPPG extends LinearOpMode {
+public  class BackupAutonomousBlueShort extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
