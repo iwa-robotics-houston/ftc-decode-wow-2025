@@ -4,6 +4,7 @@ import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,7 +20,7 @@ Together we are FTC!!!!
 
 
 @Autonomous (name = "BackupAutonomousRedLong", group = "OpMode")
-public  class BackupAutonomousRedLong extends OpMode {
+public class BackupAutonomousRedLong extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -32,7 +33,7 @@ public  class BackupAutonomousRedLong extends OpMode {
     Servo diverter;
 
     @Override
-    public void init() {
+    public void runOpMode() {
         /*
          * Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
@@ -73,41 +74,15 @@ public  class BackupAutonomousRedLong extends OpMode {
          * Tell the driver that initialization is complete.
          */
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("Void File Running", "Forwards");
-        telemetry.addLine("Left 2 Purple, Right Green");
-    }
 
-    @Override
-    public void loop() {
-        telemetry.addLine("Autonomous started");
-        telemetry.addLine("Blue, GPP");
-
-        forward();
-
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        sleep(100);
-
-        launchBalls();
-
-        sleep(100);
-
-        killSwitch();
-        sleep(100);
-
-        telemetry.addLine("Autonomous finished");
-        telemetry.addData("Status", "Completed");
-
-        requestOpModeStop();
-    }
-
-    void forward(){
 
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
         // - Carys
+
+        /*
+        Forward
+         */
 
         double forward = -0.50;
         double reverse = 0.50;
@@ -132,11 +107,16 @@ public  class BackupAutonomousRedLong extends OpMode {
         frontRightDrive.setPower(ittyBittyReverse);
         backRightDrive.setPower(ittyBittyReverse);
         sleep(1000);
-    }
 
-    void launchBalls(){
-        double forward = -0.50;
-        double reverse = 0.50;
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(100);
+
+        /*
+        LAUNCH BELOW
+         */
 
         //Brake
         frontLeftDrive.setPower(0);
@@ -175,22 +155,30 @@ public  class BackupAutonomousRedLong extends OpMode {
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
         sleep(2000);
+
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(100);
+    /*
+    Kill Switch
+     */
+        //Brake
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(1000);
+
+        //Brake Launcher
+        launcherRight.setPower(0);
+        launcherLeft.setPower(0);
+        flywheelRight.setPower(0);
+        flywheelLeft.setPower(0);
+
+        telemetry.addLine("Autonomous finished");
+        telemetry.addData("Status", "Completed");
+
     }
-
-        void killSwitch(){
-
-            //Brake
-            frontLeftDrive.setPower(0);
-            frontRightDrive.setPower(0);
-            backLeftDrive.setPower(0);
-            backRightDrive.setPower(0);
-            sleep(1000);
-
-            //Brake Launcher
-            launcherRight.setPower(0);
-            launcherLeft.setPower(0);
-            flywheelRight.setPower(0);
-            flywheelLeft.setPower(0);
-
-        }
 }
