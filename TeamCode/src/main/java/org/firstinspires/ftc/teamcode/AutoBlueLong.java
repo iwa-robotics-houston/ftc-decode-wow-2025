@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -18,7 +19,7 @@ Together we are FTC!!!!
 
 
 @Autonomous (name = "AutoBlueLong", group = "OpMode")
-public class AutoBlueLong extends LinearOpMode {
+public  class AutoBlueLong extends OpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -31,7 +32,7 @@ public class AutoBlueLong extends LinearOpMode {
     Servo diverter;
 
     @Override
-    public void runOpMode() {
+    public void init() {
         /*
          * Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
@@ -72,15 +73,45 @@ public class AutoBlueLong extends LinearOpMode {
          * Tell the driver that initialization is complete.
          */
         telemetry.addData("Status", "Initialized");
+        telemetry.addData("Void File Running", "Forwards");
+        telemetry.addLine("Left 2 Purple, Right Green");
+    }
 
+    @Override
+    public void loop() {
+        //This is where you paste the void names that you make beneath this loop void.
+        // Example: "drivetest();" would play a void called drivetest.
+        // This autonomous java file should run the forwardsRobot(); void.
+        //-Addy
+        telemetry.addLine("Autonomous started");
+        telemetry.addLine("Blue, GPP");
+
+        forward();
+
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(100);
+
+        launchBalls();
+
+        sleep(100);
+
+        killSwitch();
+        sleep(100);
+
+        telemetry.addLine("Autonomous finished");
+        telemetry.addData("Status", "Completed");
+
+        requestOpModeStop();
+    }
+
+    void forward(){
 
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
         // - Carys
-
-        /*
-        Forward
-         */
 
         double forward = -0.50;
         double reverse = 0.50;
@@ -105,16 +136,11 @@ public class AutoBlueLong extends LinearOpMode {
         frontLeftDrive.setPower(ittyBittyReverse);
         backLeftDrive.setPower(ittyBittyReverse);
         sleep(1000);
+    }
 
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        sleep(100);
-
-        /*
-        LAUNCH BELOW
-         */
+    void launchBalls(){
+        double forward = -0.50;
+        double reverse = 0.50;
 
         //Brake
         frontLeftDrive.setPower(0);
@@ -153,29 +179,22 @@ public class AutoBlueLong extends LinearOpMode {
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
         sleep(2000);
+    }
 
+    void killSwitch(){
+
+        //Brake
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        sleep(100);
-    /*
-    Kill Switch
-     */
-            //Brake
-            frontLeftDrive.setPower(0);
-            frontRightDrive.setPower(0);
-            backLeftDrive.setPower(0);
-            backRightDrive.setPower(0);
-            sleep(1000);
+        sleep(1000);
 
-            //Brake Launcher
-            launcherRight.setPower(0);
-            launcherLeft.setPower(0);
-            flywheelRight.setPower(0);
-            flywheelLeft.setPower(0);
+        //Brake Launcher
+        launcherRight.setPower(0);
+        launcherLeft.setPower(0);
+        flywheelRight.setPower(0);
+        flywheelLeft.setPower(0);
 
-        telemetry.addLine("Autonomous finished");
-        telemetry.addData("Status", "Completed");
-        }
+    }
 }
