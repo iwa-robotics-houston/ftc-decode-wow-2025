@@ -79,10 +79,6 @@ public  class BackupAutonomousRedLong extends OpMode {
 
     @Override
     public void loop() {
-        //This is where you paste the void names that you make beneath this loop void.
-        // Example: "drivetest();" would play a void called drivetest.
-        // This autonomous java file should run the forwardsRobot(); void.
-        //-Addy
         telemetry.addLine("Autonomous started");
         telemetry.addLine("Blue, GPP");
 
