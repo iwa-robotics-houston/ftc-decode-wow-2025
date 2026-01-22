@@ -16,7 +16,7 @@ Okay? okay slay
  */
 
 @Autonomous (name = "AutoBackward", group = "OpMode")
-public class AutoBackward extends OpMode {
+public class AutoBackward extends OpMode}
 
     // Declare OpMode members.
     private DcMotorEx frontLeftDrive = null;
