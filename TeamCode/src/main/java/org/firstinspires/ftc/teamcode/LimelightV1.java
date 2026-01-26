@@ -92,12 +92,6 @@ public class SensorLimelight3A extends LinearOpMode {
                     telemetry.addData("Barcode", "Data: %s", br.getData());
                 }
 
-                // Access classifier results
-                List<LLResultTypes.ClassifierResult> classifierResults = result.getClassifierResults();
-                for (LLResultTypes.ClassifierResult cr : classifierResults) {
-                    telemetry.addData("Classifier", "Class: %s, Confidence: %.2f", cr.getClassName(), cr.getConfidence());
-                }
-
                 // Access detector results
                 List<LLResultTypes.DetectorResult> detectorResults = result.getDetectorResults();
                 for (LLResultTypes.DetectorResult dr : detectorResults) {
@@ -110,11 +104,6 @@ public class SensorLimelight3A extends LinearOpMode {
                     telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                 }
 
-                // Access color results
-                List<LLResultTypes.ColorResult> colorResults = result.getColorResults();
-                for (LLResultTypes.ColorResult cr : colorResults) {
-                    telemetry.addData("Color", "X: %.2f, Y: %.2f", cr.getTargetXDegrees(), cr.getTargetYDegrees());
-                }
             } else {
                 telemetry.addData("Limelight", "No data available");
             }
