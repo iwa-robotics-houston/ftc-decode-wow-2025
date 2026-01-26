@@ -82,8 +82,7 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backRightDrive;
     DcMotor intake;
     DcMotorEx flywheel;
-    CRServo launcherLeft;
-    CRServo launcherRight;
+    CRServo launcher;
     Servo diverter;
 
     // This declares the IMU needed to get the current direction the robot is facing
@@ -97,8 +96,7 @@ public class StarterBotTeleop extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
-        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
+        launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         diverter = hardwareMap.get(Servo.class,"diverter");
 
@@ -223,24 +221,16 @@ public class StarterBotTeleop extends OpMode {
         }
 
         //launcher + flywheel
-        double launcherLeftPower = 1;
-        double launcherRightPower = 1;
-
+        double launcherPower = 1;
 
         if (gamepad2.left_bumper) {
-            launcherLeft.setPower(-1);
+            launcher.setPower(-1);
         } else {
-            launcherLeft.setPower(0);
-        }
-
-        if (gamepad2.right_bumper) {
-            launcherRight.setPower(1);
-        } else {
-            launcherRight.setPower(0);
+            launcher.setPower(0);
         }
 
         //Lemme cook. We need the flywheel to be constantly spinning
-        flywheel.setPower(1);
+        flywheel.setVelocity(1);
         //This will need extra cooking but this is the idea/draft
     }
 
