@@ -81,8 +81,7 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotor intake;
-    DcMotorEx flywheelLeft;
-    DcMotorEx flywheelRight;
+    DcMotorEx flywheel;
     CRServo launcherLeft;
     CRServo launcherRight;
     Servo diverter;
@@ -100,8 +99,7 @@ public class StarterBotTeleop extends OpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
         launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
-        flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
-        flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
+        flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         diverter = hardwareMap.get(Servo.class,"diverter");
 
         // We set the left motors in reverse which is needed for drive trains where the left
@@ -117,8 +115,8 @@ public class StarterBotTeleop extends OpMode {
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 //fixed this and hen imported hardword
         imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
         // This needs to be changed to match the orientation on your robot
@@ -241,21 +239,9 @@ public class StarterBotTeleop extends OpMode {
             launcherRight.setPower(0);
         }
 
-        if (gamepad2.b) {
-            flywheelRight.setVelocity(-1500);
-            flywheelLeft.setVelocity(1500);
-        } else {
-            flywheelRight.setPower(0);
-            flywheelLeft.setPower(0);
-        }
-
-        if(gamepad2.a){
-            flywheelRight.setVelocity(-1100);
-            flywheelLeft.setVelocity(1100);
-        } else {
-            flywheelRight.setPower(0);
-            flywheelLeft.setPower(0);
-        }
+        //Lemme cook. We need the flywheel to be constantly spinning
+        flywheel.setPower(1);
+        //This will need extra cooking but this is the idea/draft
     }
 
 
