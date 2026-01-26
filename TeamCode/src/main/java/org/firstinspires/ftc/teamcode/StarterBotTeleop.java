@@ -46,6 +46,7 @@ For future reference, because I'm struggling to find stuff due to the minor
 
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -256,6 +257,47 @@ public class StarterBotTeleop extends OpMode {
             flywheelLeft.setPower(0);
         }
     }
+
+
+    //Copying some code from a tutorial video, idk if it will be useful - Addy
+    void armToPosition(DcMotor arm, int target, double kp, double ki, double kd, OpMode opmode){
+
+        ElapsedTime timer = new ElapsedTime();
+        int MOE = 3;
+        double previousTime = 0, previousError = 0;
+        double p = 0, i = 0, d = 0;
+        double max_i = 0.2, min_i = -0.2;
+        double power;
+        while (Math.abs(target - arm.getCurrentPosition()) > 3 && ((LinearOpMode)opmode).opModeIsActive()){
+            double currentTime = timer.milliseconds();
+            double error = target - arm.getCurrentPosition();
+
+            //Proportional Error
+            p = kp * error; //directly proportional to error
+
+            i += ki * (error * (currentTime - i));
+            if(i > max_i){
+                i = max_i;
+            } else if (i < min_i){
+                i = min_i;
+            }
+
+            //Derivative Power
+            d = kd * (error - previousError) / (currentTime - previousTime); //directly proportional to rate of change of error
+
+            power = (p + i + d);
+            arm.setPower(power);
+
+            //Save Values
+            previousError = error;
+            previousTime = time;
+        }
+
+        //arm.setPower(p + i + d);
+    }
+
+    //The code above is from the an "Implementation of PID loops video"
+    //https://www.youtube.com/watch?v=_q5Lb_FmJ7E&t=373s
 }
 
 
