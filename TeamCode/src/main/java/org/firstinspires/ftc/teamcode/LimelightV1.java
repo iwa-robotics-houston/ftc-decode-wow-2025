@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
@@ -38,9 +38,9 @@ import java.util.List;
  *   and the ip address the Limelight device assigned the Control Hub and which is displayed in small text
  *   below the name of the Limelight on the top level configuration screen.
  */
-@TeleOp(name = "Sensor: Limelight3A", group = "Sensor")
+@TeleOp(name = "Sensor: LimelightV1", group = "Sensor")
 @Disabled
-public class LimelightV1.java extends LinearOpMode {
+public class LimelightV1 extends LinearOpMode {
 
     private Limelight3A limelight;
 
