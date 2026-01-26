@@ -1,6 +1,9 @@
 
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
@@ -37,7 +40,7 @@ import java.util.List;
  */
 @TeleOp(name = "Sensor: Limelight3A", group = "Sensor")
 @Disabled
-public class SensorLimelight3A extends LinearOpMode {
+public class LimelightV1.java extends LinearOpMode {
 
     private Limelight3A limelight;
 
