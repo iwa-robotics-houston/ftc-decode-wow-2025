@@ -89,11 +89,6 @@ public class LimelightV1 extends LinearOpMode {
 
                 telemetry.addData("Botpose", botpose.toString());
 
-                // Access barcode results
-                List<LLResultTypes.BarcodeResult> barcodeResults = result.getBarcodeResults();
-                for (LLResultTypes.BarcodeResult br : barcodeResults) {
-                    telemetry.addData("Barcode", "Data: %s", br.getData());
-                }
 
                 // Access detector results
                 List<LLResultTypes.DetectorResult> detectorResults = result.getDetectorResults();
@@ -101,7 +96,7 @@ public class LimelightV1 extends LinearOpMode {
                     telemetry.addData("Detector", "Class: %s, Area: %.2f", dr.getClassName(), dr.getTargetArea());
                 }
 
-                // Access fiducial results
+                // Access fiducial (AprilTag) results
                 List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
                 for (LLResultTypes.FiducialResult fr : fiducialResults) {
                     telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
