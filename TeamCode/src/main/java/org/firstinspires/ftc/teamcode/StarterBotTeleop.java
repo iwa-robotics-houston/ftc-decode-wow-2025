@@ -230,7 +230,13 @@ public class StarterBotTeleop extends OpMode {
         }
 
         //Lemme cook. We need the flywheel to be constantly spinning
-        flywheel.setVelocity(1);
+        if (gamepad2.right_bumper) {
+            flywheel.setVelocity(1);
+        }
+
+        if (gamepad2.b){
+            flywheel.setVelocity(0);
+        }
         //This will need extra cooking but this is the idea/draft
     }
 
