@@ -82,11 +82,12 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backRightDrive;
     DcMotor intake;
     DcMotorEx flywheel;
+    CRServo angler;
     CRServo launcher;
     Servo diverter;
 
     // This declares the IMU needed to get the current direction the robot is facing
-    //fixed this to0
+    //fixed this too
     GoBildaPinpointDriver imu;
 
     @Override
@@ -98,6 +99,7 @@ public class StarterBotTeleop extends OpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
+        angler = hardwareMap.get(CRServo.class, "angler");
         diverter = hardwareMap.get(Servo.class,"diverter");
 
         // We set the left motors in reverse which is needed for drive trains where the left
@@ -280,6 +282,7 @@ public class StarterBotTeleop extends OpMode {
 
     //The code above is from the an "Implementation of PID loops video"
     //https://www.youtube.com/watch?v=_q5Lb_FmJ7E&t=373s
+    //Idk what to use this for but im lowkey so nauseous its not even funny - Addy
 }
 
 
