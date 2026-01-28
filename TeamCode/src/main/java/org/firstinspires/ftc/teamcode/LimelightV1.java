@@ -90,12 +90,16 @@ public class LimelightV1 extends LinearOpMode {
                 telemetry.addData("Botpose", botpose.toString());
 
 
+                /*
                 // Access detector results
+
                 List<LLResultTypes.DetectorResult> detectorResults = result.getDetectorResults();
                 for (LLResultTypes.DetectorResult dr : detectorResults) {
                     telemetry.addData("Detector", "Class: %s, Area: %.2f", dr.getClassName(), dr.getTargetArea());
                 }
+*/
 
+                 */
                 // Access fiducial (AprilTag) results
                 List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
                 for (LLResultTypes.FiducialResult fr : fiducialResults) {
