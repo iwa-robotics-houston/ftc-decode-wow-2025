@@ -213,7 +213,7 @@ public class StarterBotTeleop extends OpMode {
         } else {
             intake.setPower(0);
         }
-
+/*
         //diverter
         if (gamepad2.dpad_left) diverter.setPosition(0);
         else if (gamepad2.dpad_right) {
@@ -221,7 +221,9 @@ public class StarterBotTeleop extends OpMode {
         } else {
             diverter.setPosition(.5);
         }
+*/
 
+ */
         //launcher + flywheel
         double launcherPower = 1;
 
