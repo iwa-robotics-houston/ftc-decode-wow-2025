@@ -282,7 +282,7 @@ public class StarterBotTeleop extends OpMode {
         //arm.setPower(p + i + d);
     }
 
-    //The code above is from the an "Implementation of PID loops video"
+    //The code above this is from the an "Implementation of PID loops video"
     //https://www.youtube.com/watch?v=_q5Lb_FmJ7E&t=373s
     //Idk what to use this for but im lowkey so nauseous its not even funny - Addy
 }
