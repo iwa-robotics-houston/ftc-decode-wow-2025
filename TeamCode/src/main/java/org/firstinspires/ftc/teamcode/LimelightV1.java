@@ -11,6 +11,7 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
@@ -99,7 +100,6 @@ public class LimelightV1 extends LinearOpMode {
                 for (LLResultTypes.DetectorResult dr : detectorResults) {
                     telemetry.addData("Detector", "Class: %s, Area: %.2f", dr.getClassName(), dr.getTargetArea());
                 }
-*/
 
 
                 // Access fiducial (AprilTag) results
@@ -115,5 +115,56 @@ public class LimelightV1 extends LinearOpMode {
             telemetry.update();
         }
         limelight.stop();
+    }
+}
+@TeleOp(name = "LimelightPIDTest")
+public class LimelightPIDTest extends LinearOpMode {
+    private DcMotor leftMotor, rightMotor; // Example motors for a drivetrain
+    private RobotAlignmentPIDController pidController;
+    private Limelight3A limelight;
+
+    // Define initial PID constants (tune these values later)
+    private final double kP = 0.05; // Start with a small Kp
+    private final double kI = 0.0;
+    private final double kD = 0.0;
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        // Hardware map motors (replace with your motor names)
+        leftMotor = hardwareMap.get(DcMotor.class, "left_motor");
+        rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
+
+        // Initialize Limelight hardware object
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+
+        // Initialize PID controller
+        pidController = new RobotAlignmentPIDController(kP, kI, kD);
+
+        waitForStart();
+
+        while (opModeIsActive()) {
+            // Get the horizontal offset (tx) from the Limelight
+            double tx = limelight.getLatestResult().getTx();
+            boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
+
+            if (hasTarget) {
+                // The target angle is 0.0 (center of the screen)
+                double motorPower = pidController.calculate(0.0, tx);
+
+                // Use the output to control motors
+                // Adjust motor logic based on robot setup (e.g., tank drive, swerve)
+                leftMotor.setPower(-motorPower);
+                rightMotor.setPower(motorPower);
+            } else {
+                // Stop motors or implement a search pattern if no target is found
+                leftMotor.setPower(0);
+                rightMotor.setPower(0);
+            }
+
+            // Add telemetry for tuning and debugging
+            telemetry.addData("Target X Offset (tx)", tx);
+            telemetry.addData("Motor Power", leftMotor.getPower());
+            telemetry.update();
+        }
     }
 }
