@@ -137,6 +137,7 @@ public class LimelightV1 extends LinearOpMode {
             // Get the horizontal offset (tx) from the Limelight
             double tx = limelight.getLatestResult().getTx();
             boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
+            boolean adjust = false;
 
             if (hasTarget) {
                 // The target angle is 0.0 (center of the screen)
@@ -146,10 +147,19 @@ public class LimelightV1 extends LinearOpMode {
                 // Adjust motor logic based on robot setup (e.g., tank drive, swerve)
                 leftMotor.setPower(-motorPower);
                 rightMotor.setPower(motorPower);
+
+                adjust = true;
+
             } else {
                 // Stop motors or implement a search pattern if no target is found
                 leftMotor.setPower(0);
                 rightMotor.setPower(0);
+            }
+
+            if (adjust = true){
+
+
+
             }
 
             // Add telemetry for tuning and debugging
