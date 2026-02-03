@@ -82,11 +82,13 @@ public class LimelightV1 extends LinearOpMode {
                 telemetry.addData("Parse Latency", parseLatency);
                 telemetry.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
 
+                // How far away from looking a tag are we?
                 telemetry.addData("tx", result.getTx());
                 telemetry.addData("txnc", result.getTxNC());
                 telemetry.addData("ty", result.getTy());
                 telemetry.addData("tync", result.getTyNC());
 
+                //Where is the robot? 3D Localization
                 telemetry.addData("Botpose", botpose.toString());
 
 
