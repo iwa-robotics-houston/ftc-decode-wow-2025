@@ -114,7 +114,7 @@ public class LimelightV1 extends LinearOpMode {
 
             telemetry.update();
         }
-        limelight.stop();
+
     }
 }
 @TeleOp(name = "LimelightPIDTest")
@@ -165,6 +165,9 @@ public class LimelightPIDTest extends LinearOpMode {
             telemetry.addData("Target X Offset (tx)", tx);
             telemetry.addData("Motor Power", leftMotor.getPower());
             telemetry.update();
+
+
+            limelight.stop();
         }
     }
 }
