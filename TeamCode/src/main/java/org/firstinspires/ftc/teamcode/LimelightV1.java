@@ -44,10 +44,29 @@ import java.util.List;
 public class LimelightV1 extends LinearOpMode {
 
     private Limelight3A limelight;
+    private DcMotor leftMotor, rightMotor; // Example motors for a drivetrain
+    private RobotAlignmentPIDController pidController;
+
+    // Define initial PID constants (tune these values later)
+    private final double kP = 0.05; // Start with a small Kp
+    private final double kI = 0.0;
+    private final double kD = 0.0;
+
 
     @Override
     public void runOpMode() throws InterruptedException
     {
+
+        // Hardware map motors (replace with your motor names)
+        leftMotor = hardwareMap.get(DcMotor.class, "left_motor");
+        rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
+
+        // Initialize Limelight hardware object
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+
+        // Initialize PID controller
+        pidController = new RobotAlignmentPIDController(kP, kI, kD);
+
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
         telemetry.setMsTransmissionInterval(11);
@@ -64,6 +83,7 @@ public class LimelightV1 extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+
             LLStatus status = limelight.getStatus();
             telemetry.addData("Name", "%s",
                     status.getName());
@@ -113,36 +133,7 @@ public class LimelightV1 extends LinearOpMode {
             }
 
             telemetry.update();
-        }
 
-    }
-}
-@TeleOp(name = "LimelightPIDTest")
-public class LimelightPIDTest extends LinearOpMode {
-    private DcMotor leftMotor, rightMotor; // Example motors for a drivetrain
-    private RobotAlignmentPIDController pidController;
-    private Limelight3A limelight;
-
-    // Define initial PID constants (tune these values later)
-    private final double kP = 0.05; // Start with a small Kp
-    private final double kI = 0.0;
-    private final double kD = 0.0;
-
-    @Override
-    public void runOpMode() throws InterruptedException {
-        // Hardware map motors (replace with your motor names)
-        leftMotor = hardwareMap.get(DcMotor.class, "left_motor");
-        rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
-
-        // Initialize Limelight hardware object
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
-
-        // Initialize PID controller
-        pidController = new RobotAlignmentPIDController(kP, kI, kD);
-
-        waitForStart();
-
-        while (opModeIsActive()) {
             // Get the horizontal offset (tx) from the Limelight
             double tx = limelight.getLatestResult().getTx();
             boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
@@ -169,5 +160,6 @@ public class LimelightPIDTest extends LinearOpMode {
 
             limelight.stop();
         }
+
     }
 }
