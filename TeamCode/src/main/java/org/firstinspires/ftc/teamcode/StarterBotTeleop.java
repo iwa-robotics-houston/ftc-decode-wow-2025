@@ -55,6 +55,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.limelightvision.Limelight3A; // Or your specific Limelight model
 
 /*
  * This OpMode illustrates how to program your robot to drive field relative.  This means
@@ -82,7 +83,7 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backRightDrive;
     DcMotor intake;
     DcMotorEx flywheel;
-    CRServo angler;
+    CRServo finger;
     CRServo launcher;
     Servo diverter;
 
@@ -99,8 +100,8 @@ public class StarterBotTeleop extends OpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
-        angler = hardwareMap.get(CRServo.class, "angler");
-        diverter = hardwareMap.get(Servo.class,"diverter");
+        finger = hardwareMap.get(CRServo.class, "finger");
+        diverter = hardwareMap.get(Servo.class, "diverter");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -223,7 +224,7 @@ public class StarterBotTeleop extends OpMode {
         }
 */
 
- 
+
         //launcher + flywheel
         double launcherPower = 1;
 
@@ -238,53 +239,62 @@ public class StarterBotTeleop extends OpMode {
             flywheel.setVelocity(1);
         }
 
-        if (gamepad2.b){
+        if (gamepad2.b) {
             flywheel.setVelocity(0);
         }
         //This will need extra cooking but this is the idea/draft
     }
 
 
-    //Copying some code from a tutorial video, idk if it will be useful - Addy
-    void armToPosition(DcMotor arm, int target, double kp, double ki, double kd, OpMode opmode){
+    @TeleOp(name = "LimelightPIDTest")
+    public class LimelightPIDTest extends LinearOpMode {
+        private DcMotor leftMotor, rightMotor; // Example motors for a drivetrain
+        private RobotAlignmentPIDController pidController;
+        private Limelight3A limelight;
 
-        ElapsedTime timer = new ElapsedTime();
-        int MOE = 3;
-        double previousTime = 0, previousError = 0;
-        double p = 0, i = 0, d = 0;
-        double max_i = 0.2, min_i = -0.2;
-        double power;
-        while (Math.abs(target - arm.getCurrentPosition()) > 3 && ((LinearOpMode)opmode).opModeIsActive()){
-            double currentTime = timer.milliseconds();
-            double error = target - arm.getCurrentPosition();
+        // Define initial PID constants (tune these values later)
+        private final double kP = 0.05; // Start with a small Kp
+        private final double kI = 0.0;
+        private final double kD = 0.0;
 
-            //Proportional Error
-            p = kp * error; //directly proportional to error
+        @Override
+        public void runOpMode() throws InterruptedException {
+            // Hardware map motors (replace with your motor names)
+            leftMotor = hardwareMap.get(DcMotor.class, "left_motor");
+            rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
 
-            i += ki * (error * (currentTime - i));
-            if(i > max_i){
-                i = max_i;
-            } else if (i < min_i){
-                i = min_i;
+            // Initialize Limelight hardware object
+            limelight = hardwareMap.get(Limelight3A.class, "limelight");
+
+            // Initialize PID controller
+            pidController = new RobotAlignmentPIDController(kP, kI, kD);
+
+            waitForStart();
+
+            while (opModeIsActive()) {
+                // Get the horizontal offset (tx) from the Limelight
+                double tx = limelight.getLatestResult().getTx();
+                boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
+
+                if (hasTarget) {
+                    // The target angle is 0.0 (center of the screen)
+                    double motorPower = pidController.calculate(0.0, tx);
+
+                    // Use the output to control motors
+                    // Adjust motor logic based on robot setup (e.g., tank drive, swerve)
+                    leftMotor.setPower(-motorPower);
+                    rightMotor.setPower(motorPower);
+                } else {
+                    // Stop motors or implement a search pattern if no target is found
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                }
+
+                // Add telemetry for tuning and debugging
+                telemetry.addData("Target X Offset (tx)", tx);
+                telemetry.addData("Motor Power", leftMotor.getPower());
+                telemetry.update();
             }
-
-            //Derivative Power
-            d = kd * (error - previousError) / (currentTime - previousTime); //directly proportional to rate of change of error
-
-            power = (p + i + d);
-            arm.setPower(power);
-
-            //Save Values
-            previousError = error;
-            previousTime = time;
         }
-
-        //arm.setPower(p + i + d);
     }
-
-    //The code above this is from the an "Implementation of PID loops video"
-    //https://www.youtube.com/watch?v=_q5Lb_FmJ7E&t=373s
-    //Idk what to use this for but im lowkey so nauseous its not even funny - Addy
 }
-
-

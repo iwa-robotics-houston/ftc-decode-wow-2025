@@ -69,11 +69,10 @@ public class SimplifiedOdometryRobot {
     DcMotor backLeftDrive; // control the left back drive wheel
     DcMotor backRightDrive; // control the right back drive wheel
     DcMotor intake;
-    DcMotor flywheelLeft;
-    DcMotor flywheelRight;
-    CRServo launcherLeft;
-    CRServo launcherRight;
-    Servo diverter;
+    DcMotor flywheel;
+    CRServo launcher;
+
+    Servo finger;
     private DcMotor driveEncoder;       //  the Axial (front/back) Odometry Module (may overlap with motor, or may not)
     private DcMotor strafeEncoder;      //  the Lateral (left/right) Odometry Module (may overlap with motor, or may not)
     private LinearOpMode myOpMode;
@@ -113,11 +112,9 @@ public class SimplifiedOdometryRobot {
         backRightDrive = setupDriveMotor( "backRightDrive",DcMotor.Direction.FORWARD);
         imu = myOpMode.hardwareMap.get(IMU.class, "imu");
         intake = myOpMode.hardwareMap.get(DcMotorEx.class, "intake");
-        launcherLeft = myOpMode.hardwareMap.get(CRServo.class, "launcherLeft");
-        launcherRight = myOpMode.hardwareMap.get(CRServo.class, "launcherRight");
-        flywheelLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "flywheelLeft");
-        flywheelRight = myOpMode.hardwareMap.get(DcMotorEx.class, "flywheelRight");
-        diverter = myOpMode.hardwareMap.get(Servo.class,"diverter");
+        launcher = myOpMode.hardwareMap.get(CRServo.class, "launcher");
+        flywheel = myOpMode.hardwareMap.get(DcMotorEx.class, "flywheel");
+        finger = myOpMode.hardwareMap.get(Servo.class,"finger");
 
 
         //  Connect to the encoder channels using the name of that channel.
@@ -131,10 +128,12 @@ public class SimplifiedOdometryRobot {
         }
 
         // Tell the software how the Control Hub is mounted on the robot to align the IMU XYZ axes correctly
+
         RevHubOrientationOnRobot orientationOnRobot =
                 new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
                         RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
         imu.initialize(new IMU.Parameters(orientationOnRobot));
+
 
         // zero out all the odometry readings.
         resetOdometry();
@@ -168,6 +167,7 @@ public class SimplifiedOdometryRobot {
         rawStrafeOdometer = strafeEncoder.getCurrentPosition() * (INVERT_STRAFE_ODOMETRY ? -1 : 1);
         driveDistance = (rawDriveOdometer - driveOdometerOffset) * ODOM_INCHES_PER_COUNT;
         strafeDistance = (rawStrafeOdometer - strafeOdometerOffset) * ODOM_INCHES_PER_COUNT;
+
 
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         AngularVelocity angularVelocity = imu.getRobotAngularVelocity(AngleUnit.DEGREES);
