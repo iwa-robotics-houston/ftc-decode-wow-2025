@@ -153,10 +153,23 @@ public class LimelightV1 extends LinearOpMode {
                 backLeftDrive.setPower(-motorPower);
                 backRightDrive.setPower(motorPower);
 
-                //adjust = true;
-
             } else {
                 // Stop motors or implement a search pattern if no target is found
+                //Turn one way, turn the other way, stop.
+                frontRightDrive.setPower(0);
+                frontLeftDrive.setPower(-1);
+                backRightDrive.setPower(0);
+                backLeftDrive.setPower(-1);
+
+                sleep(1000);
+
+                frontRightDrive.setPower(1);
+                frontLeftDrive.setPower(0);
+                backRightDrive.setPower(1);
+                backLeftDrive.setPower(0);
+
+                sleep(1000);
+
                 frontRightDrive.setPower(0);
                 frontLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
