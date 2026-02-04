@@ -44,7 +44,7 @@ import java.util.List;
 public class LimelightV1 extends LinearOpMode {
 
     private Limelight3A limelight;
-    private DcMotor leftMotor, rightMotor; // Example motors for a drivetrain
+    private DcMotor frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive; // Example motors for a drivetrain
     private RobotAlignmentPIDController pidController;
 
     // Define initial PID constants (tune these values later)
@@ -58,8 +58,11 @@ public class LimelightV1 extends LinearOpMode {
     {
 
         // Hardware map motors (replace with your motor names)
-        leftMotor = hardwareMap.get(DcMotor.class, "left_motor");
-        rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+
 
         // Initialize Limelight hardware object
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
@@ -145,26 +148,33 @@ public class LimelightV1 extends LinearOpMode {
 
                 // Use the output to control motors
                 // Adjust motor logic based on robot setup (e.g., tank drive, swerve)
-                leftMotor.setPower(-motorPower);
-                rightMotor.setPower(motorPower);
+                frontLeftDrive.setPower(-motorPower);
+                frontRightDrive.setPower(motorPower);
+                backLeftDrive.setPower(-motorPower);
+                backRightDrive.setPower(motorPower);
 
-                adjust = true;
+                //adjust = true;
 
             } else {
                 // Stop motors or implement a search pattern if no target is found
-                leftMotor.setPower(0);
-                rightMotor.setPower(0);
+                frontRightDrive.setPower(0);
+                frontLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
             }
-
+            /*
             if (adjust = true){
-
-
-
+                leftMotor.setPower();
             }
+             */
+
 
             // Add telemetry for tuning and debugging
             telemetry.addData("Target X Offset (tx)", tx);
-            telemetry.addData("Motor Power", leftMotor.getPower());
+            telemetry.addData("Front Left Motor Power", frontLeftDrive.getPower());
+            telemetry.addData("Front Right Motor Power", frontRightDrive.getPower());
+            telemetry.addData("Back Left Motor Power", backLeftDrive.getPower());
+            telemetry.addData("Back Right Motor Power", backRightDrive.getPower());
             telemetry.update();
 
 
