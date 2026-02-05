@@ -39,8 +39,8 @@ import java.util.List;
  *   and the ip address the Limelight device assigned the Control Hub and which is displayed in small text
  *   below the name of the Limelight on the top level configuration screen.
  */
-@TeleOp(name = "Sensor: LimelightV1", group = "Sensor")
-@Disabled
+@TeleOp(name = "Sensor: LimelightV1", group = "Robot")
+//@Disabled
 public class LimelightV1 extends LinearOpMode {
 
     private Limelight3A limelight;
@@ -62,6 +62,13 @@ public class LimelightV1 extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+
+        // We set the left motors in reverse which is needed for drive trains where the left
+        // motors are opposite to the right ones.
+        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
 
 
         // Initialize Limelight hardware object
@@ -157,15 +164,15 @@ public class LimelightV1 extends LinearOpMode {
                 // Stop motors or implement a search pattern if no target is found
                 //Turn one way, turn the other way, stop.
                 frontRightDrive.setPower(0);
-                frontLeftDrive.setPower(-1);
+                frontLeftDrive.setPower(-0.2);
                 backRightDrive.setPower(0);
-                backLeftDrive.setPower(-1);
+                backLeftDrive.setPower(-0.2);
 
                 sleep(1000);
 
-                frontRightDrive.setPower(1);
+                frontRightDrive.setPower(0.2);
                 frontLeftDrive.setPower(0);
-                backRightDrive.setPower(1);
+                backRightDrive.setPower(0.2);
                 backLeftDrive.setPower(0);
 
                 sleep(1000);
