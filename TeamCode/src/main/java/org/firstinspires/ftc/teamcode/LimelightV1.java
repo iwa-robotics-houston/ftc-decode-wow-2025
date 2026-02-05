@@ -148,6 +148,7 @@ public class LimelightV1 extends LinearOpMode {
             double tx = limelight.getLatestResult().getTx();
             boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
             boolean adjust = false;
+            double targetZero = 0.0;
 
             if (hasTarget) {
                 // The target angle is 0.0 (center of the screen)
@@ -155,10 +156,10 @@ public class LimelightV1 extends LinearOpMode {
 
                 // Use the output to control motors
                 // Adjust motor logic based on robot setup (e.g., tank drive, swerve)
-                frontLeftDrive.setPower(-motorPower);
-                frontRightDrive.setPower(motorPower);
-                backLeftDrive.setPower(-motorPower);
-                backRightDrive.setPower(motorPower);
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
 
             } else {
                 // Stop motors or implement a search pattern if no target is found
@@ -168,25 +169,8 @@ public class LimelightV1 extends LinearOpMode {
                 backRightDrive.setPower(0);
                 backLeftDrive.setPower(-0.2);
 
-                sleep(1000);
-
-                frontRightDrive.setPower(0.2);
-                frontLeftDrive.setPower(0);
-                backRightDrive.setPower(0.2);
-                backLeftDrive.setPower(0);
-
-                sleep(1000);
-
-                frontRightDrive.setPower(0);
-                frontLeftDrive.setPower(0);
-                backRightDrive.setPower(0);
-                backLeftDrive.setPower(0);
+                sleep(100);
             }
-            /*
-            if (adjust = true){
-                leftMotor.setPower();
-            }
-             */
 
 
             // Add telemetry for tuning and debugging
