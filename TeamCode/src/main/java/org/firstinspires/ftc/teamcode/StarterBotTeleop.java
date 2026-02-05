@@ -44,16 +44,20 @@ For future reference, because I'm struggling to find stuff due to the minor
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+//import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+//import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+//import com.qualcomm.robotcore.hardware.IMU;
+//import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.limelightvision.Limelight3A; // Or your specific Limelight model
+
 
 /*
  * This OpMode illustrates how to program your robot to drive field relative.  This means
@@ -80,15 +84,14 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotor intake;
-    DcMotorEx flywheelLeft;
-    DcMotorEx flywheelRight;
-    CRServo launcherLeft;
-    CRServo launcherRight;
-    Servo diverter;
+    DcMotorEx flywheel;
+    CRServo launcher;
+    IMU imu;
+    double targetVelocity;
 
     // This declares the IMU needed to get the current direction the robot is facing
     //fixed this to0
-    GoBildaPinpointDriver imu;
+    //GoBildaPinpointDriver imu;
 
     @Override
     public void init() {
@@ -97,11 +100,11 @@ public class StarterBotTeleop extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
-        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
-        flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
-        flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
-        diverter = hardwareMap.get(Servo.class,"diverter");
+        launcher = hardwareMap.get(CRServo.class, "launcher");
+        flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
+        imu = hardwareMap.get(IMU.class, "imu");
+
+        //  diverter = hardwareMap.get(Servo.class,"diverter");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -116,32 +119,32 @@ public class StarterBotTeleop extends OpMode {
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//fixed this and hen imported hardword
-        imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
-        // This needs to be changed to match the orientation on your robot
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        RevHubOrientationOnRobot orientationOnRobot = new
-                RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu.initialize();
+//fixed this and hen imported hardword
+        //imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
+        // This needs to be changed to match the orientation on your robot
+        // RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
+        //      RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        // RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
+        //  RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+
+        //  RevHubOrientationOnRobot orientationOnRobot = new
+        //   RevHubOrientationOnRobot(logoDirection, usbDirection);
+        // imu.initialize();
     }
 
     @Override
     public void loop() {
         telemetry.addLine("Teleop Drive");
         telemetry.addLine("Women of the Wires");
-
+        telemetry.addData("Velocity", targetVelocity);
 
         // If you press the left bumper, you get a drive from the point of view of the robot
         // (much like driving an RC vehicle)
 
 
-        double axial = gamepad1.left_stick_y;
+        double axial = -gamepad1.left_stick_y;
         double lateral = gamepad1.right_stick_x;
         double yaw = gamepad1.left_stick_x;
 
@@ -161,7 +164,7 @@ public class StarterBotTeleop extends OpMode {
 
         double maxPower = 1.0;
         double maxSpeed = 1.0;
-        double maxVelocity = 2788;
+        // double maxVelocity = 2788;
         //This velocity is the MAX velocity
 
 
@@ -203,10 +206,6 @@ public class StarterBotTeleop extends OpMode {
         telemetry.update();
 
 
-        //this is JUST intake
-        double intakePower;
-        double velocity;
-
         if (gamepad2.right_trigger > 0) {
             intake.setPower(-1);
         } else if (gamepad2.left_trigger > 0) {
@@ -215,48 +214,19 @@ public class StarterBotTeleop extends OpMode {
             intake.setPower(0);
         }
 
-        //diverter
-        if (gamepad2.dpad_left) diverter.setPosition(0);
-        else if (gamepad2.dpad_right) {
-            diverter.setPosition(.70);
-        } else {
-            diverter.setPosition(.5);
-        }
-
-        //launcher + flywheel
-        double launcherLeftPower = 1;
-        double launcherRightPower = 1;
-
-
-        if (gamepad2.left_bumper) {
-            launcherLeft.setPower(-1);
-        } else {
-            launcherLeft.setPower(0);
-        }
-
         if (gamepad2.right_bumper) {
-            launcherRight.setPower(1);
+            launcher.setPower(1);
         } else {
-            launcherRight.setPower(0);
+            launcher.setPower(0);
         }
 
         if (gamepad2.b) {
-            flywheelRight.setVelocity(-1500);
-            flywheelLeft.setVelocity(1500);
-        } else {
-            flywheelRight.setPower(0);
-            flywheelLeft.setPower(0);
+            flywheel.setVelocity(-800);
         }
-
-        if(gamepad2.a){
-            flywheelRight.setVelocity(-1100);
-            flywheelLeft.setVelocity(1100);
-        } else {
-            flywheelRight.setPower(0);
-            flywheelLeft.setPower(0);
+        if (gamepad2.a) {
+            flywheel.setVelocity(-1500);
         }
     }
 }
 
 
-//fiona little commiting comment it wont let me commit without idk why help
