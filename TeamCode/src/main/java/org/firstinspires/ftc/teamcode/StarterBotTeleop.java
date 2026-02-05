@@ -84,10 +84,9 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotorEx intake;
-    DcMotorEx flywheelLeft;
-    DcMotorEx flywheelRight;
-    CRServo launcherLeft;
-    CRServo launcherRight;
+
+    DcMotorEx flywheel;
+    CRServo launcher;
     Servo diverter;
 
 /*
@@ -176,10 +175,8 @@ public class StarterBotTeleop extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
-        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
-        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
-        flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
-        flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
+        launcher = hardwareMap.get(CRServo.class, "launcher");
+        flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
        diverter = hardwareMap.get(Servo.class,"diverter");
 
         // We set the left motors in reverse which is needed for drive trains where the left
@@ -276,11 +273,10 @@ public class StarterBotTeleop extends OpMode {
             telemetry.addData("status", "Run Time:" + runtime);
             telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
             telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
-            telemetry.addData("Flywheel Left", "%4.2f,%4.2f", flywheelLeft.getVelocity());
-            telemetry.addData("Flywheel Right", "%4.2f,%4.2f", flywheelRight.getVelocity());
+            telemetry.addData("Flywheel", "%4.2f,%4.2f", flywheel.getVelocity());
             telemetry.update();
 
-
+/*
             //this is JUST intake
             double intakePower = 1;
 
@@ -332,7 +328,34 @@ public class StarterBotTeleop extends OpMode {
             } else {
                 flywheelRight.setPower(0);
                 flywheelLeft.setPower(0);
-            }
+            }*/
+        if (gamepad2.right_trigger > 0) {
+            intake.setPower(-1);
+        } else if (gamepad2.left_trigger > 0) {
+            intake.setPower(1);
+        } else {
+            intake.setPower(0);
+        }
+
+        if (gamepad2.right_bumper) {
+            launcher.setPower(1);
+        } else {
+            launcher.setPower(0);
+        }
+
+        if (gamepad2.b) {
+            flywheel.setVelocity(-800);
+        }
+        if (gamepad2.a) {
+            flywheel.setVelocity(-1500);
+        }
+        if(gamepad2.left_bumper){
+            launcher.setPower(-1);
+        }
+        else{
+            launcher.setPower(0);
+        }
+
         }
     }
 
