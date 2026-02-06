@@ -157,7 +157,7 @@ public class SimplifiedOdometryRobot {
         return aMotor;
     }
 
-    /**
+    /*
      * Read all input devices to determine the robot's motion
      * always return true so this can be used in "while" loop conditions
      * @return true
@@ -357,6 +357,10 @@ public class SimplifiedOdometryRobot {
      */
     public void showTelemetry(boolean show){
         showTelemetry = show;
+    }
+
+    public void turnto(double v, double tx) {
+
     }
 }
 

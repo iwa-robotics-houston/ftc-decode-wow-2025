@@ -15,8 +15,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  * Pure Drive or Strafe motions are maintained using two Odometry Wheels.
  * The IMU gyro is used to stabilize the heading during all motions
  */
-
-@Autonomous(name="Sample Autonomous", group = "OpMode")
 public class SampleAutonomous extends LinearOpMode
 {
     // get an instance of the "Robot" class.
@@ -29,6 +27,7 @@ public class SampleAutonomous extends LinearOpMode
 
         // Wait for driver to press start
         telemetry.addData(">", "Touch Play to run Auto");
+        telemetry.addData("dude wth this isnt the right autonomous","This isnt auto");
         telemetry.update();
 
         waitForStart();
