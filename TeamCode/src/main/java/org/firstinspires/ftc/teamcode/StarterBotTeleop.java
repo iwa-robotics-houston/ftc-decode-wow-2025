@@ -215,11 +215,11 @@ public class StarterBotTeleop extends OpMode {
         }
 
         if (gamepad2.right_bumper) {
-            launcher.setPower(1);
-        } else {
-            launcher.setPower(0);
+            if (((targetVelocity<=810) && (targetVelocity>=780)) || ((targetVelocity<=700) &&(targetVelocity>=650))) {
+                launcher.setPower(1);
+            }
         }
-        if(gamepad2.left_bumper){
+        else if(gamepad2.left_bumper){
             launcher.setPower(-1);
         }
         else{
@@ -230,7 +230,7 @@ public class StarterBotTeleop extends OpMode {
             flywheel.setVelocity(-800);
         }
         if (gamepad2.a) {
-            flywheel.setVelocity(-1500);
+            flywheel.setVelocity(-680);
         }
         if (gamepad2.y){
             flywheel.setVelocity(0);
