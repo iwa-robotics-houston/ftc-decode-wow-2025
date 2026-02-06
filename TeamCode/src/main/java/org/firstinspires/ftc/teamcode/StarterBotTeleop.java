@@ -52,11 +52,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-//import com.qualcomm.robotcore.hardware.IMU;
 //import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.limelightvision.Limelight3A; // Or your specific Limelight model
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 
 
 /*
@@ -87,6 +88,7 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx flywheel;
     CRServo launcher;
     IMU imu;
+    RevBlinkinLedDriver light;
     double targetVelocity;
 
     // This declares the IMU needed to get the current direction the robot is facing
@@ -103,6 +105,7 @@ public class StarterBotTeleop extends OpMode {
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         imu = hardwareMap.get(IMU.class, "imu");
+        light = hardwareMap.get(RevBlinkinLedDriver.class, "light");
 
         //  diverter = hardwareMap.get(Servo.class,"diverter");
 
@@ -132,8 +135,11 @@ public class StarterBotTeleop extends OpMode {
         //  RevHubOrientationOnRobot orientationOnRobot = new
         //   RevHubOrientationOnRobot(logoDirection, usbDirection);
         // imu.initialize();
+        light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
+        RevBlinkinLedDriver.BlinkinPattern readyColor = RevBlinkinLedDriver.BlinkinPattern.BLACK;
     }
 
+    RevBlinkinLedDriver.BlinkinPattern readyColor = RevBlinkinLedDriver.BlinkinPattern.BLACK;
     @Override
     public void loop() {
         telemetry.addLine("Teleop Drive");
@@ -150,7 +156,11 @@ public class StarterBotTeleop extends OpMode {
 
 
         drive(axial, lateral, yaw);
+
+        double targetVelocity = 0;
+        RevBlinkinLedDriver.BlinkinPattern readyColor;
     }
+
 
     // Thanks to FTC16072 for sharing this code!!
     void drive(double axial, double lateral, double yaw) {
@@ -202,7 +212,7 @@ public class StarterBotTeleop extends OpMode {
         telemetry.addData("status", "Run Time:" + runtime);
         telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
         telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
-        //telemetry.addData("speed", currentVelocity);
+        telemetry.addData("speed", flywheel.getVelocity());
         telemetry.update();
 
 
@@ -216,17 +226,102 @@ public class StarterBotTeleop extends OpMode {
 
         if (gamepad2.right_bumper) {
             launcher.setPower(1);
+        } else if (gamepad2.left_bumper) {
+            launcher.setPower(-1);
         } else {
             launcher.setPower(0);
         }
 
+
+
         if (gamepad2.b) {
-            flywheel.setVelocity(-800);
+            targetVelocity = 1200;
+            flywheel.setVelocity(-targetVelocity);
+            readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
+
         }
         if (gamepad2.a) {
-            flywheel.setVelocity(-1500);
+            targetVelocity = 1500;
+            flywheel.setVelocity(-targetVelocity);
+            readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
+        }
+
+        //off flywheel
+        if (gamepad2.y) {
+             flywheel.setVelocity(0);
+        }
+
+
+        //light code
+        if (targetVelocity > 0
+        ) {
+            double flywheelVelocity = Math.abs(flywheel.getVelocity());
+
+            if (flywheelVelocity >= targetVelocity) {
+                light.setPattern(readyColor);
+            } else {
+                light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
+            }
+
+            if (flywheelVelocity < targetVelocity) {
+                light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
+            }
+        }
+
+
+
+    }
+    /*
+    @TeleOp(name = "LimelightPIDTest")
+    public class LimelightPIDTest extends LinearOpMode {
+        private DcMotor leftMotor, rightMotor; // Example motors for a drivetrain
+        private RobotAlignmentPIDController pidController;
+        private Limelight3A limelight;
+
+        // Define initial PID constants (tune these values later)
+        private final double kP = 0.05; // Start with a small Kp
+        private final double kI = 0.0;
+        private final double kD = 0.0;
+
+        @Override
+        public void runOpMode() throws InterruptedException {
+            // Hardware map motors (replace with your motor names)
+            leftMotor = hardwareMap.get(DcMotor.class, "left_motor");
+            rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
+
+            // Initialize Limelight hardware object
+            limelight = hardwareMap.get(Limelight3A.class, "limelight");
+
+            // Initialize PID controller
+            pidController = new RobotAlignmentPIDController(kP, kI, kD);
+
+            waitForStart();
+
+            while (opModeIsActive()) {
+                // Get the horizontal offset (tx) from the Limelight
+                double tx = limelight.getLatestResult().getTx();
+                boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
+
+                if (hasTarget) {
+                    // The target angle is 0.0 (center of the screen)
+                    double motorPower = pidController.calculate(0.0, tx);
+
+                    // Use the output to control motors
+                    // Adjust motor logic based on robot setup (e.g., tank drive, swerve)
+                    leftMotor.setPower(-motorPower);
+                    rightMotor.setPower(motorPower);
+                } else {
+                    // Stop motors or implement a search pattern if no target is found
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                }
+
+                // Add telemetry for tuning and debugging
+                telemetry.addData("Target X Offset (tx)", tx);
+                telemetry.addData("Motor Power", leftMotor.getPower());
+                telemetry.update();
+            }
         }
     }
+    */
 }
-
-

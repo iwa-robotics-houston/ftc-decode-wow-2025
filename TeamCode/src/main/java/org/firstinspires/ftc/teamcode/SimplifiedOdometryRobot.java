@@ -69,11 +69,7 @@ public class SimplifiedOdometryRobot {
     DcMotor backLeftDrive; // control the left back drive wheel
     DcMotor backRightDrive; // control the right back drive wheel
     DcMotor intake;
-    DcMotor flywheelLeft;
-    DcMotor flywheelRight;
-    CRServo launcherLeft;
-    CRServo launcherRight;
-    Servo diverter;
+    DcMotor flywheel;
     private DcMotor driveEncoder;       //  the Axial (front/back) Odometry Module (may overlap with motor, or may not)
     private DcMotor strafeEncoder;      //  the Lateral (left/right) Odometry Module (may overlap with motor, or may not)
     private LinearOpMode myOpMode;
@@ -113,11 +109,7 @@ public class SimplifiedOdometryRobot {
         backRightDrive = setupDriveMotor( "backRightDrive",DcMotor.Direction.FORWARD);
         imu = myOpMode.hardwareMap.get(IMU.class, "imu");
         intake = myOpMode.hardwareMap.get(DcMotorEx.class, "intake");
-        launcherLeft = myOpMode.hardwareMap.get(CRServo.class, "launcherLeft");
-        launcherRight = myOpMode.hardwareMap.get(CRServo.class, "launcherRight");
-        flywheelLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "flywheelLeft");
-        flywheelRight = myOpMode.hardwareMap.get(DcMotorEx.class, "flywheelRight");
-        diverter = myOpMode.hardwareMap.get(Servo.class,"diverter");
+        flywheel = myOpMode.hardwareMap.get(DcMotorEx.class, "flywheel");
 
 
         //  Connect to the encoder channels using the name of that channel.
