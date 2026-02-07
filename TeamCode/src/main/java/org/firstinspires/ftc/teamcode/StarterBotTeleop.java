@@ -272,7 +272,7 @@ public class StarterBotTeleop extends OpMode {
             waitForStart();
 
             while (opModeIsActive()) {
-                // Get the horizontal offset (tx) from the Limelight
+                // Gets the horizontal offset (tx) from the Limelight
                 double tx = limelight.getLatestResult().getTx();
                 boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
 
