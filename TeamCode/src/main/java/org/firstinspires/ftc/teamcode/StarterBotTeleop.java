@@ -55,6 +55,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 //import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.limelightvision.Limelight3A; // Or your specific Limelight model
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
@@ -87,9 +88,11 @@ public class StarterBotTeleop extends OpMode {
     DcMotor intake;
     DcMotorEx flywheel;
     CRServo launcher;
+    Servo diverter;
     IMU imu;
     RevBlinkinLedDriver light;
     double targetVelocity;
+    double maxVelocity;
 
     // This declares the IMU needed to get the current direction the robot is facing
     //fixed this to0
@@ -106,6 +109,7 @@ public class StarterBotTeleop extends OpMode {
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         imu = hardwareMap.get(IMU.class, "imu");
         light = hardwareMap.get(RevBlinkinLedDriver.class, "light");
+        diverter = hardwareMap.get(Servo.class, "diverter");
 
         //  diverter = hardwareMap.get(Servo.class,"diverter");
 
@@ -158,6 +162,7 @@ public class StarterBotTeleop extends OpMode {
         drive(axial, lateral, yaw);
 
         double targetVelocity = 0;
+        double maxVelocity = 0;
         RevBlinkinLedDriver.BlinkinPattern readyColor;
     }
 
@@ -215,7 +220,7 @@ public class StarterBotTeleop extends OpMode {
         telemetry.addData("speed", flywheel.getVelocity());
         telemetry.update();
 
-
+        //intake
         if (gamepad2.right_trigger > 0) {
             intake.setPower(-1);
         } else if (gamepad2.left_trigger > 0) {
@@ -224,6 +229,7 @@ public class StarterBotTeleop extends OpMode {
             intake.setPower(0);
         }
 
+        //launch
         if (gamepad2.right_bumper) {
             launcher.setPower(1);
         } else if (gamepad2.left_bumper) {
@@ -233,15 +239,18 @@ public class StarterBotTeleop extends OpMode {
         }
 
 
-
+        //on flywheel
         if (gamepad2.b) {
             targetVelocity = 1200;
+            maxVelocity = 1350;
             flywheel.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
 
         }
+
         if (gamepad2.a) {
             targetVelocity = 1500;
+            maxVelocity = 1650;
             flywheel.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
         }
@@ -251,14 +260,27 @@ public class StarterBotTeleop extends OpMode {
              flywheel.setVelocity(0);
         }
 
+        //out flywheel
+        if (gamepad2.x) {
+            flywheel.setVelocity(800);
+        }
+
+        //diverter
+        if (gamepad2.dpad_up) {
+            diverter.setPosition(.4);
+        } else {
+            diverter.setPosition(.6);
+        }
+
 
         //light code
-        if (targetVelocity > 0
-        ) {
+        if (targetVelocity > 0) {
             double flywheelVelocity = Math.abs(flywheel.getVelocity());
 
             if (flywheelVelocity >= targetVelocity) {
                 light.setPattern(readyColor);
+            } else if (flywheelVelocity >= maxVelocity){
+                light.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
             } else {
                 light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
             }
