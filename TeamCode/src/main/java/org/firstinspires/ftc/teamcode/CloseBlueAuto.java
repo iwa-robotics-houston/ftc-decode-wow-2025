@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "BlueBackAuto", group = "LinearOpMode")
-public class BlueBackAuto extends LinearOpMode {
+@Autonomous(name = "CloseBlueAuto", group = "LinearOpMode")
+public class CloseBlueAuto extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -90,10 +90,18 @@ public class BlueBackAuto extends LinearOpMode {
         double forward = -0.50;
         double reverse = 0.50;
 
+        //drive back
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
+        backRightDrive.setPower(reverse);
+        sleep(2000);
 
         //start flywheel
-        backRightDrive.setPower(0);
         frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
         flywheel.setVelocity(-1620);
         sleep(3000);
 
@@ -102,11 +110,11 @@ public class BlueBackAuto extends LinearOpMode {
         intake.setPower(1);
         sleep(3000);
 
-        //drive forward one foot
-        frontLeftDrive.setPower(forward);
+        //strafe left one foot
+        frontLeftDrive.setPower(reverse);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
-        backRightDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
         flywheel.setPower(0);
         launcher.setPower(0);
         intake.setPower(0);
