@@ -1,14 +1,10 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -40,12 +36,12 @@ import java.util.List;
  *   below the name of the Limelight on the top level configuration screen.
  */
 @TeleOp(name = "Sensor: LimelightV1", group = "Robot")
-//@Disabled
 public class LimelightV1 extends LinearOpMode {
 
     private Limelight3A limelight;
     private DcMotor frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive; // Example motors for a drivetrain
     private RobotAlignmentPIDController pidController;
+    private SimplifiedOdometryRobot robot;
 
     // Define initial PID constants (tune these values later)
     private final double kP = 0.05; // Start with a small Kp
@@ -53,35 +49,23 @@ public class LimelightV1 extends LinearOpMode {
     private final double kD = 0.0;
 
 
-    @Override
     public void runOpMode() throws InterruptedException
     {
-
-        // Hardware map motors (replace with your motor names)
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-
-        // We set the left motors in reverse which is needed for drive trains where the left
-        // motors are opposite to the right ones.
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-
-
         // Initialize Limelight hardware object
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
         // Initialize PID controller
         pidController = new RobotAlignmentPIDController(kP, kI, kD);
+        // Initialize the robot hardware & Turn on telemetry
+        robot = new SimplifiedOdometryRobot(this);
+        robot.initialize(true);
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
         telemetry.setMsTransmissionInterval(11);
 
         limelight.pipelineSwitch(0);
+
 
         /*
          * Starts polling for data.  If you neglect to call start(), getLatestResult() will return null.
@@ -91,6 +75,7 @@ public class LimelightV1 extends LinearOpMode {
         telemetry.addData(">", "Robot Ready.  Press Play.");
         telemetry.update();
         waitForStart();
+        robot.resetHeading();  // Reset heading to set a baseline for Auto
 
         while (opModeIsActive()) {
 
@@ -147,29 +132,18 @@ public class LimelightV1 extends LinearOpMode {
             // Get the horizontal offset (tx) from the Limelight
             double tx = limelight.getLatestResult().getTx();
             boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
-            boolean adjust = false;
-            double targetZero = 0.0;
+            // The target angle is 0.0 (center of the screen)
+            double targetAngle = pidController.calculate(0.0, tx);
 
             if (hasTarget) {
-                // The target angle is 0.0 (center of the screen)
-                double motorPower = pidController.calculate(0.0, tx);
-
                 // Use the output to control motors
                 // Adjust motor logic based on robot setup (e.g., tank drive, swerve)
-                frontLeftDrive.setPower(0);
-                frontRightDrive.setPower(0);
-                backLeftDrive.setPower(0);
-                backRightDrive.setPower(0);
-
-                //pp
+                robot.drive(0,0,0);
 
             } else {
-                // Stop motors or implement a search pattern if no target is found
-                //Turn one way, turn the other way, stop.
-                frontRightDrive.setPower(0);
-                frontLeftDrive.setPower(-0.2);
-                backRightDrive.setPower(0);
-                backLeftDrive.setPower(-0.2);
+
+                // The target angle is 0.0 (center of the screen)
+                robot.turnto(0, targetAngle);
 
                 sleep(100);
             }

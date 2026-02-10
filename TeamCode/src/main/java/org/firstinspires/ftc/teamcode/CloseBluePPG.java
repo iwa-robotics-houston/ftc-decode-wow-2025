@@ -14,10 +14,8 @@ public class CloseBluePPG extends LinearOpMode {
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotor intake;
-    DcMotorEx flywheelLeft;
-    DcMotorEx flywheelRight;
-    CRServo launcherLeft;
-    CRServo launcherRight;
+    DcMotorEx flywheel;
+    CRServo launcher;
     Servo diverter;
     RobotLimelightV2 limelightV2;
 
@@ -33,10 +31,8 @@ public class CloseBluePPG extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
-        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
-        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
-        flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
-        flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
+        launcher = hardwareMap.get(CRServo.class, "launcher");
+        flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         diverter = hardwareMap.get(Servo.class, "diverter");
         limelightV2 = new RobotLimelightV2();
 
@@ -68,8 +64,7 @@ public class CloseBluePPG extends LinearOpMode {
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Void File Running", "Forwards");
@@ -96,8 +91,7 @@ public class CloseBluePPG extends LinearOpMode {
 
         //start flywheel
         //NOTE: CHANGE THIS FOR CLOSE SHOOTING
-        flywheelRight.setVelocity(-1700);
-        flywheelLeft.setVelocity(1700);
+        flywheel.setVelocity(1700);
         sleep(3000);
 
         //drive back to shoot
@@ -116,13 +110,12 @@ public class CloseBluePPG extends LinearOpMode {
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        launcherLeft.setPower(-1);
+        launcher.setPower(-1);
         intake.setPower(1);
         sleep(3000);
 
         //launch right arti
-        launcherRight.setPower(1);
-        launcherLeft.setPower(0);
+        launcher.setPower(1);
         sleep(3000);
 
         //strafe LEFT one foot (blue goal)
@@ -130,9 +123,8 @@ public class CloseBluePPG extends LinearOpMode {
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(reverse);
-        flywheelRight.setPower(0);
-        flywheelLeft.setPower(0);
-        launcherRight.setPower(0);
+        flywheel.setPower(0);
+        launcher.setPower(0);
         intake.setPower(0);
         sleep(1000);
 
