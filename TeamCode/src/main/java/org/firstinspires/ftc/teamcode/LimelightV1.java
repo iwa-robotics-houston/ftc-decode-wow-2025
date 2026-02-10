@@ -109,7 +109,7 @@ public class LimelightV1 extends LinearOpMode {
 
 
 
-                // Access detector results
+                // Access detector result
 
                 List<LLResultTypes.DetectorResult> detectorResults = result.getDetectorResults();
                 for (LLResultTypes.DetectorResult dr : detectorResults) {
