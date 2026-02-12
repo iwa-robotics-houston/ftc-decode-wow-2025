@@ -87,28 +87,33 @@ public class CloseBlueAuto extends LinearOpMode {
         // - Carys
         //Heh... guess who has the limelight now divas - Addy
 
-        double forward = -0.50;
-        double reverse = 0.50;
+        double forward = 0.50;
+        double reverse = -0.50;
 
         //drive back
         frontLeftDrive.setPower(reverse);
         frontRightDrive.setPower(reverse);
         backLeftDrive.setPower(reverse);
         backRightDrive.setPower(reverse);
-        sleep(2000);
+        sleep(1500);
 
         //start flywheel
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        flywheel.setVelocity(-1620);
+        flywheel.setVelocity(-1200);
         sleep(3000);
 
         //launch all artis????
-        launcher.setPower(-1);
-        intake.setPower(1);
-        sleep(3000);
+        double flywheelVelocity = Math.abs(flywheel.getVelocity());
+        while (flywheelVelocity < 1200) {
+            flywheelVelocity = Math.abs(flywheel.getVelocity());
+            sleep(100);
+        }
+        launcher.setPower(1);
+        intake.setPower(-1);
+        sleep(5000);
 
         //strafe left one foot
         frontLeftDrive.setPower(reverse);
@@ -118,7 +123,7 @@ public class CloseBlueAuto extends LinearOpMode {
         flywheel.setPower(0);
         launcher.setPower(0);
         intake.setPower(0);
-        sleep(500);
+        sleep(750);
 
         //brake
         frontLeftDrive.setPower(0);

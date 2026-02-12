@@ -87,20 +87,25 @@ public class AllBackAuto extends LinearOpMode {
         // - Carys
         //Heh... guess who has the limelight now divas - Addy
 
-        double forward = -0.50;
-        double reverse = 0.50;
+        double forward = 0.50;
+        double reverse = -0.50;
 
 
         //start flywheel
         backRightDrive.setPower(0);
         frontLeftDrive.setPower(0);
-        flywheel.setVelocity(-1620);
+        flywheel.setVelocity(-1580);
         sleep(3000);
 
         //launch all artis????
+        double flywheelVelocity = Math.abs(flywheel.getVelocity());
+        while (flywheelVelocity < 1500) {
+            flywheelVelocity = Math.abs(flywheel.getVelocity());
+            sleep(100);
+        }
         launcher.setPower(1);
         intake.setPower(-1);
-        sleep(3000);
+        sleep(10000);
 
         //drive forward one foot
         frontLeftDrive.setPower(forward);
@@ -110,7 +115,7 @@ public class AllBackAuto extends LinearOpMode {
         flywheel.setPower(0);
         launcher.setPower(0);
         intake.setPower(0);
-        sleep(500);
+        sleep(400);
 
         //brake
         frontLeftDrive.setPower(0);
