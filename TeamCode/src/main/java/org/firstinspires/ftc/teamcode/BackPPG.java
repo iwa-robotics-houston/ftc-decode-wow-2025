@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "BackPPG", group = "LinearOpMode")
@@ -18,9 +19,8 @@ public class BackPPG extends LinearOpMode {
     DcMotor intake;
     DcMotorEx flywheelLeft;
     DcMotorEx flywheelRight;
-    CRServo launcherLeft;
-    CRServo launcherRight;
-    Servo diverter;
+    CRServo flywheel;
+   
 
     @Override
     public void runOpMode() {
@@ -34,12 +34,8 @@ public class BackPPG extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
-        launcherLeft = hardwareMap.get(CRServo.class, "launcherLeft");
-        launcherRight = hardwareMap.get(CRServo.class, "launcherRight");
-        flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
-        flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
-        diverter = hardwareMap.get(Servo.class, "diverter");
-
+        flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
+        
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
          * Reduction or 90 Deg drives may require direction flips
@@ -68,8 +64,7 @@ public class BackPPG extends LinearOpMode {
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Void File Running", "Forwards");
@@ -95,18 +90,16 @@ public class BackPPG extends LinearOpMode {
         double reverse = 0.50;
 
         //start flywheel
-        flywheelRight.setVelocity(-1700);
-        flywheelLeft.setVelocity(1700);
+        flywheel.setVelocity(1700);
         sleep(3000);
 
-        //launch left artis
-        launcherLeft.setPower(-1);
+        //launch artis
+        flywheel.setPower(1);
         intake.setPower(1);
         sleep(3000);
 
-        //launch right arti
-        launcherRight.setPower(1);
-        launcherLeft.setPower(0);
+        //launch arti
+        flywheel.setPower(1);
         sleep(3000);
 
         //drive forward one foot
@@ -114,9 +107,7 @@ public class BackPPG extends LinearOpMode {
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
-        flywheelRight.setPower(0);
-        flywheelLeft.setPower(0);
-        launcherRight.setPower(0);
+        flywheel.setPower(0);
         intake.setPower(0);
         sleep(1500);
 

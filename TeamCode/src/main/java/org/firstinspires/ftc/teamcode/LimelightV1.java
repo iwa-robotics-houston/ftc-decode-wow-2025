@@ -88,6 +88,7 @@ public class LimelightV1 extends LinearOpMode {
                     status.getPipelineIndex(), status.getPipelineType());
 
             LLResult result = limelight.getLatestResult();
+            result.getPipelineIndex();
             if (result.isValid()) {
                 // Access general information
                 Pose3D botpose = result.getBotpose();
@@ -131,6 +132,7 @@ public class LimelightV1 extends LinearOpMode {
 
             // Get the horizontal offset (tx) from the Limelight
             double tx = limelight.getLatestResult().getTx();
+            result.getPipelineIndex();
             boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
             // The target angle is 0.0 (center of the screen)
             double targetAngle = pidController.calculate(0.0, tx);
