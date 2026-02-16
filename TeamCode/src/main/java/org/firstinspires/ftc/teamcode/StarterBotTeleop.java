@@ -44,15 +44,16 @@ For future reference, because I'm struggling to find stuff due to the minor
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 //import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-//import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -89,7 +90,7 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx flywheel;
     CRServo launcher;
     Servo diverter;
-    IMU imu;
+    GoBildaPinpointDriver imu;
     RevBlinkinLedDriver light;
     double targetVelocity;
     double maxVelocity;
@@ -107,7 +108,7 @@ public class StarterBotTeleop extends OpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
-        imu = hardwareMap.get(IMU.class, "imu");
+        imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
         light = hardwareMap.get(RevBlinkinLedDriver.class, "light");
         diverter = hardwareMap.get(Servo.class, "diverter");
 
