@@ -90,7 +90,7 @@ public class StarterBotTeleop extends OpMode {
 
     // This declares the IMU needed to get the current direction the robot is facing
     //fixed this too
-    GoBildaPinpointDriver imu;
+
 
     @Override
     public void init() {
@@ -102,7 +102,7 @@ public class StarterBotTeleop extends OpMode {
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         finger = hardwareMap.get(CRServo.class, "finger");
-        imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
+        imu = (IMU) hardwareMap.get(GoBildaPinpointDriver.class, "imu");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
