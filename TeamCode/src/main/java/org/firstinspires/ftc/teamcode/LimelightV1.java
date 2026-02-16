@@ -159,8 +159,6 @@ public class LimelightV1 extends LinearOpMode {
             //telemetry.addData("Back Right Motor Power", backRightDrive.getPower());
             telemetry.update();
 
-
-            limelight.stop();
         }
 
     }
