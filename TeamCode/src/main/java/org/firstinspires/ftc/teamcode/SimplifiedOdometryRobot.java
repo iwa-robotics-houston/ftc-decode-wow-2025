@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
+import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import java.util.List;
@@ -170,12 +171,12 @@ public class SimplifiedOdometryRobot {
         strafeDistance = (rawStrafeOdometer - strafeOdometerOffset) * ODOM_INCHES_PER_COUNT;
 
 
-        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
-        AngularVelocity angularVelocity = imu.getRobotAngularVelocity(AngleUnit.DEGREES);
+        float orientation = imu.getYawScalar();
+        double angularVelocity = imu.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES);
 
-        rawHeading  = orientation.getYaw(AngleUnit.DEGREES);
+        rawHeading  = orientation;
         heading     = rawHeading - headingOffset;
-        turnRate    = angularVelocity.zRotationRate;
+        turnRate    = angularVelocity;
 
         if (showTelemetry) {
             myOpMode.telemetry.addData("Odom Ax:Lat", "%6d %6d", rawDriveOdometer - driveOdometerOffset, rawStrafeOdometer - strafeOdometerOffset);
