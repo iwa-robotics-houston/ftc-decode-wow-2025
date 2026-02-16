@@ -153,10 +153,10 @@ public class LimelightV1 extends LinearOpMode {
 
             // Add telemetry for tuning and debugging
             telemetry.addData("Target X Offset (tx)", tx);
-            telemetry.addData("Front Left Motor Power", frontLeftDrive.getPower());
-            telemetry.addData("Front Right Motor Power", frontRightDrive.getPower());
-            telemetry.addData("Back Left Motor Power", backLeftDrive.getPower());
-            telemetry.addData("Back Right Motor Power", backRightDrive.getPower());
+            //telemetry.addData("Front Left Motor Power", frontLeftDrive.getPower());
+            //telemetry.addData("Front Right Motor Power", frontRightDrive.getPower());
+            //telemetry.addData("Back Left Motor Power", backLeftDrive.getPower());
+            //telemetry.addData("Back Right Motor Power", backRightDrive.getPower());
             telemetry.update();
 
 

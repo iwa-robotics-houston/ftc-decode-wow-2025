@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 import java.util.List;
 
+/*
 @TeleOp(name = "LimelightPIDTest")
 public class LimelightPIDTest extends LinearOpMode {
     private DcMotor backLeftDrive, backRightDrive, frontLeftDrive, frontRightDrive; // Example motors for a drivetrain
@@ -51,7 +52,7 @@ public class LimelightPIDTest extends LinearOpMode {
 
         /*
          * Starts polling for data.  If you neglect to call start(), getLatestResult() will return null.
-         */
+
         limelight.start();
 
         telemetry.addData(">", "Robot Ready.  Press Play.");
@@ -157,3 +158,4 @@ public class LimelightPIDTest extends LinearOpMode {
 
     }
 }
+*/

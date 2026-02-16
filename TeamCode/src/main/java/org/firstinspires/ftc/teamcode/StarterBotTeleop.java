@@ -235,6 +235,7 @@ public class StarterBotTeleop extends OpMode {
         //This will need extra cooking but this is the idea/draft
     }
 
+    /*
 
     @TeleOp(name = "LimelightPIDTest")
     public class LimelightPIDTest extends LinearOpMode {
@@ -291,6 +292,6 @@ public class StarterBotTeleop extends OpMode {
                 telemetry.addData("Motor Power", backLeftDrive.getPower());
                 telemetry.update();
             }
-        }
-    }
+            */
+    
 }
