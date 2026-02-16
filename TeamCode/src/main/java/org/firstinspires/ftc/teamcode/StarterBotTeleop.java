@@ -52,7 +52,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.limelightvision.Limelight3A; // Or your specific Limelight model
@@ -82,7 +81,7 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotor intake;
-    IMU imu;
+    GoBildaPinpointDriver imu;
     DcMotorEx flywheel;
     CRServo finger;
     CRServo launcher;
@@ -101,7 +100,7 @@ public class StarterBotTeleop extends OpMode {
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         finger = hardwareMap.get(CRServo.class, "finger");
-        imu = (IMU) hardwareMap.get(GoBildaPinpointDriver.class, "imu");
+        imu = (GoBildaPinpointDriver) hardwareMap.get(GoBildaPinpointDriver.class, "imu");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -118,7 +117,7 @@ public class StarterBotTeleop extends OpMode {
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        imu = (IMU) hardwareMap.get(GoBildaPinpointDriver.class, "imu");
+        imu = (GoBildaPinpointDriver) hardwareMap.get(GoBildaPinpointDriver.class, "imu");
         // This needs to be changed to match the orientation on your robot
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
                 RevHubOrientationOnRobot.LogoFacingDirection.UP;
