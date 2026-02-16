@@ -19,7 +19,7 @@ public class BackPPG extends LinearOpMode {
     DcMotor intake;
     DcMotorEx flywheelLeft;
     DcMotorEx flywheelRight;
-    CRServo flywheel;
+    DcMotorEx flywheel;
    
 
     @Override

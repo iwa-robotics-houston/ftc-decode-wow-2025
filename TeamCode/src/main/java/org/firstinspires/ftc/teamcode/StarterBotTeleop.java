@@ -86,7 +86,6 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx flywheel;
     CRServo finger;
     CRServo launcher;
-    Servo diverter;
 
     // This declares the IMU needed to get the current direction the robot is facing
     //fixed this too
@@ -119,8 +118,7 @@ public class StarterBotTeleop extends OpMode {
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-//fixed this and hen imported hardword
-        imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
+        imu = (IMU) hardwareMap.get(GoBildaPinpointDriver.class, "imu");
         // This needs to be changed to match the orientation on your robot
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
                 RevHubOrientationOnRobot.LogoFacingDirection.UP;
@@ -129,7 +127,8 @@ public class StarterBotTeleop extends OpMode {
 
         RevHubOrientationOnRobot orientationOnRobot = new
                 RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu.initialize();
+        telemetry.addData("Status", "IMU Calibrating...");
+        telemetry.update();
     }
 
     @Override
@@ -215,15 +214,6 @@ public class StarterBotTeleop extends OpMode {
         } else {
             intake.setPower(0);
         }
-/*
-        //diverter
-        if (gamepad2.dpad_left) diverter.setPosition(0);
-        else if (gamepad2.dpad_right) {
-            diverter.setPosition(.70);
-        } else {
-            diverter.setPosition(.5);
-        }
-*/
 
 
         //launcher + flywheel
@@ -249,7 +239,7 @@ public class StarterBotTeleop extends OpMode {
 
     @TeleOp(name = "LimelightPIDTest")
     public class LimelightPIDTest extends LinearOpMode {
-        private DcMotor leftMotor, rightMotor; // Example motors for a drivetrain
+        private DcMotor backLeftDrive, backRightDrive; // Example motors for a drivetrain
         private RobotAlignmentPIDController pidController;
         private Limelight3A limelight;
 
@@ -261,8 +251,10 @@ public class StarterBotTeleop extends OpMode {
         @Override
         public void runOpMode() throws InterruptedException {
             // Hardware map motors (replace with your motor names)
-            leftMotor = hardwareMap.get(DcMotor.class, "left_motor");
-            rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
+            frontLeftDrive = hardwareMap.get(DcMotorEx.class, "frontLeftDrive");
+            frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
+            backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
+            backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
 
             // Initialize Limelight hardware object
             limelight = hardwareMap.get(Limelight3A.class, "limelight");
@@ -283,17 +275,21 @@ public class StarterBotTeleop extends OpMode {
 
                     // Use the output to control motors
                     // Adjust motor logic based on robot setup (e.g., tank drive, swerve)
-                    leftMotor.setPower(-motorPower);
-                    rightMotor.setPower(motorPower);
+                    backLeftDrive.setPower(-motorPower);
+                    frontLeftDrive.setPower(-motorPower);
+                    frontRightDrive.setPower(motorPower);
+                    backRightDrive.setPower(motorPower);
                 } else {
                     // Stop motors or implement a search pattern if no target is found
-                    leftMotor.setPower(0);
-                    rightMotor.setPower(0);
+                    backLeftDrive.setPower(0);
+                    frontLeftDrive.setPower(0);
+                    frontRightDrive.setPower(0);
+                    backRightDrive.setPower(0);
                 }
 
                 // Add telemetry for tuning and debugging
                 telemetry.addData("Target X Offset (tx)", tx);
-                telemetry.addData("Motor Power", leftMotor.getPower());
+                telemetry.addData("Motor Power", backLeftDrive.getPower());
                 telemetry.update();
             }
         }
