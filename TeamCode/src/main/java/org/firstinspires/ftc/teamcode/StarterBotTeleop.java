@@ -82,6 +82,7 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotor intake;
+    IMU imu;
     DcMotorEx flywheel;
     CRServo finger;
     CRServo launcher;
@@ -101,7 +102,7 @@ public class StarterBotTeleop extends OpMode {
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         finger = hardwareMap.get(CRServo.class, "finger");
-        diverter = hardwareMap.get(Servo.class, "diverter");
+        imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
