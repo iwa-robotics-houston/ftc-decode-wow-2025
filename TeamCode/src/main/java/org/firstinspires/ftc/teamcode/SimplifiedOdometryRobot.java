@@ -6,6 +6,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -72,12 +73,10 @@ public class SimplifiedOdometryRobot {
     DcMotor intake;
     DcMotor flywheel;
     CRServo launcher;
-
-    Servo finger;
     private DcMotor driveEncoder;       //  the Axial (front/back) Odometry Module (may overlap with motor, or may not)
     private DcMotor strafeEncoder;      //  the Lateral (left/right) Odometry Module (may overlap with motor, or may not)
     private LinearOpMode myOpMode;
-    private IMU imu;
+    private GoBildaPinpointDriver imu;
     private ElapsedTime holdTimer = new ElapsedTime();  // User for any motion requiring a hold time or timeout.
 
     private int rawDriveOdometer    = 0; // Unmodified axial odometer count
@@ -111,11 +110,11 @@ public class SimplifiedOdometryRobot {
         frontRightDrive = setupDriveMotor("frontRightDrive", DcMotor.Direction.FORWARD);
         backLeftDrive  = setupDriveMotor( "backLeftDrive", DcMotor.Direction.REVERSE);
         backRightDrive = setupDriveMotor( "backRightDrive",DcMotor.Direction.FORWARD);
-        imu = myOpMode.hardwareMap.get(IMU.class, "imu");
+        imu = myOpMode.hardwareMap.get(GoBildaPinpointDriver.class, "imu");
         intake = myOpMode.hardwareMap.get(DcMotorEx.class, "intake");
         launcher = myOpMode.hardwareMap.get(CRServo.class, "launcher");
         flywheel = myOpMode.hardwareMap.get(DcMotorEx.class, "flywheel");
-        finger = myOpMode.hardwareMap.get(Servo.class,"finger");
+        //finger = myOpMode.hardwareMap.get(Servo.class,"finger");
 
 
         //  Connect to the encoder channels using the name of that channel.
@@ -133,7 +132,7 @@ public class SimplifiedOdometryRobot {
         RevHubOrientationOnRobot orientationOnRobot =
                 new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
                         RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        imu.initialize();
 
 
         // zero out all the odometry readings.
@@ -163,6 +162,7 @@ public class SimplifiedOdometryRobot {
      * always return true so this can be used in "while" loop conditions
      * @return true
      */
+
     public boolean readSensors() {
         rawDriveOdometer = driveEncoder.getCurrentPosition() * (INVERT_DRIVE_ODOMETRY ? -1 : 1);
         rawStrafeOdometer = strafeEncoder.getCurrentPosition() * (INVERT_STRAFE_ODOMETRY ? -1 : 1);

@@ -38,15 +38,15 @@ import java.util.List;
 @TeleOp(name = "Sensor: LimelightV1", group = "Robot")
 public class LimelightV1 extends LinearOpMode {
 
-    private Limelight3A limelight;
-    private DcMotor frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive; // Example motors for a drivetrain
-    private RobotAlignmentPIDController pidController;
-    private SimplifiedOdometryRobot robot;
+   Limelight3A limelight;
+   DcMotor frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive; // Example motors for a drivetrain
+    RobotAlignmentPIDController pidController;
+   SimplifiedOdometryRobot robot;
 
     // Define initial PID constants (tune these values later)
-    private final double kP = 0.05; // Start with a small Kp
-    private final double kI = 0.0;
-    private final double kD = 0.0;
+    double kP = 0.05; // Start with a small Kp
+    double kI = 0.0;
+    double kD = 0.0;
 
 
     public void runOpMode() throws InterruptedException
