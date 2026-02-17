@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -10,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "CloseBlueAuto", group = "LinearOpMode")
-public class CloseBlueAuto extends LinearOpMode {
+@Autonomous(name = "CloseRedAuto", group = "LinearOpMode")
+public class CloseRedAuto extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -119,10 +118,10 @@ public class CloseBlueAuto extends LinearOpMode {
         sleep(5000);
 
         //strafe left one foot
-        frontLeftDrive.setPower(reverse);
-        frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(reverse);
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
+        backRightDrive.setPower(forward);
         flywheel.setPower(0);
         launcher.setPower(0);
         passThrough.setPower(0);

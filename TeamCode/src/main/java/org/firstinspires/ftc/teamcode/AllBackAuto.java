@@ -18,6 +18,7 @@ public class AllBackAuto extends LinearOpMode {
     DcMotorEx backRightDrive;
     DcMotor intake;
     CRServo launcher;
+    CRServo passThrough;
     DcMotorEx flywheel;
     Servo diverter;
 
@@ -34,6 +35,7 @@ public class AllBackAuto extends LinearOpMode {
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         launcher = hardwareMap.get(CRServo.class, "launcher");
+        passThrough = hardwareMap.get(CRServo.class, "passThrough");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         diverter = hardwareMap.get(Servo.class, "diverter");
 
@@ -99,11 +101,12 @@ public class AllBackAuto extends LinearOpMode {
 
         //launch all artis????
         double flywheelVelocity = Math.abs(flywheel.getVelocity());
-        while (flywheelVelocity < 1500) {
+        while (flywheelVelocity < -1580) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
             sleep(100);
         }
         launcher.setPower(1);
+        passThrough.setPower(-1);
         intake.setPower(-1);
         sleep(10000);
 
@@ -114,6 +117,7 @@ public class AllBackAuto extends LinearOpMode {
         backRightDrive.setPower(forward);
         flywheel.setPower(0);
         launcher.setPower(0);
+        passThrough.setPower(0);
         intake.setPower(0);
         sleep(400);
 
