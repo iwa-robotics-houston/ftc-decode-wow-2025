@@ -20,7 +20,6 @@ public class AllBackAuto extends LinearOpMode {
     CRServo launcher;
     CRServo passThrough;
     DcMotorEx flywheel;
-    Servo diverter;
 
     @Override
     public void runOpMode() {
@@ -37,7 +36,6 @@ public class AllBackAuto extends LinearOpMode {
         launcher = hardwareMap.get(CRServo.class, "launcher");
         passThrough = hardwareMap.get(CRServo.class, "pass");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
-        diverter = hardwareMap.get(Servo.class, "diverter");
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
@@ -91,12 +89,13 @@ public class AllBackAuto extends LinearOpMode {
 
         double forward = 0.50;
         double reverse = -0.50;
+        double flywheelSpeed = 1580;
 
 
         //start flywheel
         backRightDrive.setPower(0);
         frontLeftDrive.setPower(0);
-        flywheel.setVelocity(-1580);
+        flywheel.setVelocity(-flywheelSpeed);
         sleep(3000);
 
         //launch all artis????
@@ -104,28 +103,32 @@ public class AllBackAuto extends LinearOpMode {
         while (flywheelVelocity <= -1580) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
             sleep(100);
+            launcher.setPower(1);
+            passThrough.setPower(-1);
+            intake.setPower(-1);
+            sleep(10000);
         }
-        launcher.setPower(1);
-        passThrough.setPower(-1);
-        intake.setPower(-1);
-        sleep(10000);
 
         //drive forward one foot
+        //Include the flywheel to have a positive 'flywheelSpeed', instead of negative.
+        //This will let the flywheel slow down.
         frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
-        flywheel.setPower(0);
+        flywheel.setVelocity(flywheelSpeed);
         launcher.setPower(0);
         passThrough.setPower(0);
         intake.setPower(0);
         sleep(400);
 
         //brake
+        //Have the flywheel at 0, as since it is slowing down it can stop now.
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
+        flywheel.setVelocity(0);
 
         telemetry.addLine("Autonomous finished");
         telemetry.addData("Status", "Completed");
