@@ -85,7 +85,6 @@ public class CloseBlueAuto extends LinearOpMode {
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
         // - Carys
-        //Heh... guess who has the limelight now divas - Addy
 
         double forward = 0.50;
         double reverse = -0.50;
@@ -105,7 +104,9 @@ public class CloseBlueAuto extends LinearOpMode {
         flywheel.setVelocity(-1200);
         sleep(3000);
 
-        //launch all artis????
+        //launch all artis
+        //this is supposed to be less than, the loop will not continue forever
+        //while the value appears negative, the flywheel reads it correctly
         double flywheelVelocity = Math.abs(flywheel.getVelocity());
         while (flywheelVelocity < 1200) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());

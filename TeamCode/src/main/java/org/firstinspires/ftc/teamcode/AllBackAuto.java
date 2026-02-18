@@ -82,10 +82,8 @@ public class AllBackAuto extends LinearOpMode {
         waitForStart();
         opModeIsActive();
 
-        //Right now, this code is really rudimentary, does not include limelight or
-        //odometry --> this is not what we really want
+        //this code worked for Feb 7, will be adding odometry to it.
         // - Carys
-        //Heh... guess who has the limelight now divas - Addy
 
         double forward = 0.50;
         double reverse = -0.50;
@@ -98,6 +96,7 @@ public class AllBackAuto extends LinearOpMode {
         sleep(3000);
 
         //launch all artis????
+        //this works I promise you, it's supposed to be less than
         double flywheelVelocity = Math.abs(flywheel.getVelocity());
         while (flywheelVelocity < 1500) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
