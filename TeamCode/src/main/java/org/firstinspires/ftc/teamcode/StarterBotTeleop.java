@@ -89,6 +89,7 @@ public class StarterBotTeleop extends OpMode {
     DcMotor intake;
     DcMotorEx flywheel;
     CRServo launcher;
+    CRServo passThrough;
     Servo diverter;
     GoBildaPinpointDriver imu;
     RevBlinkinLedDriver light;
@@ -106,6 +107,7 @@ public class StarterBotTeleop extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
+        passThrough = hardwareMap.get(CRServo.class, "passThrough");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
@@ -230,6 +232,15 @@ public class StarterBotTeleop extends OpMode {
             intake.setPower(0);
         }
 
+        //pass through
+        if (gamepad2.dpad_up) {
+            passThrough.setPower(-1);
+        } else if (gamepad2.dpad_down) {
+            passThrough.setPower(1);
+        } else {
+            intake.setPower(0);
+        }
+
         //launch
         if (gamepad2.right_bumper) {
             launcher.setPower(1);
@@ -265,14 +276,6 @@ public class StarterBotTeleop extends OpMode {
         if (gamepad2.x) {
             flywheel.setVelocity(800);
         }
-
-        //diverter
-        if (gamepad2.dpad_up) {
-            diverter.setPosition(.4);
-        } else {
-            diverter.setPosition(.6);
-        }
-
 
         //light code
         if (targetVelocity > 0) {
