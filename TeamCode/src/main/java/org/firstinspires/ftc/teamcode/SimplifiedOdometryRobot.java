@@ -25,6 +25,7 @@ import java.util.List;
 
 //Use this for robot initialzation to save time!
 //I found this online shoutout to that cool guy who made the base code he's so cool - Addy
+//don't use this file for further code - Carys
 
 public class SimplifiedOdometryRobot {
     // Adjust these numbers to suit your robot.
