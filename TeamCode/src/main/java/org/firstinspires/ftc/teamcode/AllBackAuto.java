@@ -100,10 +100,11 @@ public class AllBackAuto extends LinearOpMode {
 
         //launch all artis????
         double flywheelVelocity = Math.abs(flywheel.getVelocity());
-        while (flywheelVelocity <= -1580) {
+        while (flywheelVelocity <= -1580 && flywheelVelocity >= 0) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
             sleep(100);
         }
+
 
         launcher.setPower(1);
         passThrough.setPower(-1);
