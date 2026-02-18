@@ -103,11 +103,14 @@ public class AllBackAuto extends LinearOpMode {
         while (flywheelVelocity <= -1580) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
             sleep(100);
-            launcher.setPower(1);
-            passThrough.setPower(-1);
-            intake.setPower(-1);
-            sleep(10000);
         }
+
+        launcher.setPower(1);
+        passThrough.setPower(-1);
+        intake.setPower(-1);
+        sleep(10000);
+
+        sleep(5000);
 
         //drive forward one foot
         //Include the flywheel to have a positive 'flywheelSpeed', instead of negative.

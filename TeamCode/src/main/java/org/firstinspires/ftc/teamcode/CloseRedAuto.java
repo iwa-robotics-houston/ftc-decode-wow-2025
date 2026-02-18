@@ -110,11 +110,13 @@ public class CloseRedAuto extends LinearOpMode {
         while (flywheelVelocity <= -1000) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
             sleep(100);
-            launcher.setPower(1);
-            passThrough.setPower(-1);
-            intake.setPower(-1);
-            sleep(5000);
         }
+        launcher.setPower(1);
+        passThrough.setPower(-1);
+        intake.setPower(-1);
+        sleep(5000);
+
+        sleep(5000);
 
         //strafe right one foot
         //Include the flywheel to have a positive 'flywheelSpeed', instead of negative.
