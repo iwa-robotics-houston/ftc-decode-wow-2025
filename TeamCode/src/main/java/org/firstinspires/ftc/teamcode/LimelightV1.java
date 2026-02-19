@@ -8,6 +8,7 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -39,8 +40,9 @@ import java.util.List;
  *   and the ip address the Limelight device assigned the Control Hub and which is displayed in small text
  *   below the name of the Limelight on the top level configuration screen.
  */
-@TeleOp(name = "Sensor: LimelightV1", group = "Robot")
+
 //@Disabled
+@Autonomous (name = "Sensor: LimelightV1", group = "Robot")
 public class LimelightV1 extends LinearOpMode {
 
     private Limelight3A limelight;
@@ -56,7 +58,7 @@ public class LimelightV1 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException
     {
-
+/*
         // Hardware map motors (replace with your motor names)
         frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
@@ -69,14 +71,15 @@ public class LimelightV1 extends LinearOpMode {
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-
+*/
 
         // Initialize Limelight hardware object
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
+        /*
         // Initialize PID controller
         pidController = new RobotAlignmentPIDController(kP, kI, kD);
-
+*/
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
         telemetry.setMsTransmissionInterval(11);
@@ -123,15 +126,6 @@ public class LimelightV1 extends LinearOpMode {
                 telemetry.addData("Botpose", botpose.toString());
 
 
-
-                // Access detector results
-
-                List<LLResultTypes.DetectorResult> detectorResults = result.getDetectorResults();
-                for (LLResultTypes.DetectorResult dr : detectorResults) {
-                    telemetry.addData("Detector", "Class: %s, Area: %.2f", dr.getClassName(), dr.getTargetArea());
-                }
-
-
                 // Access fiducial (AprilTag) results
                 List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
                 for (LLResultTypes.FiducialResult fr : fiducialResults) {
@@ -144,6 +138,7 @@ public class LimelightV1 extends LinearOpMode {
 
             telemetry.update();
 
+            /*
             // Get the horizontal offset (tx) from the Limelight
             double tx = limelight.getLatestResult().getTx();
             boolean hasTarget = limelight.getLatestResult().isValid(); // Check if target is valid
@@ -172,7 +167,6 @@ public class LimelightV1 extends LinearOpMode {
                 sleep(100);
             }
 
-
             // Add telemetry for tuning and debugging
             telemetry.addData("Target X Offset (tx)", tx);
             telemetry.addData("Front Left Motor Power", frontLeftDrive.getPower());
@@ -180,8 +174,7 @@ public class LimelightV1 extends LinearOpMode {
             telemetry.addData("Back Left Motor Power", backLeftDrive.getPower());
             telemetry.addData("Back Right Motor Power", backRightDrive.getPower());
             telemetry.update();
-
-
+*/
             limelight.stop();
         }
 
