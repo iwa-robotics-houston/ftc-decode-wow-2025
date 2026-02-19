@@ -118,8 +118,8 @@ public class SensorGoBildaPinpoint extends LinearOpMode {
         odo.resetPosAndIMU();
 
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("X offset", odo.getXOffset(DistanceUnit.INCH));
-        telemetry.addData("Y offset", odo.getYOffset(DistanceUnit.INCH));
+        telemetry.addData("X offset", odo.getXOffset(DistanceUnit.CM));
+        telemetry.addData("Y offset", odo.getYOffset(DistanceUnit.CM));
         telemetry.addData("Device Version Number:", odo.getDeviceVersion());
         telemetry.addData("Heading Scalar", odo.getYawScalar());
         telemetry.update();

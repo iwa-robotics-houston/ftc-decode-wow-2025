@@ -17,9 +17,10 @@ public class CloseBlueAuto extends LinearOpMode {
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotor intake;
+    CRServo passThrough;
     CRServo launcher;
     DcMotorEx flywheel;
-    Servo diverter;
+
 
     @Override
     public void runOpMode() {
@@ -33,9 +34,9 @@ public class CloseBlueAuto extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
+        passThrough = hardwareMap.get(CRServo.class, "passThrough");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
-        diverter = hardwareMap.get(Servo.class, "diverter");
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
@@ -75,7 +76,6 @@ public class CloseBlueAuto extends LinearOpMode {
         //This is where you paste the void names that you make beneath this loop void.
         // Example: "drivetest();" would play a void called drivetest.
         // This autonomous java file should run the forwardsRobot(); void.
-        //-Addy
         telemetry.addLine("Autonomous started");
         telemetry.addLine("Back, PPG");
 
@@ -84,10 +84,10 @@ public class CloseBlueAuto extends LinearOpMode {
 
         //Right now, this code is really rudimentary, does not include limelight or
         //odometry --> this is not what we really want
-        // - Carys
 
         double forward = 0.50;
         double reverse = -0.50;
+        double targetVelocity;
 
         //drive back
         frontLeftDrive.setPower(reverse);
@@ -101,19 +101,21 @@ public class CloseBlueAuto extends LinearOpMode {
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        flywheel.setVelocity(-1200);
+        targetVelocity = 1200;
+        flywheel.setVelocity(-targetVelocity);
         sleep(3000);
 
         //launch all artis
         //this is supposed to be less than, the loop will not continue forever
         //while the value appears negative, the flywheel reads it correctly
         double flywheelVelocity = Math.abs(flywheel.getVelocity());
-        while (flywheelVelocity < 1200) {
+        while (flywheelVelocity < targetVelocity) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
-            sleep(100);
+            sleep(50);
         }
         launcher.setPower(1);
         intake.setPower(-1);
+        passThrough.setPower(-1);
         sleep(5000);
 
         //strafe left one foot
@@ -123,6 +125,7 @@ public class CloseBlueAuto extends LinearOpMode {
         backRightDrive.setPower(reverse);
         flywheel.setPower(0);
         launcher.setPower(0);
+        passThrough.setPower(0);
         intake.setPower(0);
         sleep(750);
 

@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "AllBackAuto", group = "LinearOpMode")
-public class AllBackAuto extends LinearOpMode {
+@Autonomous(name = "CloseRedAuto", group = "LinearOpMode")
+public class CloseRedAuto extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -20,6 +20,7 @@ public class AllBackAuto extends LinearOpMode {
     CRServo passThrough;
     CRServo launcher;
     DcMotorEx flywheel;
+
 
     @Override
     public void runOpMode() {
@@ -81,40 +82,52 @@ public class AllBackAuto extends LinearOpMode {
         waitForStart();
         opModeIsActive();
 
-        //this code worked for Feb 7, will be adding odometry to it.
-        // - Carys
+        //Right now, this code is really rudimentary, does not include limelight or
+        //odometry --> this is not what we really want
 
         double forward = 0.50;
         double reverse = -0.50;
+        double targetVelocity;
 
+        //drive back
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
+        backRightDrive.setPower(reverse);
+        sleep(1500);
 
         //start flywheel
-        backRightDrive.setPower(0);
         frontLeftDrive.setPower(0);
-        flywheel.setVelocity(-1580);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        targetVelocity = 1200;
+        flywheel.setVelocity(-targetVelocity);
         sleep(3000);
 
-        //launch all artis????
-        //this works I promise you, it's supposed to be less than
+        //launch all artis
+        //this is supposed to be less than, the loop will not continue forever
+        //while the value appears negative, the flywheel reads it correctly
         double flywheelVelocity = Math.abs(flywheel.getVelocity());
-        while (flywheelVelocity < 1500) {
+        while (flywheelVelocity < targetVelocity) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
-            sleep(100);
+            sleep(50);
         }
         launcher.setPower(1);
         intake.setPower(-1);
         passThrough.setPower(-1);
-        sleep(10000);
+        sleep(5000);
 
-        //drive forward one foot
+        //strafe right one foot
         frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(forward);
-        backLeftDrive.setPower(forward);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
         backRightDrive.setPower(forward);
         flywheel.setPower(0);
         launcher.setPower(0);
         intake.setPower(0);
-        sleep(400);
+        passThrough.setPower(0);
+        sleep(750);
 
         //brake
         frontLeftDrive.setPower(0);
