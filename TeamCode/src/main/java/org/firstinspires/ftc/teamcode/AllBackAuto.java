@@ -33,7 +33,7 @@ public class AllBackAuto extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
-        passThrough = hardwareMap.get(CRServo.class, "passThrough");
+        passThrough = hardwareMap.get(CRServo.class, "pass");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
 
@@ -97,14 +97,14 @@ public class AllBackAuto extends LinearOpMode {
         //launch all artis????
         //this works I promise you, it's supposed to be less than
         double flywheelVelocity = Math.abs(flywheel.getVelocity());
-        while (flywheelVelocity < 1500) {
+        while (flywheelVelocity < 1600) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
             sleep(100);
         }
         launcher.setPower(1);
         intake.setPower(-1);
         passThrough.setPower(-1);
-        sleep(10000);
+        sleep(15000);
 
         //drive forward one foot
         frontLeftDrive.setPower(forward);
