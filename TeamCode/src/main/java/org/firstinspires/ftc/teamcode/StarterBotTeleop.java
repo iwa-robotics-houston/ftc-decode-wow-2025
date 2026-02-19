@@ -110,7 +110,7 @@ public class StarterBotTeleop extends OpMode {
         passThrough = hardwareMap.get(CRServo.class, "passThrough");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
-        imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
+        imu = hardwareMap.get(GoBildaPinpointDriver.class, "odo");
         light = hardwareMap.get(RevBlinkinLedDriver.class, "light");
         diverter = hardwareMap.get(Servo.class, "diverter");
 
