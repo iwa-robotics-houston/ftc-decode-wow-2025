@@ -71,6 +71,7 @@ public class CloseBlueAuto extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Void File Running", "Forwards");
         telemetry.addLine("Left 2 Purple, Right Green");
+        flywheel.setVelocityPIDFCoefficients(200,0,0,14);
 
 
         //This is where you paste the void names that you make beneath this loop void.

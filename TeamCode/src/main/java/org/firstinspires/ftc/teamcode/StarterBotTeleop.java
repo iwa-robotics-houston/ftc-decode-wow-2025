@@ -53,6 +53,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -129,6 +130,8 @@ public class StarterBotTeleop extends OpMode {
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        flywheel.setVelocityPIDFCoefficients(200,0,0,14);
+//f is 14 btw
 //fixed this and hen imported hardword
         //imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
         // This needs to be changed to match the orientation on your robot
@@ -144,16 +147,22 @@ public class StarterBotTeleop extends OpMode {
         RevBlinkinLedDriver.BlinkinPattern readyColor = RevBlinkinLedDriver.BlinkinPattern.BLACK;
     }
 
+
     RevBlinkinLedDriver.BlinkinPattern readyColor = RevBlinkinLedDriver.BlinkinPattern.BLACK;
     @Override
     public void loop() {
+        PIDFCoefficients coefficients = flywheel.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addLine("Teleop Drive");
         telemetry.addLine("Women of the Wires");
         telemetry.addData("Velocity", targetVelocity);
+        telemetry.addData("P", coefficients.p);
+        telemetry.addData("I", coefficients.i);
+        telemetry.addData("D", coefficients.d);
+        telemetry.addData("F", coefficients.f);
+        telemetry.addData("MotorControlAlgorithm", coefficients.algorithm);
 
         // If you press the left bumper, you get a drive from the point of view of the robot
         // (much like driving an RC vehicle)
-
 
         double axial = -gamepad1.left_stick_y;
         double lateral = gamepad1.right_stick_x;
@@ -251,7 +260,7 @@ public class StarterBotTeleop extends OpMode {
 
         //on flywheel
         if (gamepad2.b) {
-            targetVelocity = 1200;
+            targetVelocity = 1250;
             maxVelocity = 1350;
             flywheel.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
@@ -259,7 +268,7 @@ public class StarterBotTeleop extends OpMode {
         }
 
         if (gamepad2.a) {
-            targetVelocity = 1500;
+            targetVelocity = 1550;
             maxVelocity = 1650;
             flywheel.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
