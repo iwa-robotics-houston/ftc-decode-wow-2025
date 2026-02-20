@@ -71,6 +71,8 @@ public class AllBackAuto extends LinearOpMode {
         telemetry.addData("Void File Running", "Forwards");
         telemetry.addLine("Left 2 Purple, Right Green");
         flywheel.setVelocityPIDFCoefficients(200,0,0,14);
+        telemetry.addData("speed", flywheel.getVelocity());
+
 
 
         //This is where you paste the void names that you make beneath this loop void.
@@ -78,6 +80,7 @@ public class AllBackAuto extends LinearOpMode {
         // This autonomous java file should run the forwardsRobot(); void.
         telemetry.addLine("Autonomous started");
         telemetry.addLine("Back, PPG");
+
 
         waitForStart();
         opModeIsActive();
@@ -88,24 +91,92 @@ public class AllBackAuto extends LinearOpMode {
         double forward = 0.50;
         double reverse = -0.50;
 
-
+        /*
         //start flywheel
         backRightDrive.setPower(0);
         frontLeftDrive.setPower(0);
-        flywheel.setVelocity(-1580);
+        flywheel.setVelocity(-1500);
         sleep(3000);
 
         //launch all artis????
         //this works I promise you, it's supposed to be less than
         double flywheelVelocity = Math.abs(flywheel.getVelocity());
-        while (flywheelVelocity < 1550) {
+        while (flywheelVelocity < 1500) {
             flywheelVelocity = Math.abs(flywheel.getVelocity());
             sleep(100);
         }
         launcher.setPower(1);
         intake.setPower(-1);
         passThrough.setPower(-1);
-        sleep(15000);
+        sleep(8000);
+        */
+
+        //drive forward one foot
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(forward);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(forward);
+        flywheel.setPower(0);
+        launcher.setPower(0);
+        intake.setPower(0);
+        sleep(770);
+
+        //turn
+        frontLeftDrive.setPower(.5);
+        frontRightDrive.setPower(-.5);
+        backLeftDrive.setPower(.5);
+        backRightDrive.setPower(-.5);
+        sleep(460);
+
+        //drive forward to intake
+        //values of left same as right
+        frontLeftDrive.setPower(.25);
+        frontRightDrive.setPower(.25);
+        backLeftDrive.setPower(.25);
+        backRightDrive.setPower(.25);
+        intake.setPower(-1);
+        sleep(1800);
+
+        //test brake
+        frontLeftDrive.setPower(.25);
+        frontRightDrive.setPower(.25);
+        backLeftDrive.setPower(.25);
+        backRightDrive.setPower(.25);
+        intake.setPower(0);
+        sleep(30000);
+
+        //go back
+        frontLeftDrive.setPower(reverse);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(reverse);
+        backRightDrive.setPower(reverse);
+        sleep(1500);
+
+        //turn other way
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
+        sleep(500);
+
+        //drive back
+        frontLeftDrive.setPower(forward);
+        frontRightDrive.setPower(reverse);
+        backLeftDrive.setPower(forward);
+        backRightDrive.setPower(reverse);
+        flywheel.setVelocity(-1500);
+        sleep(400);
+
+        //SHOOT
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        sleep(3000);
+        launcher.setPower(1);
+        intake.setPower(-1);
+        passThrough.setPower(-1);
+        sleep(8000);
 
         //drive forward one foot
         frontLeftDrive.setPower(forward);
