@@ -1,23 +1,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
-
-import java.util.List;
 
 /*
  * This OpMode illustrates how to use the Limelight3A Vision Sensor.
@@ -43,8 +31,8 @@ import java.util.List;
  */
 
 //@Disabled
-@Autonomous (name = "Sensor: LimelightV1", group = "Robot")
-public class LimelightV1 extends LinearOpMode {
+@Autonomous (name = "Sensor: BlueAprilTag", group = "Robot")
+public class BlueAprilTag extends LinearOpMode {
     private Limelight3A limelight;
 
     @Override
