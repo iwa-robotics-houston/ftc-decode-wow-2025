@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "AllBackAuto", group = "LinearOpMode")
-public class AllBackAuto extends LinearOpMode {
+@Autonomous(name = "BackBlueAuto", group = "LinearOpMode")
+public class BackBlueAuto extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -135,13 +135,14 @@ public class AllBackAuto extends LinearOpMode {
         backLeftDrive.setPower(.25);
         backRightDrive.setPower(.25);
         intake.setPower(-1);
-        sleep(1800);
+        passThrough.setPower(-1);
+        sleep(3000);
 
         //test brake
-        frontLeftDrive.setPower(.25);
-        frontRightDrive.setPower(.25);
-        backLeftDrive.setPower(.25);
-        backRightDrive.setPower(.25);
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
         intake.setPower(0);
         sleep(30000);
 
