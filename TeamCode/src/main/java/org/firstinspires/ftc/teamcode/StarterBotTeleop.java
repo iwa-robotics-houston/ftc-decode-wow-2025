@@ -93,6 +93,7 @@ public class StarterBotTeleop extends OpMode {
     CRServo passThrough;
     GoBildaPinpointDriver imu;
     RevBlinkinLedDriver light;
+    DcMotor flipper;
     double targetVelocity;
     double maxVelocity;
 
@@ -112,6 +113,8 @@ public class StarterBotTeleop extends OpMode {
         flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
         imu = hardwareMap.get(GoBildaPinpointDriver.class, "odo");
         light = hardwareMap.get(RevBlinkinLedDriver.class, "light");
+        flipper = hardwareMap.get(DcMotor.class, "flipper");
+
 
         //  diverter = hardwareMap.get(Servo.class,"diverter");
 
@@ -268,7 +271,7 @@ public class StarterBotTeleop extends OpMode {
         }
 
         if (gamepad2.a) {
-            targetVelocity = 1550;
+            targetVelocity = 1600;
             maxVelocity = 1650;
             flywheel.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
@@ -301,7 +304,13 @@ public class StarterBotTeleop extends OpMode {
             }
         }
 
-
+        //flipper?
+        if (gamepad1.a) {
+            flipper.setPower(.3);
+        }
+        else if (gamepad1.b){
+            flipper.setPower(0);
+        }
 
     }
     /*

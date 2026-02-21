@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "BackBlueAuto", group = "LinearOpMode")
-public class BackBlueAuto extends LinearOpMode {
+@Autonomous(name = "BackRedAuto", group = "LinearOpMode")
+public class BackRedAuto extends LinearOpMode {
     DcMotorEx frontLeftDrive;
     DcMotorEx frontRightDrive;
     DcMotorEx backLeftDrive;
@@ -85,13 +85,13 @@ public class BackBlueAuto extends LinearOpMode {
         waitForStart();
         opModeIsActive();
 
-        //this code worked for Feb 7, will be adding odometry to it.
+        //6 ball auto
         // - Carys
 
         double forward = 0.50;
         double reverse = -0.50;
 
-        /*
+
         //start flywheel
         backRightDrive.setPower(0);
         frontLeftDrive.setPower(0);
@@ -109,7 +109,6 @@ public class BackBlueAuto extends LinearOpMode {
         intake.setPower(-1);
         passThrough.setPower(-1);
         sleep(8000);
-        */
 
         //drive forward one foot
         frontLeftDrive.setPower(forward);
@@ -119,14 +118,14 @@ public class BackBlueAuto extends LinearOpMode {
         flywheel.setPower(0);
         launcher.setPower(0);
         intake.setPower(0);
-        sleep(770);
+        sleep(680);
 
         //turn
         frontLeftDrive.setPower(.5);
         frontRightDrive.setPower(-.5);
         backLeftDrive.setPower(.5);
         backRightDrive.setPower(-.5);
-        sleep(460);
+        sleep(450);
 
         //drive forward to intake
         //values of left same as right
@@ -136,44 +135,38 @@ public class BackBlueAuto extends LinearOpMode {
         backRightDrive.setPower(.25);
         intake.setPower(-1);
         passThrough.setPower(-1);
-        sleep(3000);
-
-        //test brake
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        intake.setPower(0);
-        sleep(30000);
+        sleep(2000);
 
         //go back
         frontLeftDrive.setPower(reverse);
         frontRightDrive.setPower(reverse);
         backLeftDrive.setPower(reverse);
         backRightDrive.setPower(reverse);
-        sleep(1500);
+        sleep(750);
 
         //turn other way
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(forward);
-        backRightDrive.setPower(reverse);
-        sleep(500);
+        frontLeftDrive.setPower(-.5);
+        frontRightDrive.setPower(.5);
+        backLeftDrive.setPower(-.5);
+        backRightDrive.setPower(.5);
+        intake.setPower(0);
+        passThrough.setPower(0);
+        sleep(570);
 
         //drive back
-        frontLeftDrive.setPower(forward);
+        frontLeftDrive.setPower(reverse);
         frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(forward);
+        backLeftDrive.setPower(reverse);
         backRightDrive.setPower(reverse);
         flywheel.setVelocity(-1500);
-        sleep(400);
+        sleep(800);
 
         //SHOOT
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        sleep(3000);
+        sleep(2500);
         launcher.setPower(1);
         intake.setPower(-1);
         passThrough.setPower(-1);
@@ -184,16 +177,18 @@ public class BackBlueAuto extends LinearOpMode {
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
-        flywheel.setPower(0);
+        flywheel.setVelocity(0);
+        passThrough.setPower(0);
         launcher.setPower(0);
         intake.setPower(0);
-        sleep(400);
+        sleep(600);
 
         //brake
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
+        sleep(3000);
 
         telemetry.addLine("Autonomous finished");
         telemetry.addData("Status", "Completed");
