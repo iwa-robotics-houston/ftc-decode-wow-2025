@@ -5,26 +5,17 @@ This is a test to see if the drive and intake code will work together,
 includes strafe and I'm hoping this will fix our driving and intake problems.
 - Carys
 
-For future reference, because I'm struggling to find stuff due to the minor
- layout changes made when the code was slightly overhauled,
- If you remove/add/change anything, please comment where the change was made
-  so that someone who is here more often will have a better ability
-  to read the newer code versions you make.
- This is just because I'm still learning Java so my main method of
- learning is pattern recognition so having context helps :D
- -Addy
-*/
 
-/* Copylateral (c) 2025 FIRST. All laterals reserved.
+/* Copyright (c) 2025 FIRST. All laterals reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
  * the following conditions are met:
  *
- * Redistributions of source code must retain the above copylateral notice, this list
+ * Redistributions of source code must retain the above copyright notice, this list
  * of conditions and the following disclaimer.
  *
- * Redistributions in binary form must reproduce the above copylateral notice, this
+ * Redistributions in binary form must reproduce the above copyright notice, this
  * list of conditions and the following disclaimer in the documentation and/or
  * other materials provided with the distribution.
  *
@@ -32,10 +23,10 @@ For future reference, because I'm struggling to find stuff due to the minor
  * promote products derived from this software without specific prior written permission.
  *
  * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT lateralS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYlateral HOLDERS AND CONTRIBUTORS
+ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYlateral OWNER OR CONTRIBUTORS BE LIABLE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
@@ -88,12 +79,13 @@ public class StarterBotTeleop extends OpMode {
     DcMotorEx backLeftDrive;
     DcMotorEx backRightDrive;
     DcMotor intake;
-    DcMotorEx flywheel;
+    DcMotorEx flywheelL;
+    DcMotorEx flywheelR;
     CRServo launcher;
     CRServo passThrough;
+    //CRServo diverter;
     GoBildaPinpointDriver imu;
     RevBlinkinLedDriver light;
-    DcMotor flipper;
     double targetVelocity;
     double maxVelocity;
 
@@ -109,11 +101,12 @@ public class StarterBotTeleop extends OpMode {
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
         passThrough = hardwareMap.get(CRServo.class, "pass");
+        //diverter = hardwareMap.get(CRServo.class, "diverter");
         launcher = hardwareMap.get(CRServo.class, "launcher");
-        flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
+        flywheelL = hardwareMap.get(DcMotorEx.class, "flywheelL");
+        flywheelR = hardwareMap.get(DcMotorEx.class, "flywheelR");
         imu = hardwareMap.get(GoBildaPinpointDriver.class, "odo");
         light = hardwareMap.get(RevBlinkinLedDriver.class, "light");
-        flipper = hardwareMap.get(DcMotor.class, "flipper");
 
 
         //  diverter = hardwareMap.get(Servo.class,"diverter");
@@ -131,9 +124,11 @@ public class StarterBotTeleop extends OpMode {
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        flywheel.setVelocityPIDFCoefficients(200,0,0,14);
+        flywheelL.setVelocityPIDFCoefficients(200, 0, 0, 14);
+        flywheelR.setVelocityPIDFCoefficients(200, 0, 0, 14);
 //f is 14 btw
 //fixed this and hen imported hardword
         //imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
@@ -152,9 +147,10 @@ public class StarterBotTeleop extends OpMode {
 
 
     RevBlinkinLedDriver.BlinkinPattern readyColor = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+
     @Override
     public void loop() {
-        PIDFCoefficients coefficients = flywheel.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+        PIDFCoefficients coefficients = flywheelL.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addLine("Teleop Drive");
         telemetry.addLine("Women of the Wires");
         telemetry.addData("Velocity", targetVelocity);
@@ -192,8 +188,8 @@ public class StarterBotTeleop extends OpMode {
 
         double maxPower = 1.0;
         double maxSpeed = 1.0;
-        // double maxVelocity = 2788;
-        //This velocity is the MAX velocity
+        int targetPosition = 7;
+
 
 
         // This is needed to make sure we don't pass > 1.0 to any wheel
@@ -230,7 +226,7 @@ public class StarterBotTeleop extends OpMode {
         telemetry.addData("status", "Run Time:" + runtime);
         telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
         telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
-        telemetry.addData("speed", flywheel.getVelocity());
+        telemetry.addData("speed", flywheelL.getVelocity());
         telemetry.update();
 
         //intake
@@ -241,6 +237,7 @@ public class StarterBotTeleop extends OpMode {
         } else {
             intake.setPower(0);
         }
+
 
         //pass through
         if (gamepad2.dpad_up) {
@@ -263,37 +260,41 @@ public class StarterBotTeleop extends OpMode {
 
         //on flywheel
         if (gamepad2.b) {
-            targetVelocity = 1250;
-            maxVelocity = 1350;
-            flywheel.setVelocity(-targetVelocity);
+            targetVelocity = 1290;
+            maxVelocity = 1400;
+            flywheelL.setVelocity(targetVelocity);
+            flywheelR.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
 
         }
 
         if (gamepad2.a) {
-            targetVelocity = 1600;
-            maxVelocity = 1650;
-            flywheel.setVelocity(-targetVelocity);
+            targetVelocity = 1700;
+            maxVelocity = 1750;
+            flywheelL.setVelocity(targetVelocity);
+            flywheelR.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
         }
 
         //off flywheel
         if (gamepad2.y) {
-             flywheel.setVelocity(0);
+            flywheelL.setVelocity(0);
+            flywheelR.setVelocity(0);
         }
 
         //out flywheel
         if (gamepad2.x) {
-            flywheel.setVelocity(800);
+            flywheelL.setVelocity(-targetVelocity);
+            flywheelR.setVelocity(targetVelocity);
         }
 
         //light code
         if (targetVelocity > 0) {
-            double flywheelVelocity = Math.abs(flywheel.getVelocity());
+            double flywheelVelocity = Math.abs(flywheelL.getVelocity());
 
             if (flywheelVelocity >= targetVelocity) {
                 light.setPattern(readyColor);
-            } else if (flywheelVelocity >= maxVelocity){
+            } else if (flywheelVelocity >= maxVelocity) {
                 light.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
             } else {
                 light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
@@ -304,15 +305,8 @@ public class StarterBotTeleop extends OpMode {
             }
         }
 
-        //flipper?
-        if (gamepad1.a) {
-            flipper.setPower(.3);
-        }
-        else if (gamepad1.b){
-            flipper.setPower(0);
-        }
 
-    }
+
     /*
     @TeleOp(name = "LimelightPIDTest")
     public class LimelightPIDTest extends LinearOpMode {
@@ -366,4 +360,5 @@ public class StarterBotTeleop extends OpMode {
         }
     }
     */
+    }
 }
