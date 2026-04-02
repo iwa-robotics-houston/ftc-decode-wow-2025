@@ -35,19 +35,22 @@ includes strafe and I'm hoping this will fix our driving and intake problems.
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static java.lang.Thread.sleep;
-
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 //import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.limelightvision.Limelight3A; // Or your specific Limelight model
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 
 
@@ -65,8 +68,8 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  *
  */
-@TeleOp(name = "BlueBotTeleop", group = "Robot")
-public class BlueBotTeleop extends OpMode {
+@TeleOp(name = "StarterBotTeleop", group = "Robot")
+public class StarterBotTeleop extends OpMode {
 
     ElapsedTime runtime = new ElapsedTime();
 
@@ -80,11 +83,9 @@ public class BlueBotTeleop extends OpMode {
     DcMotorEx flywheelR;
     CRServo launcher;
     CRServo passThrough;
+    //CRServo diverter;
     GoBildaPinpointDriver imu;
     RevBlinkinLedDriver light;
-    Limelight limelight;
-
-
     double targetVelocity;
     double maxVelocity;
 
@@ -100,13 +101,12 @@ public class BlueBotTeleop extends OpMode {
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
         passThrough = hardwareMap.get(CRServo.class, "pass");
+        //diverter = hardwareMap.get(CRServo.class, "diverter");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheelL = hardwareMap.get(DcMotorEx.class, "flywheelL");
         flywheelR = hardwareMap.get(DcMotorEx.class, "flywheelR");
         imu = hardwareMap.get(GoBildaPinpointDriver.class, "odo");
         light = hardwareMap.get(RevBlinkinLedDriver.class, "light");
-        limelight = new Limelight();
-        limelight.initLimelight(hardwareMap);
 
 
         //  diverter = hardwareMap.get(Servo.class,"diverter");
@@ -173,7 +173,6 @@ public class BlueBotTeleop extends OpMode {
         double targetVelocity = 0;
         double maxVelocity = 0;
         RevBlinkinLedDriver.BlinkinPattern readyColor;
-        double scanGoal;
     }
 
 
@@ -181,6 +180,7 @@ public class BlueBotTeleop extends OpMode {
     void drive(double axial, double lateral, double yaw) {
         // This calculates the power needed for each wheel based on the amount of axial,
         // strafe lateral, and yaw
+
         double frontLeftPower = axial + lateral + yaw;
         double frontRightPower = axial - lateral - yaw;
         double backRightPower = axial - lateral + yaw;
@@ -189,6 +189,7 @@ public class BlueBotTeleop extends OpMode {
         double maxPower = 1.0;
         double maxSpeed = 1.0;
         int targetPosition = 7;
+
 
 
         // This is needed to make sure we don't pass > 1.0 to any wheel
@@ -225,8 +226,7 @@ public class BlueBotTeleop extends OpMode {
         telemetry.addData("status", "Run Time:" + runtime);
         telemetry.addData("Front left/right", "%4.2f,%4.2f", frontLeftPower, frontRightPower);
         telemetry.addData("Back left/right", "%4.2f,%4.2f", backLeftPower, backRightPower);
-        telemetry.addData("speed left", flywheelL.getVelocity());
-        telemetry.addData("speed right", flywheelR.getVelocity());
+        telemetry.addData("speed", flywheelL.getVelocity());
         telemetry.update();
 
         //intake
@@ -257,90 +257,53 @@ public class BlueBotTeleop extends OpMode {
             launcher.setPower(0);
         }
 
-        //BOTH FLYWHEELS IN SAME DIRECTION
+
         //on flywheel
         if (gamepad2.b) {
             targetVelocity = 1290;
             maxVelocity = 1400;
-            flywheelL.setVelocity(-targetVelocity);
+            flywheelL.setVelocity(targetVelocity);
             flywheelR.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
 
         }
 
-        limelight.setPipeline(8);
-        //blue goal
-        if (gamepad1.left_trigger > 0.1) {
-            limelight.updateLimelight();
-            limelight.scanGoal();
-            if (limelight.resultWorks() && limelight.getTa() > 1.7) {
-                frontLeftDrive.setPower(-1);
-                frontRightDrive.setPower(-1);
-                backLeftDrive.setPower(-1);
-                backRightDrive.setPower(-1);
-            } else if (limelight.resultWorks() && limelight.getTa() < 1.7) {
-                frontLeftDrive.setPower(0);
-                frontRightDrive.setPower(0);
-                backLeftDrive.setPower(0);
-                backRightDrive.setPower(0);
-                telemetry.addLine("blue goal");
-            }
+        if (gamepad2.a) {
+            targetVelocity = 1700;
+            maxVelocity = 1750;
+            flywheelL.setVelocity(targetVelocity);
+            flywheelR.setVelocity(-targetVelocity);
+            readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
         }
 
-            if (gamepad1.right_trigger > 0.1) {
-                limelight.updateLimelight();
-                limelight.scanGoal();
-                if (limelight.resultWorks() && limelight.getTx() < -4) {
-                    frontLeftDrive.setPower(-.5);
-                    frontRightDrive.setPower(.5);
-                    backLeftDrive.setPower(-.5);
-                    backRightDrive.setPower(.5);
-                } else if (limelight.resultWorks() && limelight.getTx() > -4) {
-                    frontLeftDrive.setPower(0);
-                    frontRightDrive.setPower(0);
-                    backLeftDrive.setPower(0);
-                    backRightDrive.setPower(0);
-                    telemetry.addLine("blue goal");
-                }
+        //off flywheel
+        if (gamepad2.y) {
+            flywheelL.setVelocity(0);
+            flywheelR.setVelocity(0);
+        }
+
+        //out flywheel
+        if (gamepad2.x) {
+            flywheelL.setVelocity(-targetVelocity);
+            flywheelR.setVelocity(targetVelocity);
+        }
+
+        //light code
+        if (targetVelocity > 0) {
+            double flywheelVelocity = Math.abs(flywheelL.getVelocity());
+
+            if (flywheelVelocity >= targetVelocity) {
+                light.setPattern(readyColor);
+            } else if (flywheelVelocity >= maxVelocity) {
+                light.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
+            } else {
+                light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
             }
 
-                if (gamepad2.a) {
-                    targetVelocity = 1700;
-                    maxVelocity = 1750;
-                    flywheelL.setVelocity(-targetVelocity);
-                    flywheelR.setVelocity(-targetVelocity);
-                    readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
-                }
-
-                //off flywheel
-                if (gamepad2.y) {
-                    flywheelL.setVelocity(0);
-                    flywheelR.setVelocity(0);
-                }
-
-                //out flywheel
-                if (gamepad2.x) {
-                    flywheelL.setVelocity(targetVelocity);
-                    flywheelR.setVelocity(targetVelocity);
-                }
-
-
-                //light code
-                if (targetVelocity > 0) {
-                    double flywheelVelocity = Math.abs(flywheelL.getVelocity());
-
-                    if (flywheelVelocity >= targetVelocity) {
-                        light.setPattern(readyColor);
-                    } else if (flywheelVelocity >= maxVelocity) {
-                        light.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
-                    } else {
-                        light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
-                    }
-
-                    if (flywheelVelocity < targetVelocity) {
-                        light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
-                    }
-                }
+            if (flywheelVelocity < targetVelocity) {
+                light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
+            }
+        }
 
 
 
@@ -397,5 +360,5 @@ public class BlueBotTeleop extends OpMode {
         }
     }
     */
-            }
-        }
+    }
+}
