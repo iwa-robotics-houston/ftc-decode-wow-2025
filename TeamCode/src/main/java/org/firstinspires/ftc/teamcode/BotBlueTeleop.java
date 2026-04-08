@@ -74,8 +74,10 @@ public class BotBlueTeleop extends OpMode {
     DcMotor intake;
     DcMotorEx flywheelL;
     DcMotorEx flywheelR;
+    DcMotorEx flipper;
     CRServo launcher;
     CRServo passThrough;
+    CRServo passThrough2;
     GoBildaPinpointDriver imu;
     RevBlinkinLedDriver light;
     Limelight limelight;
@@ -94,9 +96,10 @@ public class BotBlueTeleop extends OpMode {
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
         passThrough = hardwareMap.get(CRServo.class, "pass");
-        //diverter = hardwareMap.get(CRServo.class, "diverter");
+        passThrough2 = hardwareMap.get(CRServo.class, "pass2");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheelL = hardwareMap.get(DcMotorEx.class, "flywheelL");
+        flipper = hardwareMap.get(DcMotorEx.class, "flipper");
         flywheelR = hardwareMap.get(DcMotorEx.class, "flywheelR");
         imu = hardwareMap.get(GoBildaPinpointDriver.class, "odo");
         light = hardwareMap.get(RevBlinkinLedDriver.class, "light");
@@ -223,24 +226,38 @@ public class BotBlueTeleop extends OpMode {
         telemetry.addData("speed", flywheelL.getVelocity());
         telemetry.update();
 
-        //intake
+        //intake + pass
         if (gamepad2.right_trigger > 0) {
             intake.setPower(-1);
+            passThrough.setPower(-1);
         } else if (gamepad2.left_trigger > 0) {
             intake.setPower(1);
+            passThrough.setPower(1);
         } else {
             intake.setPower(0);
+            passThrough.setPower(0);
         }
+
+        //flipper?
+        if (gamepad1.a) {
+            flipper.setPower(-.3);
+        } else if (gamepad1.b) {
+            flipper.setPower(.3);
+        } else
+            flipper.setPower(0);
 
 
         //pass through
         if (gamepad2.dpad_up) {
-            passThrough.setPower(-1);
+            passThrough2.setPower(1);
+            //in
         } else if (gamepad2.dpad_down) {
-            passThrough.setPower(1);
+            passThrough2.setPower(-1);
+            //out
         } else {
-            passThrough.setPower(0);
+            passThrough2.setPower(0);
         }
+
 
         //launch
         if (gamepad2.right_bumper) {
@@ -271,69 +288,69 @@ public class BotBlueTeleop extends OpMode {
             }
         }
         //far goal blue
-            if (gamepad1.right_trigger > 0.1) {
-                limelight.updateLimelight();
-                limelight.scanGoal();
-                if (limelight.resultWorks() && limelight.getTx() < -4) {
-                    frontLeftDrive.setPower(-.5);
-                    frontRightDrive.setPower(.5);
-                    backLeftDrive.setPower(-.5);
-                    backRightDrive.setPower(.5);
-                } else if (limelight.resultWorks() && limelight.getTx() > -4) {
-                    frontLeftDrive.setPower(0);
-                    frontRightDrive.setPower(0);
-                    backLeftDrive.setPower(0);
-                    backRightDrive.setPower(0);
-                    telemetry.addLine("far blue goal");
-                }
+        if (gamepad1.right_trigger > 0.1) {
+            limelight.updateLimelight();
+            limelight.scanGoal();
+            if (limelight.resultWorks() && limelight.getTx() < -4) {
+                frontLeftDrive.setPower(-.5);
+                frontRightDrive.setPower(.5);
+                backLeftDrive.setPower(-.5);
+                backRightDrive.setPower(.5);
+            } else if (limelight.resultWorks() && limelight.getTx() > -4) {
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
+                telemetry.addLine("far blue goal");
+            }
+        }
+
+        //on flywheel
+        if (gamepad2.b) {
+            targetVelocity = 1290;
+            maxVelocity = 1400;
+            flywheelL.setVelocity(-targetVelocity);
+            flywheelR.setVelocity(-targetVelocity);
+            readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
+
+        }
+
+        if (gamepad2.a) {
+            targetVelocity = 1700;
+            maxVelocity = 1750;
+            flywheelL.setVelocity(-targetVelocity);
+            flywheelR.setVelocity(-targetVelocity);
+            readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
+        }
+
+        //off flywheel
+        if (gamepad2.y) {
+            flywheelL.setVelocity(0);
+            flywheelR.setVelocity(0);
+        }
+
+        //out flywheel
+        if (gamepad2.x) {
+            flywheelL.setVelocity(targetVelocity);
+            flywheelR.setVelocity(targetVelocity);
+        }
+
+        //light code
+        if (targetVelocity > 0) {
+            double flywheelVelocity = Math.abs(flywheelL.getVelocity());
+
+            if (flywheelVelocity >= targetVelocity) {
+                light.setPattern(readyColor);
+            } else if (flywheelVelocity >= maxVelocity) {
+                light.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
+            } else {
+                light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
             }
 
-            //on flywheel
-            if (gamepad2.b) {
-                targetVelocity = 1290;
-                maxVelocity = 1400;
-                flywheelL.setVelocity(targetVelocity);
-                flywheelR.setVelocity(-targetVelocity);
-                readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
-
+            if (flywheelVelocity < targetVelocity) {
+                light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
             }
-
-            if (gamepad2.a) {
-                targetVelocity = 1700;
-                maxVelocity = 1750;
-                flywheelL.setVelocity(targetVelocity);
-                flywheelR.setVelocity(-targetVelocity);
-                readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
-            }
-
-            //off flywheel
-            if (gamepad2.y) {
-                flywheelL.setVelocity(0);
-                flywheelR.setVelocity(0);
-            }
-
-            //out flywheel
-            if (gamepad2.x) {
-                flywheelL.setVelocity(-targetVelocity);
-                flywheelR.setVelocity(targetVelocity);
-            }
-
-            //light code
-            if (targetVelocity > 0) {
-                double flywheelVelocity = Math.abs(flywheelL.getVelocity());
-
-                if (flywheelVelocity >= targetVelocity) {
-                    light.setPattern(readyColor);
-                } else if (flywheelVelocity >= maxVelocity) {
-                    light.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
-                } else {
-                    light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
-                }
-
-                if (flywheelVelocity < targetVelocity) {
-                    light.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
-                }
-            }
+        }
 
 
 
@@ -390,5 +407,5 @@ public class BotBlueTeleop extends OpMode {
         }
     }
     */
-        }
     }
+}

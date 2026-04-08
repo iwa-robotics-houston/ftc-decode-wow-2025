@@ -18,6 +18,7 @@ public class BackBlueAuto extends LinearOpMode {
     DcMotorEx backRightDrive;
     DcMotor intake;
     CRServo passThrough;
+    CRServo passThrough2;
     CRServo launcher;
     DcMotorEx flywheelL;
     DcMotorEx flywheelR;
@@ -36,6 +37,7 @@ public class BackBlueAuto extends LinearOpMode {
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         passThrough = hardwareMap.get(CRServo.class, "pass");
+        passThrough2 = hardwareMap.get(CRServo.class, "pass2");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheelL = hardwareMap.get(DcMotorEx.class, "flywheelL");
         flywheelR = hardwareMap.get(DcMotorEx.class, "flywheelR");
@@ -90,7 +92,7 @@ public class BackBlueAuto extends LinearOpMode {
         waitForStart();
         opModeIsActive();
 
-        //6 ball auto
+        //fix red auto
         // - Carys
 
         double forward = 0.50;
@@ -115,8 +117,9 @@ public class BackBlueAuto extends LinearOpMode {
         }
 
          */
-        passThrough.setPower(-1);
+        passThrough2.setPower(1);
         sleep(400);
+        passThrough.setPower(-1);
         launcher.setPower(-1);
         intake.setPower(-1);
         sleep(6000);
@@ -156,6 +159,7 @@ public class BackBlueAuto extends LinearOpMode {
         backLeftDrive.setPower(.25);
         backRightDrive.setPower(.25);
         intake.setPower(-1);
+        passThrough.setPower(-1);
         launcher.setPower(1);
         sleep(3500);
 
@@ -191,6 +195,7 @@ public class BackBlueAuto extends LinearOpMode {
         sleep(2500);
         intake.setPower(-1);
         passThrough.setPower(-1);
+        passThrough.setPower(1);
         launcher.setPower(-1);
         sleep(5000);
 

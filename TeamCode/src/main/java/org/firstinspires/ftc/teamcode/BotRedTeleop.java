@@ -270,7 +270,8 @@ public class BotRedTeleop extends OpMode {
                 telemetry.addLine("close red goal");
             }
         }
-        //far goal blue
+
+        //far goal red
         if (gamepad1.right_trigger > 0.1) {
             limelight.updateLimelight();
             limelight.scanGoal();
