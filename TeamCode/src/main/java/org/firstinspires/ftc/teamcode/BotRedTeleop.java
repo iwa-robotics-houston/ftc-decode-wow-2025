@@ -74,8 +74,10 @@ public class BotRedTeleop extends OpMode {
     DcMotor intake;
     DcMotorEx flywheelL;
     DcMotorEx flywheelR;
+    DcMotorEx flipper;
     CRServo launcher;
     CRServo passThrough;
+    CRServo passThrough2;
     GoBildaPinpointDriver imu;
     RevBlinkinLedDriver light;
     Limelight limelight;
@@ -94,9 +96,10 @@ public class BotRedTeleop extends OpMode {
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
         passThrough = hardwareMap.get(CRServo.class, "pass");
-        //diverter = hardwareMap.get(CRServo.class, "diverter");
+        passThrough2 = hardwareMap.get(CRServo.class, "pass2");
         launcher = hardwareMap.get(CRServo.class, "launcher");
         flywheelL = hardwareMap.get(DcMotorEx.class, "flywheelL");
+        flipper = hardwareMap.get(DcMotorEx.class, "flipper");
         flywheelR = hardwareMap.get(DcMotorEx.class, "flywheelR");
         imu = hardwareMap.get(GoBildaPinpointDriver.class, "odo");
         light = hardwareMap.get(RevBlinkinLedDriver.class, "light");
@@ -122,8 +125,8 @@ public class BotRedTeleop extends OpMode {
         flywheelL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        flywheelL.setVelocityPIDFCoefficients(200, 0, 0, 14);
-        flywheelR.setVelocityPIDFCoefficients(200, 0, 0, 14);
+        flywheelL.setVelocityPIDFCoefficients(100, 0, 0, 14);
+        flywheelR.setVelocityPIDFCoefficients(100, 0, 0, 14);
 //f is 14 btw
 //fixed this and hen imported hardword
         //imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
@@ -223,24 +226,38 @@ public class BotRedTeleop extends OpMode {
         telemetry.addData("speed", flywheelL.getVelocity());
         telemetry.update();
 
-        //intake
+        //intake + pass
         if (gamepad2.right_trigger > 0) {
             intake.setPower(-1);
+            passThrough.setPower(-1);
         } else if (gamepad2.left_trigger > 0) {
             intake.setPower(1);
+            passThrough.setPower(1);
         } else {
             intake.setPower(0);
+            passThrough.setPower(0);
         }
+
+        //flipper?
+        if (gamepad1.a) {
+            flipper.setPower(-.3);
+        } else if (gamepad1.b) {
+            flipper.setPower(.3);
+        } else
+            flipper.setPower(0);
 
 
         //pass through
         if (gamepad2.dpad_up) {
-            passThrough.setPower(-1);
+            passThrough2.setPower(1);
+            //in
         } else if (gamepad2.dpad_down) {
-            passThrough.setPower(1);
+            passThrough2.setPower(-1);
+            //out
         } else {
-            passThrough.setPower(0);
+            passThrough2.setPower(0);
         }
+
 
         //launch
         if (gamepad2.right_bumper) {
@@ -270,7 +287,6 @@ public class BotRedTeleop extends OpMode {
                 telemetry.addLine("close red goal");
             }
         }
-
         //far goal red
         if (gamepad1.right_trigger > 0.1) {
             limelight.updateLimelight();
@@ -293,16 +309,16 @@ public class BotRedTeleop extends OpMode {
         if (gamepad2.b) {
             targetVelocity = 1290;
             maxVelocity = 1400;
-            flywheelL.setVelocity(targetVelocity);
+            flywheelL.setVelocity(-targetVelocity);
             flywheelR.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
 
         }
 
         if (gamepad2.a) {
-            targetVelocity = 1700;
-            maxVelocity = 1750;
-            flywheelL.setVelocity(targetVelocity);
+            targetVelocity = 1530;
+            maxVelocity = 1530;
+            flywheelL.setVelocity(-targetVelocity);
             flywheelR.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
         }
@@ -315,7 +331,7 @@ public class BotRedTeleop extends OpMode {
 
         //out flywheel
         if (gamepad2.x) {
-            flywheelL.setVelocity(-targetVelocity);
+            flywheelL.setVelocity(targetVelocity);
             flywheelR.setVelocity(targetVelocity);
         }
 

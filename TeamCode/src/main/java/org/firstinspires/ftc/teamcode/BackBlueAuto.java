@@ -77,8 +77,8 @@ public class BackBlueAuto extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Void File Running", "Forwards");
         telemetry.addLine("Left 2 Purple, Right Green");
-        flywheelR.setVelocityPIDFCoefficients(200, 0, 0, 14);
-        flywheelL.setVelocityPIDFCoefficients(200, 0, 0, 14);
+        flywheelR.setVelocityPIDFCoefficients(100, 0, 0, 14);
+        flywheelL.setVelocityPIDFCoefficients(100, 0, 0, 14);
         telemetry.addData("speed", flywheelL.getVelocity());
 
 
@@ -103,8 +103,8 @@ public class BackBlueAuto extends LinearOpMode {
         //fresh battery velocity
         backRightDrive.setPower(0);
         frontLeftDrive.setPower(0);
-        flywheelL.setVelocity(-1500);
-        flywheelR.setVelocity(-1500);
+        flywheelL.setVelocity(-1530);
+        flywheelR.setVelocity(-1530);
         sleep(3000);
 
         /*
@@ -150,7 +150,7 @@ public class BackBlueAuto extends LinearOpMode {
         frontRightDrive.setPower(.5);
         backLeftDrive.setPower(-.5);
         backRightDrive.setPower(.5);
-        sleep(430);
+        sleep(470);
 
         //drive forward to intake
         //values of left same as right
@@ -159,7 +159,6 @@ public class BackBlueAuto extends LinearOpMode {
         backLeftDrive.setPower(.25);
         backRightDrive.setPower(.25);
         intake.setPower(-1);
-        passThrough.setPower(-1);
         launcher.setPower(1);
         sleep(3500);
 
@@ -176,7 +175,7 @@ public class BackBlueAuto extends LinearOpMode {
         backLeftDrive.setPower(.5);
         backRightDrive.setPower(-.5);
         launcher.setPower(0);
-        sleep(380);
+        sleep(450);
 
         //drive back
         frontLeftDrive.setPower(reverse);
@@ -185,7 +184,7 @@ public class BackBlueAuto extends LinearOpMode {
         backRightDrive.setPower(reverse);
         flywheelL.setVelocity(-1530);
         flywheelR.setVelocity(-1530);
-        sleep(800);
+        sleep(900);
 
         //SHOOT
         frontLeftDrive.setPower(0);
@@ -195,7 +194,7 @@ public class BackBlueAuto extends LinearOpMode {
         sleep(2500);
         intake.setPower(-1);
         passThrough.setPower(-1);
-        passThrough.setPower(1);
+        passThrough2.setPower(1);
         launcher.setPower(-1);
         sleep(5000);
 

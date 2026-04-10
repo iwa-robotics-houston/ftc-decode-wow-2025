@@ -18,8 +18,11 @@ public class BackRedAuto extends LinearOpMode {
     DcMotorEx backRightDrive;
     DcMotor intake;
     CRServo passThrough;
+    CRServo passThrough2;
     CRServo launcher;
-    DcMotorEx flywheel;
+    DcMotorEx flywheelL;
+    DcMotorEx flywheelR;
+
 
     @Override
     public void runOpMode() {
@@ -34,8 +37,11 @@ public class BackRedAuto extends LinearOpMode {
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         passThrough = hardwareMap.get(CRServo.class, "pass");
+        passThrough2 = hardwareMap.get(CRServo.class, "pass2");
         launcher = hardwareMap.get(CRServo.class, "launcher");
-        flywheel = hardwareMap.get(DcMotorEx.class, "flywheel");
+        flywheelL = hardwareMap.get(DcMotorEx.class, "flywheelL");
+        flywheelR = hardwareMap.get(DcMotorEx.class, "flywheelR");
+
 
         /*
          * Note: The settings here assume direct drive on left and right wheels. Gear
@@ -65,13 +71,15 @@ public class BackRedAuto extends LinearOpMode {
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Void File Running", "Forwards");
         telemetry.addLine("Left 2 Purple, Right Green");
-        flywheel.setVelocityPIDFCoefficients(200, 0, 0, 14);
-        telemetry.addData("speed", flywheel.getVelocity());
+        flywheelR.setVelocityPIDFCoefficients(100, 0, 0, 14);
+        flywheelL.setVelocityPIDFCoefficients(100, 0, 0, 14);
+        telemetry.addData("speed", flywheelL.getVelocity());
 
 
         //This is where you paste the void names that you make beneath this loop void.
@@ -84,7 +92,7 @@ public class BackRedAuto extends LinearOpMode {
         waitForStart();
         opModeIsActive();
 
-        //6 ball auto
+        //fix red auto
         // - Carys
 
         double forward = 0.50;
@@ -92,24 +100,31 @@ public class BackRedAuto extends LinearOpMode {
 
 
         //start flywheel
+        //fresh battery velocity
         backRightDrive.setPower(0);
         frontLeftDrive.setPower(0);
-        flywheel.setVelocity(-1720);
+        flywheelL.setVelocity(-1530);
+        flywheelR.setVelocity(-1530);
         sleep(3000);
 
+        /*
         //launch all artis????
         //this works I promise you, it's supposed to be less than
-        double flywheelVelocity = Math.abs(flywheel.getVelocity());
-        while (flywheelVelocity < 1720) {
-            flywheelVelocity = Math.abs(flywheel.getVelocity());
+        double flywheelLVelocity = Math.abs(flywheelL.getVelocity());
+        while (flywheelLVelocity < 1500) {
+            flywheelLVelocity = Math.abs(flywheelL.getVelocity());
             sleep(100);
         }
-        intake.setPower(-1);
-        passThrough.setPower(-1);
-        sleep(400);
-        launcher.setPower(1);
-        sleep(8000);
 
+         */
+        passThrough2.setPower(1);
+        sleep(400);
+        passThrough.setPower(-1);
+        launcher.setPower(-1);
+        intake.setPower(-1);
+        sleep(6000);
+
+        /*
         //turn
         frontLeftDrive.setPower(-.5);
         frontRightDrive.setPower(.5);
@@ -117,34 +132,25 @@ public class BackRedAuto extends LinearOpMode {
         backRightDrive.setPower(.5);
         sleep(300);
 
-        //strafe right one foot
-        frontLeftDrive.setPower(forward);
-        frontRightDrive.setPower(reverse);
-        backLeftDrive.setPower(reverse);
-        backRightDrive.setPower(forward);
-        flywheel.setPower(0);
-        launcher.setPower(0);
-        intake.setPower(0);
-        passThrough.setPower(0);
-        sleep(600);
-
-        /*
+         */
         //drive forward one foot
         frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
-        flywheel.setPower(0);
+        flywheelL.setPower(0);
+        flywheelR.setPower(0);
         launcher.setPower(0);
         intake.setPower(0);
-        sleep(680);
+        passThrough.setPower(0);
+        sleep(630);
 
         //turn
         frontLeftDrive.setPower(.5);
         frontRightDrive.setPower(-.5);
         backLeftDrive.setPower(.5);
         backRightDrive.setPower(-.5);
-        sleep(450);
+        sleep(470);
 
         //drive forward to intake
         //values of left same as right
@@ -153,32 +159,32 @@ public class BackRedAuto extends LinearOpMode {
         backLeftDrive.setPower(.25);
         backRightDrive.setPower(.25);
         intake.setPower(-1);
-        sleep(2000);
+        launcher.setPower(1);
+        sleep(3500);
 
         //go back
         frontLeftDrive.setPower(reverse);
         frontRightDrive.setPower(reverse);
         backLeftDrive.setPower(reverse);
         backRightDrive.setPower(reverse);
-        intake.setPower(0);
-        passThrough.setPower(-1);
-        sleep(750);
+        sleep(1150);
 
         //turn other way
         frontLeftDrive.setPower(-.5);
         frontRightDrive.setPower(.5);
         backLeftDrive.setPower(-.5);
         backRightDrive.setPower(.5);
-        passThrough.setPower(0);
-        sleep(530);
+        launcher.setPower(0);
+        sleep(450);
 
         //drive back
         frontLeftDrive.setPower(reverse);
         frontRightDrive.setPower(reverse);
         backLeftDrive.setPower(reverse);
         backRightDrive.setPower(reverse);
-        flywheel.setVelocity(-1500);
-        sleep(800);
+        flywheelL.setVelocity(-1530);
+        flywheelR.setVelocity(-1530);
+        sleep(900);
 
         //SHOOT
         frontLeftDrive.setPower(0);
@@ -188,16 +194,17 @@ public class BackRedAuto extends LinearOpMode {
         sleep(2500);
         intake.setPower(-1);
         passThrough.setPower(-1);
-        sleep(500);
-        launcher.setPower(1);
-        sleep(8000);
+        passThrough2.setPower(1);
+        launcher.setPower(-1);
+        sleep(5000);
 
         //drive forward one foot
         frontLeftDrive.setPower(forward);
         frontRightDrive.setPower(forward);
         backLeftDrive.setPower(forward);
         backRightDrive.setPower(forward);
-        flywheel.setVelocity(0);
+        flywheelL.setVelocity(0);
+        flywheelR.setVelocity(0);
         passThrough.setPower(0);
         launcher.setPower(0);
         intake.setPower(0);
@@ -214,8 +221,5 @@ public class BackRedAuto extends LinearOpMode {
         telemetry.addData("Status", "Completed");
 
 
-    }
-    
-         */
     }
 }

@@ -125,8 +125,8 @@ public class BotBlueTeleop extends OpMode {
         flywheelL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        flywheelL.setVelocityPIDFCoefficients(200, 0, 0, 14);
-        flywheelR.setVelocityPIDFCoefficients(200, 0, 0, 14);
+        flywheelL.setVelocityPIDFCoefficients(100, 0, 0, 14);
+        flywheelR.setVelocityPIDFCoefficients(100, 0, 0, 14);
 //f is 14 btw
 //fixed this and hen imported hardword
         //imu = hardwareMap.get(GoBildaPinpointDriver.class, "imu");
@@ -316,8 +316,8 @@ public class BotBlueTeleop extends OpMode {
         }
 
         if (gamepad2.a) {
-            targetVelocity = 1700;
-            maxVelocity = 1750;
+            targetVelocity = 1530;
+            maxVelocity = 1530;
             flywheelL.setVelocity(-targetVelocity);
             flywheelR.setVelocity(-targetVelocity);
             readyColor = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
