@@ -64,7 +64,7 @@ public class BackBlueAuto extends LinearOpMode {
         backRightDrive.setZeroPowerBehavior(BRAKE);
 
         /*
-         * Tell the driver that initialization is complete.
+         * Tell the driver initialization is complete.
          */
 
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
